@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'OZ_MERN_TEAM_4',
+  title: '도르멍',
   description: 'OZ_06_MERN_PROJECT',
 };
 
