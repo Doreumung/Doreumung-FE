@@ -2,8 +2,8 @@
 
 import React, { useEffect } from 'react';
 import { clsx } from 'clsx';
-import { layerPopupVariants } from './layerPopupStyles';
 import { LayerPopupProps } from './types';
+import { layerPopupStyles } from './layerPopupStyles';
 
 const LayerPopup: React.FC<LayerPopupProps> = ({
   // React.FC - 함수형 컴포넌트
@@ -37,7 +37,7 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
       )}
     >
       <div
-        className={layerPopupVariants({ visible, size })}
+        className={layerPopupStyles({ visible, size })}
         {...props} // 추가 HTML 속성
       >
         <div className="relative w-full p-6 rounded-2xl">

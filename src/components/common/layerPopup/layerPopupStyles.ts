@@ -1,6 +1,6 @@
 import { cva } from 'class-variance-authority';
 
-export const layerPopupVariants = cva(
+export const layerPopupStyles = cva(
   'flex items-center justify-center rounded-2xl bg-background border border-darkerGray transition-all', // base
   {
     variants: {
