@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { clsx } from 'clsx';
-import { layerPopupVariants } from './LayerPopupStyles';
+import { layerPopupVariants } from './layerPopupStyles';
 import { LayerPopupProps } from './types';
 
 const LayerPopup: React.FC<LayerPopupProps> = ({
