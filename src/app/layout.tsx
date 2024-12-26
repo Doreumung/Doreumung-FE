@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import './globals.css';
+import '@/styles/globals.css';
 
 export const metadata: Metadata = {
   title: '도르멍',
@@ -12,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='ko'>
+    <html lang="ko">
       <body>{children}</body>
     </html>
   );
