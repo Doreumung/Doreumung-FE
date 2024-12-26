@@ -35,6 +35,9 @@ export default {
         googleContainer: 'hsl(var(--google-container))',
         googleLabel: 'hsl(var(--google-label))',
       },
+      dropShadow: {
+        button: '3px 3px 0 hsl(var(--foreground))',
+      },
     },
   },
   plugins: [],
