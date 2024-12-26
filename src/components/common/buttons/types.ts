@@ -1,23 +1,14 @@
+import { VariantProps } from 'class-variance-authority';
 import React from 'react';
+import { buttonStyles } from './buttonStyles';
 
-interface Button extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  size?: 'lg' | 'md' | 'sm' | 'xs';
-  color?:
-    | 'green'
-    | 'yellow'
-    | 'orange'
-    | 'skyblue'
-    | 'blue'
-    | 'lightGray'
-    | 'darkGray'
-    | 'fadedGreen'
-    | 'fadedYellow';
+export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
+  VariantProps<typeof buttonStyles> & {
+    label: string;
+    className?: string;
+    onClick: React.MouseEventHandler<HTMLButtonElement>;
+  };
+
+export type SocialLoginButtonProps = Omit<ButtonProps, 'label' | 'size' | 'color' | 'disabled'> & {
   provider: 'kakao' | 'naver' | 'google';
-  disabled?: boolean;
-  label: string;
-  className?: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
-}
-
-export type SocialLoginButtonProps = Pick<Button, 'provider' | 'onClick'>;
-export type ButtonProps = Omit<Button, 'provider'>;
+};
