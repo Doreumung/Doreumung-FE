@@ -1,6 +1,6 @@
 import { VariantProps } from 'class-variance-authority';
-import { layerPopupVariants } from './LayerPopupStyles';
 import { HTMLAttributes } from 'react';
+import { layerPopupVariants } from './LayerPopupStyles';
 
 export type LayerPopupProps = HTMLAttributes<HTMLDivElement> &
   VariantProps<typeof layerPopupVariants> & {
