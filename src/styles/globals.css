@@ -20,6 +20,7 @@
 :root {
   --background: 0, 0%, 93%;
   --foreground: 0, 0%, 8%;
+  --overlay: rgba(20, 20, 20, 0.2);
   --darker-gray: 0, 0%, 25%;
   --dark-gray: 0, 0%, 43%;
   --lighter-gray: 0, 0%, 81%;
@@ -34,11 +35,11 @@
   --faded-skyblue: 204, 51%, 93%;
   --faded-green: 92, 47%, 85%;
   --kakao-container: 52, 100%, 50%;
-  --kakao-label: 0, 0%, 13%, 0.85;
+  --kakao-label: rgba(33, 33, 33, 0.85);
   --naver-container: 146, 97%, 39%;
   --naver-label: 0, 0%, 100%;
   --google-container: 0, 0%, 100%;
-  --google-label: 0, 0%, 13%, 0.85;
+  --google-label: rgba(33, 33, 33, 0.85);
 }
 
 body {

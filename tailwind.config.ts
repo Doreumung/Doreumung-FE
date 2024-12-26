@@ -15,6 +15,7 @@ export default {
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        overlay: 'var(--overlay)',
         darkerGray: 'hsl(var(--darker-gray))',
         darkGray: 'hsl(var(--dark-gray))',
         lighterGray: 'hsl(var(--lighter-gray))',
@@ -29,11 +30,11 @@ export default {
         fadedSkyblue: 'hsl(var(--faded-skyblue))',
         fadedGreen: 'hsl(var(--faded-green))',
         kakaoContainer: 'hsl(var(--kakao-container))',
-        kakaoLabel: 'hsl(var(--kakao-label))',
+        kakaoLabel: 'var(--kakao-label)',
         naverContainer: 'hsl(var(--naver-container))',
         naverLabel: 'hsl(var(--naver-label))',
         googleContainer: 'hsl(var(--google-container))',
-        googleLabel: 'hsl(var(--google-label))',
+        googleLabel: 'var(--google-label)',
       },
       dropShadow: {
         button: '3px 3px 0 hsl(var(--foreground))',
