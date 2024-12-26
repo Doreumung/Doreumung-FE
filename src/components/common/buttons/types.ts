@@ -12,12 +12,12 @@ type Button = {
     | 'darkGray'
     | 'fadedGreen'
     | 'fadedYellow';
-  social: 'kakao' | 'naver' | 'google';
+  provider: 'kakao' | 'naver' | 'google';
   disabled?: boolean;
   label: string;
   className?: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-export type SocialButtonProps = Pick<Button, 'social' | 'onClick'>;
-export type ButtonProps = Omit<Button, 'social'>;
+export type SocialLoginButtonProps = Pick<Button, 'provider' | 'onClick'>;
+export type ButtonProps = Omit<Button, 'provider'>;
