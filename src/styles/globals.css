@@ -1,21 +1,47 @@
+@font-face {
+  font-family: 'GmarketSansMedium';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GumiRomanceTTF';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/GumiRomanceTTF.woff2')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: 0, 0%, 93%;
+  --foreground: 0, 0%, 8%;
+  --darker-gray: 0, 0%, 25%;
+  --dark-gray: 0, 0%, 43%;
+  --lighter-gray: 0, 0%, 81%;
+  --light-gray: 0, 0%, 61%;
+  --logo: 28, 100%, 60%;
+  --yellow: 47, 94%, 53%;
+  --green: 94, 63%, 63%;
+  --blue: 214, 90%, 42%;
+  --skyblue: 204, 64%, 74%;
+  --faded-orange: 30, 86%, 84%;
+  --faded-yellow: 48, 78%, 88%;
+  --faded-skyblue: 204, 51%, 93%;
+  --faded-green: 92, 47%, 85%;
+  --kakao-container: 52, 100%, 50%;
+  --kakao-label: 0, 0%, 13%, 0.85;
+  --naver-container: 146, 97%, 39%;
+  --naver-label: 0, 0%, 100%;
+  --google-container: 0, 0%, 100%;
+  --google-label: 0, 0%, 13%, 0.85;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply text-foreground bg-background;
+  @apply font-default;
 }

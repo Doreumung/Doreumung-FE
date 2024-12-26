@@ -1,16 +1,39 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 
 export default {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
+      fontFamily: {
+        logo: ['GumiRomanceTTF'],
+        default: ['GmarketSansMedium'],
+      },
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        darkerGray: 'hsl(var(--darker-gray))',
+        darkGray: 'hsl(var(--dark-gray))',
+        lighterGray: 'hsl(var(--lighter-gray))',
+        lightGray: 'hsl(var(--light-gray))',
+        logo: 'hsl(var(--logo))',
+        yellow: 'hsl(var(--yellow))',
+        green: 'hsl(var(--green))',
+        blue: 'hsl(var(--blue))',
+        skyblue: 'hsl(var(--skyblue))',
+        fadedOrange: 'hsl(var(--faded-orange))',
+        fadedYellow: 'hsl(var(--faded-yellow))',
+        fadedSkyblue: 'hsl(var(--faded-skyblue))',
+        fadedGreen: 'hsl(var(--faded-green))',
+        kakaoContainer: 'hsl(var(--kakao-container))',
+        kakaoLabel: 'hsl(var(--kakao-label))',
+        naverContainer: 'hsl(var(--naver-container))',
+        naverLabel: 'hsl(var(--naver-label))',
+        googleContainer: 'hsl(var(--google-container))',
+        googleLabel: 'hsl(var(--google-label))',
       },
     },
   },
