@@ -1,6 +1,6 @@
 import React from 'react';
 
-type Button = {
+interface Button extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'lg' | 'md' | 'sm' | 'xs';
   color?:
     | 'green'
@@ -17,7 +17,7 @@ type Button = {
   label: string;
   className?: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
-};
+}
 
 export type SocialLoginButtonProps = Pick<Button, 'provider' | 'onClick'>;
 export type ButtonProps = Omit<Button, 'provider'>;
