@@ -34,13 +34,13 @@ const Input: React.FC<InputProps> = ({
         id={id}
         type={inputType}
         placeholder={placeholder}
-        className={twMerge(clsx(inputStyles({ variant }), className))}
+        className={twMerge(clsx(inputStyles({ variant }), className, isPasswordInput && 'pr-12'))}
         {...props}
       />
       {isPasswordInput && (
         <button
           type="button"
-          className="absolute right-5 bottom-5 text-lightGray hover:text-darkGray"
+          className="absolute bg-white right-5 bottom-5 text-lightGray hover:text-darkGray"
           onClick={() => setIsPasswordVisible(prev => !prev)}
         >
           {isPasswordVisible ? <EyeOff className=" h-5 w-5" /> : <Eye className="h-5 w-5" />}
