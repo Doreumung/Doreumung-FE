@@ -40,7 +40,7 @@ const Input: React.FC<InputProps> = ({
       {isPasswordInput && (
         <button
           type="button"
-          className="absolute right-5 top-1/2 -translate-1/2 text-lightGray hover:text-darkGray"
+          className="absolute right-5 bottom-5 text-lightGray hover:text-darkGray"
           onClick={() => setIsPasswordVisible(prev => !prev)}
         >
           {isPasswordVisible ? <EyeOff className=" h-5 w-5" /> : <Eye className="h-5 w-5" />}
