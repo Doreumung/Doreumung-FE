@@ -10,6 +10,7 @@ const Input: React.FC<InputProps> = ({
   label,
   type,
   placeholder,
+  error,
   variant,
   className,
   ...props
@@ -45,6 +46,8 @@ const Input: React.FC<InputProps> = ({
           {isPasswordVisible ? <EyeOff className=" h-5 w-5" /> : <Eye className="h-5 w-5" />}
         </button>
       )}
+      {/* [임시 코드] 사용할 때 맞춰 수정해야 함 */}
+      {error && <p className="text-logo text-sm">{error}</p>}
     </div>
   );
 };
