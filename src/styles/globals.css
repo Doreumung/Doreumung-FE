@@ -20,6 +20,7 @@
 :root {
   --background: 0, 0%, 93%;
   --foreground: 0, 0%, 8%;
+  --overlay: rgba(20, 20, 20, 0.2);
   --darker-gray: 0, 0%, 25%;
   --dark-gray: 0, 0%, 43%;
   --lighter-gray: 0, 0%, 81%;
@@ -31,17 +32,41 @@
   --skyblue: 204, 64%, 74%;
   --faded-orange: 30, 86%, 84%;
   --faded-yellow: 48, 78%, 88%;
-  --faded-skyblue: 204, 51%, 93%;
+  --faded-skyblue: 202, 54%, 88%;
   --faded-green: 92, 47%, 85%;
   --kakao-container: 52, 100%, 50%;
-  --kakao-label: 0, 0%, 13%, 0.85;
+  --kakao-label: rgba(33, 33, 33, 0.85);
   --naver-container: 146, 97%, 39%;
   --naver-label: 0, 0%, 100%;
   --google-container: 0, 0%, 100%;
-  --google-label: 0, 0%, 13%, 0.85;
+  --google-label: rgba(33, 33, 33, 0.85);
 }
 
 body {
   @apply text-foreground bg-background;
   @apply font-default;
+}
+
+.speech_bubble {
+  @apply inline-block relative px-3 py-1 border border-foreground rounded-2xl bg-green;
+}
+
+.speech_bubble::before {
+  @apply absolute w-0 h-0 z-10;
+  content: '';
+  bottom: -24px;
+  left: 32px;
+  border-width: 13px 5px 13px 5px;
+  border-color: hsl(var(--green)) transparent transparent hsl(var(--green));
+  border-style: solid;
+}
+
+.speech_bubble::after {
+  @apply absolute w-0 h-0 -z-10;
+  content: '';
+  bottom: -29px;
+  left: 31px;
+  border-width: 15px 6px 15px 6px;
+  border-color: hsl(var(--foreground)) transparent transparent hsl(var(--foreground));
+  border-style: solid;
 }
