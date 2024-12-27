@@ -6,14 +6,11 @@ import { InputProps } from './types';
 import { Eye, EyeOff } from 'lucide-react';
 
 const Input: React.FC<InputProps> = ({
-  label,
   id,
+  label,
   type,
-  unit,
   placeholder,
-  error,
   variant,
-  color,
   className,
   ...props
 }) => {
@@ -27,7 +24,7 @@ const Input: React.FC<InputProps> = ({
       {label && (
         <label
           htmlFor={id}
-          className={clsx('text-logo pl-3', variant === 'signin' && 'relative top-6')}
+          className={clsx('text-logo pl-3', variant === 'signin' && 'absolute top-1')}
         >
           {label}
         </label>
@@ -36,7 +33,7 @@ const Input: React.FC<InputProps> = ({
         id={id}
         type={inputType}
         placeholder={placeholder}
-        className={twMerge(clsx(inputStyles({ variant })))}
+        className={twMerge(clsx(inputStyles({ variant }), className))}
         {...props}
       />
       {isPasswordInput && (
