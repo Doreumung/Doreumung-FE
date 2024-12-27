@@ -41,7 +41,7 @@ const Select = () => {
           selectedValue={year ? `${year}년` : null}
           placeholder="년도"
           onSelect={value => {
-            setYear(parseInt(value.toString().replace('년', ''), 10));
+            setYear(value);
             setDay(null); // 년도 변경 시 일 초기화
           }}
         />
@@ -51,7 +51,7 @@ const Select = () => {
           selectedValue={month ? `${month}월` : null}
           placeholder="월"
           onSelect={value => {
-            setMonth(parseInt(value.toString().replace('월', ''), 10));
+            setMonth(value);
             setDay(null); // 월 변경 시 일 초기화
           }}
         />
@@ -60,7 +60,7 @@ const Select = () => {
           options={days}
           selectedValue={day ? `${day}일` : null}
           placeholder="일"
-          onSelect={value => setDay(parseInt(value.toString().replace('일', ''), 10))}
+          onSelect={value => setDay(value)}
         />
       </div>
     </div>
