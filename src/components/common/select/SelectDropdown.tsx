@@ -67,7 +67,7 @@ export const SelectDropdown = <T extends number>({
         </svg>
       </div>
       {isOpen && options.length > 0 && (
-        <ul className="absolute z-10 w-full overflow-y-scroll scrollbar-hide h-48 bg-white border border-green">
+        <ul className="absolute z-10 overflow-y-scroll w-full h-48 border border-green bg-white scrollbar-hide">
           {options.map(option => (
             <li
               key={option}

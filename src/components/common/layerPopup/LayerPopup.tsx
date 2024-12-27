@@ -32,7 +32,7 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
   return (
     <div
       className={clsx(
-        'fixed inset-0 flex items-center justify-center transition-opacity bg-overlay',
+        'fixed flex items-center justify-center bg-overlay inset-0 transition-opacity',
         visible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none',
       )}
     >
