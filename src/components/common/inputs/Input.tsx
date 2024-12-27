@@ -25,7 +25,7 @@ const Input: React.FC<InputProps> = ({
       {label && (
         <label
           htmlFor={id}
-          className={clsx('text-logo pl-3', variant === 'signin' && 'absolute top-1')}
+          className={clsx('pl-3 text-logo ', variant === 'signin' && 'absolute top-1')}
         >
           {label}
         </label>
@@ -40,14 +40,14 @@ const Input: React.FC<InputProps> = ({
       {isPasswordInput && (
         <button
           type="button"
-          className="absolute bg-white right-5 bottom-5 text-lightGray hover:text-darkGray"
+          className="absolute right-5 bottom-5 bg-white text-lightGray hover:text-darkGray"
           onClick={() => setIsPasswordVisible(prev => !prev)}
         >
           {isPasswordVisible ? <EyeOff className=" h-5 w-5" /> : <Eye className="h-5 w-5" />}
         </button>
       )}
       {/* [임시 코드] 사용할 때 맞춰 수정해야 함 */}
-      {error && <p className="text-logo text-sm">{error}</p>}
+      {error && <p className="text-sm text-logo">{error}</p>}
     </div>
   );
 };
