@@ -1,6 +1,6 @@
 import { cva } from 'class-variance-authority';
 
-export const inputWrapperStyles = cva('flex flex-col text-sm w-96', {
+export const inputWrapperStyles = cva('flex flex-col w-96 text-sm', {
   variants: {
     variant: {
       default: 'gap-1',
@@ -14,14 +14,14 @@ export const inputWrapperStyles = cva('flex flex-col text-sm w-96', {
 });
 
 export const inputStyles = cva(
-  'w-full p-4 text-darkerGray border border-green rounded-2xl focus:outline-green',
+  'w-full p-4 border border-green rounded-2xl text-darkerGray focus:outline-green',
   {
     variants: {
       variant: {
         default: 'h-11',
-        signin: 'pt-6 pb-2 h-16',
+        signin: 'h-16 pt-6 pb-2',
         title:
-          'h-11 bg-fadedGreen text-darkerGray placeholder-lightGray border-darkGray focus:outline-darkGray',
+          'h-11 border-darkGray bg-fadedGreen text-darkerGray placeholder-lightGray focus:outline-darkGray',
       },
     },
     defaultVariants: {

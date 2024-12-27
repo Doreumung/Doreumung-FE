@@ -1,18 +1,18 @@
 import { cva } from 'class-variance-authority';
 
-export const toggleStyles = cva(['rounded-2xl', 'border border-darkerGray'], {
+export const toggleStyles = cva('rounded-2xl border border-darkerGray', {
   variants: {
     size: {
-      md: ['text-xl', 'h-10', 'min-w-24', 'px-5'],
-      sm: ['text-base', 'h-9', 'w-20'],
+      md: 'min-w-24 h-10 px-5 text-xl',
+      sm: 'w-20 h-9 text-base',
     },
     checked: {
-      true: ['bg-fadedSkyblue', 'text-darkerGray'],
-      false: ['bg-lighterGray', 'text-lightGray'],
+      true: 'bg-fadedSkyblue text-darkerGray',
+      false: 'bg-lighterGray text-lightGray',
     },
     disabled: {
-      true: ['!bg-darkerGray', '!text-lighterGray'],
-      false: [],
+      true: '!bg-darkerGray !text-lighterGray',
+      false: '',
     },
   },
   defaultVariants: {

@@ -33,7 +33,7 @@ const Dropdown: React.FC<DropdownProps> = ({ variant, options }) => {
   }, []);
 
   return (
-    <div className="relative inline-block" ref={dropdownRef}>
+    <div className="inline-block relative" ref={dropdownRef}>
       <button className="px-2 py-2 text-sm" onClick={() => setIsOpen(prev => !prev)}>
         {variant === 'navbar' ? `${username}님 혼저옵서예!` : <LucideEllipsisVertical />}
       </button>

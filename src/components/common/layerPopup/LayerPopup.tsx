@@ -6,7 +6,6 @@ import { LayerPopupProps } from './types';
 import { layerPopupStyles } from './layerPopupStyles';
 
 const LayerPopup: React.FC<LayerPopupProps> = ({
-  // React.FC - 함수형 컴포넌트
   visible,
   size,
   children,
@@ -14,11 +13,10 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
   onClose,
   ...props
 }) => {
-  // ESC 키 핸들러
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && visible) {
-        onClose?.(); // onClose 콜백 호출
+        onClose?.();
       }
     };
 
@@ -32,14 +30,11 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
   return (
     <div
       className={clsx(
-        'fixed flex items-center justify-center bg-overlay inset-0 transition-opacity',
+        'flex justify-center items-center fixed inset-0 bg-overlay transition-opacity',
         visible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none',
       )}
     >
-      <div
-        className={layerPopupStyles({ visible, size })}
-        {...props} // 추가 HTML 속성
-      >
+      <div className={layerPopupStyles({ visible, size })} {...props}>
         <div className="relative w-full p-6 rounded-2xl">
           <div className="flex flex-col gap-6">
             <div className="flex justify-start gap-5 text-base">
