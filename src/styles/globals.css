@@ -45,6 +45,7 @@
 body {
   @apply text-foreground bg-background;
   @apply font-default;
+  @apply select-none;
 }
 
 .speech_bubble {
