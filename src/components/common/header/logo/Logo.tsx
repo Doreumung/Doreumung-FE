@@ -1,18 +1,18 @@
-import DoreumungLogo from '@public/images/logo.svg';
-import Dolmung from '@public/images/dolmung.svg';
-import Image from 'next/image';
-import { dolmungStyles, logoContainerStyles, logoStyles } from './logoStyles';
-import { LogoVariants } from './types';
-import Link from 'next/link';
+'use client';
 
-const Logo: React.FC<LogoVariants> = ({ variant }) => {
+import { usePathname } from 'next/navigation';
+import LogoImage from './LogoImage';
+import LogoText from './LogoText';
+
+const Logo = () => {
+  const path = usePathname();
+  const variant = path === '/' ? 'motion' : 'default';
+
   return (
-    <>
-      <Link href="/" className={logoContainerStyles({ variant })}>
-        <Image src={DoreumungLogo} alt="logo" className={logoStyles({ variant })} />
-        <Image src={Dolmung} alt="dolmung" className={dolmungStyles({ variant })} />
-      </Link>
-    </>
+    <div className="relative w-full h-full">
+      <LogoText variant={variant} />
+      <LogoImage variant={variant} />
+    </div>
   );
 };
 
