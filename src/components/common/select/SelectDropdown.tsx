@@ -36,7 +36,7 @@ export const SelectDropdown = <T extends number>({
   };
 
   return (
-    <div className="relative inline-block w-32" ref={dropdownRef}>
+    <div className="relative inline-block w-1/3" ref={dropdownRef}>
       {/* 드롭다운에 ref 연결 */}
       <div
         className={clsx(
