@@ -43,7 +43,9 @@ const Navbar = () => {
           ref={menu.label.includes('혼저옵서예!') ? ref : null}
           className="relative cursor-pointer"
         >
-          <span onClick={() => handleMenuClick(menu)}>{menu.label}</span>
+          <span className="text-darkerGray hover:text-logo" onClick={() => handleMenuClick(menu)}>
+            {menu.label}
+          </span>
           {isOpen && menu.label.includes('혼저옵서예!') && (
             <Dropdown variant="userMenu" setIsOpen={setIsOpen} />
           )}
