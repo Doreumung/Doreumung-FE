@@ -14,16 +14,22 @@ const LogoImage: React.FC<LogoTextAndImageProps> = ({ variant }) => {
   const motionWidth = useTransform(scrollYProgress, INPUT_RANGE, ['56px', '48px', '48px']);
   const motionLeft = useTransform(scrollYProgress, INPUT_RANGE, ['217px', '160px', '160px']);
   const motionBottom = useTransform(scrollYProgress, INPUT_RANGE, ['55px', '12px', '12px']);
+  const motionTransform = useTransform(scrollYProgress, INPUT_RANGE, [
+    'rotate(0)',
+    'rotate(360deg)',
+    'rotate(360deg)',
+  ]);
 
   const width = variant === 'motion' ? motionWidth : '48px';
   const left = variant === 'motion' ? motionLeft : '160px';
   const bottom = variant === 'motion' ? motionBottom : '12px';
+  const transform = variant === 'motion' ? motionTransform : undefined;
 
   return (
     <>
       <motion.div
         className={twMerge(clsx(variant === 'default' && 'w-12 bottom-3 left-40'), 'absolute')}
-        style={{ width, left, bottom }}
+        style={{ width, left, bottom, transform }}
       >
         <Image src={Dolmung} alt="dolmung" />
       </motion.div>
