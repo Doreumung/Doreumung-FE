@@ -49,9 +49,7 @@ export const SelectDropdown = <T extends number>({
           }
         }}
       >
-        <span className="text-darkGray text-sm">
-          {selectedValue ? selectedValue.toString() : placeholder}
-        </span>
+        <span className="text-darkGray text-sm">{selectedValue ? selectedValue : placeholder}</span>
         {/* 화살표 모양 */}
         <svg
           xmlns="http://www.w3.org/2000/svg"

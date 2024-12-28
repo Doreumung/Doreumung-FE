@@ -1,11 +1,12 @@
-import { VariantProps } from 'class-variance-authority';
-import { dropdownStyles } from './dropdownStyles';
+import { Dispatch, SetStateAction } from 'react';
 
 export type DropdownOption = {
   label: string;
-  action?: () => void;
+  path?: string;
+  action?: string;
 };
 
-export type DropdownProps = VariantProps<typeof dropdownStyles> & {
-  options: DropdownOption[];
+export type DropdownProps = {
+  variant: 'userMenu' | 'travelMenu';
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
 };
