@@ -1,6 +1,6 @@
 import { cva } from 'class-variance-authority';
 
-export const inputWrapperStyles = cva('flex flex-col w-96 text-sm', {
+export const inputWrapperStyles = cva('flex flex-col w-96 relative text-sm', {
   variants: {
     variant: {
       default: 'gap-1',
@@ -20,8 +20,7 @@ export const inputStyles = cva(
       variant: {
         default: 'h-11',
         signin: 'h-16 pt-6 pb-2',
-        title:
-          'h-11 border-darkGray bg-fadedGreen text-darkerGray placeholder-lightGray focus:outline-darkGray',
+        title: 'h-11 border-darkGray bg-fadedGreen placeholder-lightGray focus:outline-darkGray',
       },
     },
     defaultVariants: {

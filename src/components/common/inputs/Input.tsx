@@ -21,7 +21,7 @@ const Input: React.FC<InputProps> = ({
   const inputType = isPasswordInput && isPasswordVisible ? 'text' : type;
 
   return (
-    <div className={twMerge(clsx(inputWrapperStyles({ variant })), 'relative')}>
+    <div className={clsx(inputWrapperStyles({ variant }))}>
       {label && (
         <label
           htmlFor={id}
