@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import { inputStyles, inputWrapperStyles } from './inputStyles';
+import { inputStyles, inputWrapperStyles, passwordStyle } from './inputStyles';
 import { InputProps } from './types';
 import { Eye, EyeOff } from 'lucide-react';
 
@@ -34,13 +34,13 @@ const Input: React.FC<InputProps> = ({
         id={id}
         type={inputType}
         placeholder={placeholder}
-        className={twMerge(clsx(inputStyles({ variant }), className, isPasswordInput && 'pr-12'))}
+        className={twMerge(clsx(inputStyles({ variant }), isPasswordInput && 'pr-12'), className)}
         {...props}
       />
       {isPasswordInput && (
         <button
           type="button"
-          className="absolute right-5 bottom-5 bg-white text-lightGray hover:text-darkGray"
+          className={clsx(passwordStyle({ variant }))}
           onClick={() => setIsPasswordVisible(prev => !prev)}
         >
           {isPasswordVisible ? <EyeOff className=" h-5 w-5" /> : <Eye className="h-5 w-5" />}

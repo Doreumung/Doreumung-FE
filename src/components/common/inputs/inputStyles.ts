@@ -29,3 +29,16 @@ export const inputStyles = cva(
     },
   },
 );
+
+export const passwordStyle = cva('absolute right-5 bg-white text-lightGray hover:text-darkGray', {
+  variants: {
+    variant: {
+      default: 'top-1/2 -translate-1/2',
+      signin: 'bottom-5',
+      title: '',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
