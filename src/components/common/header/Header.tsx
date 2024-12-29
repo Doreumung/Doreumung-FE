@@ -7,6 +7,7 @@ import { motion, useMotionValue, useScroll, useTransform } from 'motion/react';
 import clsx from 'clsx';
 import { HEADER_HEIGHT, INPUT_RANGE } from './constants';
 import useIsMobile from '@/hooks/useIsMobile';
+import { useEffect } from 'react';
 
 const Header = () => {
   const isMobile = useIsMobile();
@@ -26,6 +27,11 @@ const Header = () => {
   const defaultHeight = useMotionValue(HEADER_HEIGHT.default[deviceType]);
 
   const height = variant === 'home' ? motionHeight : defaultHeight;
+
+  useEffect(() => {
+    defaultHeight.set(HEADER_HEIGHT.default[deviceType]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deviceType]);
 
   return (
     <header className={clsx(variant === 'travelPlan' && 'hidden')}>
