@@ -1,10 +1,28 @@
-export const DROPDOWN_MENUS_USER = [
+const DROPDOWN_MENUS_USER = [
   { label: '회원정보 수정', path: '/edit-profile' },
   { label: '저장한 경로', path: '/my-travel' },
   { label: '로그아웃', action: 'signOut' },
-] as const;
+];
 
-export const DROPDOWN_MENUS_TRAVEL = [
+const DROPDOWN_MENUS_TRAVEL = [
   { label: '리뷰 작성', path: '/travel-review/create' },
   { label: '삭제', action: 'deleteTravel' },
-] as const;
+];
+
+const SIGN_IN_AND_SIGN_UP_MENU = [
+  { label: '로그인', path: '/sign-in' },
+  { label: '회원가입', path: '/sign-up' },
+];
+
+const REVIEW_MENU = [{ label: '여행 후기', path: '/travel-review', separator: true }];
+
+const MOBILE_DROPDOWN_MENUS = [...REVIEW_MENU, ...SIGN_IN_AND_SIGN_UP_MENU];
+
+const MOBILE_DROPDOWN_MENUS_USER = [...REVIEW_MENU, ...DROPDOWN_MENUS_USER];
+
+export const DROPDOWN_MENU = {
+  userMenu: DROPDOWN_MENUS_USER,
+  travelMenu: DROPDOWN_MENUS_TRAVEL,
+  mobileMenu: MOBILE_DROPDOWN_MENUS,
+  mobileUserMenu: MOBILE_DROPDOWN_MENUS_USER,
+};
