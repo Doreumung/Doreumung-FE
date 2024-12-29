@@ -16,9 +16,9 @@ const SIGN_IN_AND_SIGN_UP_MENU = [
 
 const REVIEW_MENU = [{ label: '여행 후기', path: '/travel-review', separator: true }];
 
-const MOBILE_DROPDOWN_MENUS = [...REVIEW_MENU, ...SIGN_IN_AND_SIGN_UP_MENU] as const;
+const MOBILE_DROPDOWN_MENUS = [...REVIEW_MENU, ...SIGN_IN_AND_SIGN_UP_MENU];
 
-const MOBILE_DROPDOWN_MENUS_USER = [...REVIEW_MENU, ...DROPDOWN_MENUS_USER] as const;
+const MOBILE_DROPDOWN_MENUS_USER = [...REVIEW_MENU, ...DROPDOWN_MENUS_USER];
 
 export const DROPDOWN_MENU = {
   userMenu: DROPDOWN_MENUS_USER,
