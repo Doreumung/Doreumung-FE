@@ -12,6 +12,7 @@ const Input: React.FC<InputProps> = ({
   placeholder,
   error,
   variant,
+  width,
   className,
   ...props
 }) => {
@@ -21,7 +22,7 @@ const Input: React.FC<InputProps> = ({
   const inputType = isPasswordInput && isPasswordVisible ? 'text' : type;
 
   return (
-    <div className={clsx(inputWrapperStyles({ variant }))}>
+    <div className={clsx(inputWrapperStyles({ variant, width }))}>
       {label && (
         <label
           htmlFor={id}

@@ -1,15 +1,20 @@
 import { cva } from 'class-variance-authority';
 
-export const inputWrapperStyles = cva('flex flex-col w-96 relative text-sm', {
+export const inputWrapperStyles = cva('flex flex-col relative text-sm', {
   variants: {
     variant: {
       default: 'gap-1',
       signin: '',
       title: '',
     },
+    width: {
+      default: 'w-80 md:w-96',
+      wide: 'md:w-[700px]',
+    },
   },
   defaultVariants: {
     variant: 'default',
+    width: 'default',
   },
 });
 
