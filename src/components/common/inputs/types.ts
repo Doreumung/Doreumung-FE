@@ -1,5 +1,5 @@
 import { VariantProps } from 'class-variance-authority';
-import { inputStyles, inputWrapperStyles } from './inputStyles';
+import { inputWrapperStyles } from './inputStyles';
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
   VariantProps<typeof inputWrapperStyles> & {
