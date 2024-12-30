@@ -23,7 +23,12 @@ const Page = () => {
 
   const onSubmit = (data: SignInSchema) => {
     // 제출했을 때 data 반환
+    const userData = { ...data, isChecked };
+    console.log(userData);
+
+    // 확인용
     console.log('Form Data:', data);
+    console.log(isChecked);
   };
 
   return (
@@ -45,10 +50,10 @@ const Page = () => {
         {errors.password && (
           <p className="px-3 pb-1 text-xs text-red-600">{errors.password.message}</p>
         )}
-        <div className="flex gap-1.5 text-darkGray pb-10 px-2">
+        <div className="flex gap-1.5 pb-10 px-2 text-darkGray">
           <div
             className={`w-5 h-5 rounded-md ${
-              isChecked ? 'bg-green' : 'bg-background border border-green'
+              isChecked ? 'bg-green' : 'border border-green bg-background'
             } flex items-center justify-center transition-transform duration-200 transform active:scale-125`}
             onClick={() => {
               setIsChecked(!isChecked);
@@ -76,9 +81,9 @@ const Page = () => {
       </div>
       <div className="flex flex-col gap-10">
         <Button label="로그인" onClick={() => {}} className="w-96 text-sm" />
-        <div className="flex gap-2 text-lightGray pb-10 justify-center">
+        <div className="flex justify-center gap-2 pb-10 text-lightGray">
           <p>아직 회원이 아니신가요?</p>
-          <button className="underline underline-offset-4 text-darkerGray">회원가입</button>
+          <button className="text-darkerGray underline underline-offset-4">회원가입</button>
         </div>
       </div>
       <div className="flex flex-col gap-4">
