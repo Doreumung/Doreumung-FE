@@ -18,11 +18,11 @@ export const LOGO_STYLES = {
     default: {
       web: {
         width: '128px',
-        marginLeft: '56px',
+        marginLeft: '32px',
       },
       mobile: {
         width: '112px',
-        marginLeft: '40px',
+        marginLeft: '16px',
       },
     },
     motion: {
@@ -32,7 +32,7 @@ export const LOGO_STYLES = {
       },
       mobile: {
         width: '144px',
-        marginLeft: '80px',
+        marginLeft: '72px',
       },
     },
   },
@@ -40,13 +40,13 @@ export const LOGO_STYLES = {
     default: {
       web: {
         width: '48px',
-        left: '176px',
+        left: '160px',
         bottom: '12px',
         transform: 'rotate(360deg)',
       },
       mobile: {
         width: '40px',
-        left: '144px',
+        left: '128px',
         bottom: '12px',
         transform: 'rotate(360deg)',
       },
