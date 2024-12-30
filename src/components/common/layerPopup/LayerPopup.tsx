@@ -49,7 +49,7 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
     <div className="flex justify-center items-center fixed inset-0 bg-overlay transition-opacity z-50 opacity-100 pointer-events-auto">
       {isConfirmPopup ? (
         <div className={layerPopupStyles()} {...props}>
-          <div className="relative p-6 h-50 rounded-2xl">
+          <div className="relative w-[500px] p-6 h-50 rounded-2xl">
             <div className="flex flex-col gap-20">
               <div className="flex justify-start items-center gap-5 text-base">
                 <Image src={Dolmung} alt="dolmung image" width={60} height={60} />
@@ -64,7 +64,7 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
         </div>
       ) : (
         <div className={layerPopupStyles()} {...props}>
-          <div className="relative w-full p-6 h-62 rounded-2xl">
+          <div className="relative w-[500px] p-6 h-62 rounded-2xl">
             <div className="flex flex-col items-center gap-5">
               <div className="flex items-center self-start gap-3 pl-6 text-base">
                 <Image src={Dolmung} alt="dolmung image" width={50} height={50} />
