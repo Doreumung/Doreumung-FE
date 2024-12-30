@@ -6,7 +6,7 @@ import { SelectDropdown } from './SelectDropdown';
 import { SelectProps } from './types';
 
 // Select 컴포넌트
-const Select: React.FC<SelectProps> = ({ setSelectedDate }) => {
+const Select: React.FC<SelectProps> = ({ setSelectedDate, optional }) => {
   const [year, setYear] = useState<number | null>(null); // null로 초기화
   const [month, setMonth] = useState<number | null>(null);
   const [day, setDay] = useState<number | null>(null);
@@ -33,11 +33,11 @@ const Select: React.FC<SelectProps> = ({ setSelectedDate }) => {
     } else {
       setSelectedDate(null);
     }
-  }, [year, month, day]);
+  }, [year, month, day, setSelectedDate]);
 
   return (
     <div>
-      <p className="px-4 py-1 text-logo text-sm">생년월일</p>
+      {optional ? <p className="px-4 py-1 text-logo text-sm">생년월일</p> : null}
       <div className="flex gap-2">
         {/* 년도 드롭다운 */}
         <SelectDropdown
