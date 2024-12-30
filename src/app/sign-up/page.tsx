@@ -1,3 +1,5 @@
+'use client';
+
 import Button from '@/components/common/buttons/Button';
 import Input from '@/components/common/inputs/Input';
 import Select from '@/components/common/select/Select';
@@ -91,7 +93,10 @@ const Page = () => {
             <div className="flex gap-7 px-3">
               {genderOptions.map(genderOption => {
                 return (
-                  <label className="flex items-center space-x-2 accent-darkGray pb-5">
+                  <label
+                    key={genderOption}
+                    className="flex items-center space-x-2 accent-darkGray pb-5"
+                  >
                     <input
                       type="radio"
                       name="gender"
