@@ -4,12 +4,13 @@ export const inputWrapperStyles = cva('flex flex-col relative text-sm', {
   variants: {
     variant: {
       default: 'gap-1',
+      eye: 'gap-1',
       signin: '',
       title: '',
     },
     width: {
-      default: 'w-80 md:w-96',
-      wide: 'md:w-[700px]',
+      default: 'w-full max-w-96',
+      wide: 'w-full md:w-[700px]',
     },
   },
   defaultVariants: {
@@ -24,6 +25,7 @@ export const inputStyles = cva(
     variants: {
       variant: {
         default: 'h-11',
+        eye: 'h-11',
         signin: 'h-16 pt-6 pb-2',
         title: 'h-11 border-darkGray bg-fadedGreen placeholder-lightGray focus:outline-darkGray',
       },
@@ -38,6 +40,7 @@ export const passwordStyle = cva('absolute right-5 bg-white text-lightGray hover
   variants: {
     variant: {
       default: 'top-1/2 -translate-1/2',
+      eye: 'bottom-3',
       signin: 'bottom-5',
       title: '',
     },
