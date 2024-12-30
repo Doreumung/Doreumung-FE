@@ -1,6 +1,6 @@
 import { cva } from 'class-variance-authority';
 
-export const buttonStyles = cva('border border-darkerGray rounded-2xl', {
+export const buttonStyles = cva('border border-darkerGray rounded-2xl hover:brightness-105', {
   variants: {
     size: {
       lg: 'w-80 h-16 text-2xl',
