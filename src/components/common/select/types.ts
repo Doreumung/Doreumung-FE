@@ -10,4 +10,5 @@ export type SelectDropdownProps<T> = {
 // 부모 컴포넌트로 값 올려주기
 export type SelectProps = {
   setSelectedDate: (date: Date | null) => void; // 부모 컴포넌트에서 날짜를 설정하는 함수
+  optional: boolean;
 };
