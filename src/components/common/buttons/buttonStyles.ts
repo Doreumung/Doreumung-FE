@@ -16,8 +16,8 @@ export const buttonStyles = cva('border border-darkerGray rounded-2xl', {
       blue: 'bg-blue text-background',
       fadedGreen: 'bg-fadedGreen text-foreground',
       fadedYellow: 'bg-fadedYellow text-foreground',
-      lightGray: 'bg-lighterGray text-foreground',
-      darkGray: 'bg-darkerGray text-background',
+      lighterGray: 'bg-lighterGray text-foreground',
+      darkerGray: 'bg-darkerGray text-background',
     },
     shadow: {
       dropShadow:
