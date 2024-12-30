@@ -1,14 +1,13 @@
 'use client';
 
 import Button from '@/components/common/buttons/Button';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import SelectRegion from './SelectRegion';
 import SelectSchedule from './SelectSchedule';
 import TravelHeader from './TravelHeader';
+import BackNavigation from '@/components/common/backNavigation/BackNavigation';
 
 const MultiStepForm = () => {
-  const router = useRouter();
   const [step, setStep] = useState(1);
 
   const handelNextStep = () => {
@@ -23,7 +22,7 @@ const MultiStepForm = () => {
   return (
     <div className="flex flex-col gap-2 min-h-screen px-8 pt-4 pb-8">
       <header className="text-base">
-        <div onClick={() => router.push('/')}>&lt; 메인으로</div>
+        <BackNavigation to="home" />
       </header>
       <main className="flex-grow">
         <form>
