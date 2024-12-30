@@ -10,7 +10,7 @@ const Home = () => {
   const paddingTop = useTransform(scrollYProgress, [0, 0.5, 1], ['80px', '0px', '0px']);
 
   return (
-    <motion.div className="flex flex-col gap-28" style={{ paddingTop }}>
+    <motion.div className="flex flex-col gap-28 w-full" style={{ paddingTop }}>
       <section className="flex justify-between h-[900px]">
         <div className="w-3/4 h-full">{/* 서비스 사용 방법 gif 이미지 삽입 공간*/}</div>
         <div className="flex justify-center self-end w-1/4 pb-5">
