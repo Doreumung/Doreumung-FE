@@ -69,7 +69,7 @@ const Page = () => {
           )}
 
           <Input
-            id="password"
+            id="confirmPassword"
             label="비밀번호 확인"
             {...register('confirmPassword')}
             type="password"
