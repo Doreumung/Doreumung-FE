@@ -46,7 +46,7 @@ const Page = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col justify-center items-center h-screen"
     >
-      <div className="w-96 inline-block">
+      <div className="inline-block w-96">
         <p className="pb-8 text-3xl text-darkerGray text-center">회원가입</p>
         <div className="flex flex-col gap-3">
           <Input id="email" label="이메일" {...register('email')} type="email" variant="default" />
@@ -95,7 +95,7 @@ const Page = () => {
                 return (
                   <label
                     key={genderOption}
-                    className="flex items-center space-x-2 accent-darkGray pb-5"
+                    className="flex items-center space-x-2 pb-5 accent-darkGray"
                   >
                     <input
                       type="radio"
@@ -104,7 +104,7 @@ const Page = () => {
                       className="w-3"
                       onChange={handleGenderChange}
                     />
-                    <span className="text-sm text-darkGray h-4 align-middle">{genderOption}</span>
+                    <span className="h-4 text-sm text-darkGray align-middle">{genderOption}</span>
                   </label>
                 );
               })}
