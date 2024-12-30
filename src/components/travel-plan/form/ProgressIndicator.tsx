@@ -6,9 +6,9 @@ const ProgressIndicator = ({
   totalSteps: number;
 }) => {
   return (
-    <div className="w-full h-2 overflow-hidden fixed">
+    <div className="fixed z-50 w-full h-2 overflow-hidden">
       <div
-        className="bg-logo h-full transition-all duration-300 ease-in-out"
+        className="h-full bg-logo transition-all duration-300 ease-in-out"
         style={{ width: `${(currentStep / totalSteps) * 100}%` }}
         role="progressbar"
         aria-valuenow={currentStep}
