@@ -26,6 +26,7 @@
   --lighter-gray: 0, 0%, 81%;
   --light-gray: 0, 0%, 61%;
   --logo: 28, 100%, 60%;
+  --red: 6, 63%, 50%;
   --yellow: 47, 94%, 53%;
   --green: 94, 63%, 63%;
   --blue: 214, 90%, 42%;
@@ -43,8 +44,8 @@
 }
 
 body {
-  @apply text-foreground bg-background;
-  @apply font-default;
+  @apply w-screen;
+  @apply font-default text-foreground bg-background;
   @apply select-none;
 }
 

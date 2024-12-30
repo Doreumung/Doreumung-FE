@@ -16,7 +16,7 @@ const RootLayout = ({
     <html lang="ko">
       <body>
         <Header />
-        <main className="mt-20">{children}</main>
+        <main className="flex justify-center w-full mt-16 md:mt-20">{children}</main>
       </body>
     </html>
   );
