@@ -49,15 +49,17 @@ body {
 }
 
 .speech_bubble {
-  @apply inline-block relative px-3 py-1 border border-foreground rounded-2xl bg-green;
+  @apply inline-block relative w-fit px-3 py-1;
+  @apply border border-foreground rounded-2xl;
+  @apply bg-green text-sm sm:text-base;
 }
 
 .speech_bubble::before {
   @apply absolute w-0 h-0 z-10;
   content: '';
-  bottom: -24px;
-  left: 32px;
-  border-width: 13px 5px 13px 5px;
+  bottom: -10px;
+  left: 32.5px;
+  border-width: 9px 8px 9px 8px;
   border-color: hsl(var(--green)) transparent transparent hsl(var(--green));
   border-style: solid;
 }
@@ -65,9 +67,9 @@ body {
 .speech_bubble::after {
   @apply absolute w-0 h-0 -z-10;
   content: '';
-  bottom: -29px;
-  left: 31px;
-  border-width: 15px 6px 15px 6px;
+  bottom: -13.2px;
+  left: 31.2px;
+  border-width: 9.7px 8.6px 9.7px 8.6px;
   border-color: hsl(var(--foreground)) transparent transparent hsl(var(--foreground));
   border-style: solid;
 }
