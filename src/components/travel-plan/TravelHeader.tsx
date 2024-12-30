@@ -1,7 +1,7 @@
 import SpeechBubble from '@/components/common/speechBubble/SpeechBubble';
 import Image from 'next/image';
 import Dolmung from '@public/images/dolmung.svg';
-import { TravelHeaderProps } from './form/types';
+import { TravelHeaderProps } from './types';
 
 const TravelHeader: React.FC<TravelHeaderProps> = ({ step, stepName }) => {
   return (
