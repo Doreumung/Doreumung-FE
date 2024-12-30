@@ -1,17 +1,50 @@
+'use client';
+
 import Button from '@/components/common/buttons/Button';
 import SocialLoginButton from '@/components/common/buttons/SocialLoginButton';
 import Input from '@/components/common/inputs/Input';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { signInSchema, SignInSchema } from './signInSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const Page = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
+  const {
+    register, // 연결하여 유효성 검사 진행
+    handleSubmit, // 폼 제출 시 실행
+    formState: { errors },
+  } = useForm<SignInSchema>({
+    resolver: zodResolver(signInSchema),
+    mode: 'onBlur',
+    reValidateMode: 'onChange', // 유효성 검사 진행
+  });
+
+  const onSubmit = (data: SignInSchema) => {
+    // 제출했을 때 data 반환
+    console.log('Form Data:', data);
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col items-center justify-center h-screen"
+    >
       <p className="pb-8 text-3xl text-darkerGray">로그인</p>
       <div className="flex flex-col gap-4">
-        <Input id="email" label="이메일" type="email" variant="signin" />
-        <Input id="password" label="비밀번호" type="password" variant="signin" />
+        <Input id="email" label="이메일" type="email" variant="signin" {...register('email')} />
+        {errors.email && <p className="px-3 pb-1 text-xs text-red-600">{errors.email.message}</p>}
+        <Input
+          id="password"
+          label="비밀번호"
+          type="password"
+          variant="signin"
+          {...register('password')}
+        />
+        {errors.password && (
+          <p className="px-3 pb-1 text-xs text-red-600">{errors.password.message}</p>
+        )}
         <div className="flex gap-1.5 text-darkGray pb-10 px-2">
           <div
             className={`w-5 h-5 rounded-md ${
@@ -53,7 +86,7 @@ const Page = () => {
         <SocialLoginButton provider="naver" onClick={() => {}} />
         <SocialLoginButton provider="google" onClick={() => {}} />
       </div>
-    </div>
+    </form>
   );
 };
 
