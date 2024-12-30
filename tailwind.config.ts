@@ -38,6 +38,7 @@ export default {
       },
       dropShadow: {
         button: '3px 3px 0 hsl(var(--foreground))',
+        clickedButton: '2px 2px 0 hsl(var(--foreground))',
       },
     },
   },

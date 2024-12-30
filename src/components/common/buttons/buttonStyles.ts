@@ -1,12 +1,12 @@
 import { cva } from 'class-variance-authority';
 
-export const buttonStyles = cva('border border-foreground rounded-2xl', {
+export const buttonStyles = cva('border border-darkerGray rounded-2xl', {
   variants: {
     size: {
-      lg: 'w-80 h-16 drop-shadow-button text-2xl ',
-      md: 'w-36 h-14 drop-shadow-button text-xl ',
+      lg: 'w-80 h-16 text-2xl',
+      md: 'w-36 h-14 text-xl',
       sm: 'w-24 h-10 text-lg',
-      xs: '*:w-20 h-8 text-base',
+      xs: 'w-20 h-8 text-base',
     },
     color: {
       green: 'bg-green text-foreground',
@@ -19,6 +19,11 @@ export const buttonStyles = cva('border border-foreground rounded-2xl', {
       lightGray: 'bg-lighterGray text-background',
       darkGray: 'bg-darkerGray text-background',
     },
+    shadow: {
+      dropShadow:
+        'drop-shadow-button active:translate-x-px active:translate-y-px active:drop-shadow-clickedButton',
+      none: '',
+    },
     disabled: {
       true: 'brightness-75 text-darkGray',
       false: '',
@@ -27,12 +32,13 @@ export const buttonStyles = cva('border border-foreground rounded-2xl', {
   defaultVariants: {
     size: 'sm',
     color: 'green',
+    shadow: 'none',
     disabled: false,
   },
 });
 
 export const socialLoginButtonStyles = cva(
-  'flex gap-2 justify-center items-center border border-foreground rounded-2xl w-96 h-11',
+  'flex gap-2 justify-center items-center rounded-2xl w-96 h-11',
   {
     variants: {
       provider: {
