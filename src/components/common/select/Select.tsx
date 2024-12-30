@@ -3,9 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { SelectDropdown } from './SelectDropdown';
+import { SelectProps } from './types';
 
 // Select 컴포넌트
-const Select = () => {
+const Select: React.FC<SelectProps> = ({ setSelectedDate }) => {
   const [year, setYear] = useState<number | null>(null); // null로 초기화
   const [month, setMonth] = useState<number | null>(null);
   const [day, setDay] = useState<number | null>(null);
@@ -28,12 +29,15 @@ const Select = () => {
     if (year && month && day) {
       const selectedDate = dayjs(`${year}-${month}-${day}`, 'YYYY-MM-DD');
       console.log('Selected Date:', selectedDate.toDate());
+      setSelectedDate(selectedDate.toDate());
+    } else {
+      setSelectedDate(null);
     }
   }, [year, month, day]);
 
   return (
     <div>
-      <p className="px-2 py-1 text-logo text-sm">생년월일</p>
+      <p className="px-4 py-1 text-logo text-sm">생년월일</p>
       <div className="flex gap-2">
         {/* 년도 드롭다운 */}
         <SelectDropdown
