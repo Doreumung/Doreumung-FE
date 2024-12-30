@@ -18,6 +18,7 @@ const Home = () => {
             size="lg"
             color="green"
             label="일정 생성하기"
+            shadow="dropShadow"
             onClick={() => router.push('/travel-plan')}
           />
         </div>

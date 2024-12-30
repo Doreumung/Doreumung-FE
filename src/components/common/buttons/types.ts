@@ -6,9 +6,12 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonStyles> & {
     label: string;
     className?: string;
-    onClick: React.MouseEventHandler<HTMLButtonElement>;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
   };
 
-export type SocialLoginButtonProps = Omit<ButtonProps, 'label' | 'size' | 'color' | 'disabled'> & {
+export type SocialLoginButtonProps = Omit<
+  ButtonProps,
+  'label' | 'size' | 'color' | 'shadow' | 'disabled'
+> & {
   provider: 'kakao' | 'naver' | 'google';
 };
