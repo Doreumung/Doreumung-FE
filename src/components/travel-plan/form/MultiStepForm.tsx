@@ -56,14 +56,32 @@ const MultiStepForm = () => {
           {step < 3 && (
             <footer className="flex justify-between">
               {step > 1 ? (
-                <Button size="md" color="yellow" label="이전" onClick={handelPrevStep} />
+                <Button
+                  size="md"
+                  color="yellow"
+                  shadow="dropShadow"
+                  label="이전"
+                  onClick={handelPrevStep}
+                />
               ) : (
                 <div></div>
               )}
               {step < 2 ? (
-                <Button size="md" color="yellow" label="다음" onClick={handelNextStep} />
+                <Button
+                  size="md"
+                  color="yellow"
+                  shadow="dropShadow"
+                  label="다음"
+                  onClick={handelNextStep}
+                />
               ) : (
-                <Button size="md" color="blue" label="일정 생성" onClick={handleSubmit} />
+                <Button
+                  size="md"
+                  color="blue"
+                  shadow="dropShadow"
+                  label="일정 생성"
+                  onClick={handleSubmit}
+                />
               )}
             </footer>
           )}
