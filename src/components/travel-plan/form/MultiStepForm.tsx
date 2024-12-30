@@ -4,7 +4,6 @@ import Button from '@/components/common/buttons/Button';
 import { useState } from 'react';
 import SelectRegion from './SelectRegion';
 import SelectSchedule from './SelectSchedule';
-import TravelHeader from '../TravelHeader';
 import BackNavigation from '@/components/common/backNavigation/BackNavigation';
 import ProgressIndicator from './ProgressIndicator';
 import TravelPlan from '../plan/TravelPlan';
@@ -35,19 +34,11 @@ const MultiStepForm = () => {
             <form>
               {step === 1 && (
                 <div>
-                  <TravelHeader
-                    step="지역을 선택하지 않으면 랜덤으로 배정돼요!"
-                    stepName="지역 선택"
-                  />
                   <SelectRegion />
                 </div>
               )}
               {step === 2 && (
                 <div>
-                  <TravelHeader
-                    step="테마을 선택하지 않으면 랜덤으로 배정돼요!"
-                    stepName="테마 선택"
-                  />
                   <SelectSchedule />
                 </div>
               )}
