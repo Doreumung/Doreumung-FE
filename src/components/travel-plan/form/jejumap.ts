@@ -10,7 +10,7 @@ export type Area = {
 
 export const jejuArea: Area[] = [
   {
-    name: "한림읍",
+    name: '한림읍',
     path: [
       { lat: 33.447, lng: 126.298 },
       { lat: 33.443, lng: 126.292 },
@@ -79,7 +79,7 @@ export const jejuArea: Area[] = [
     ],
   },
   {
-    name: "애월읍",
+    name: '애월읍',
     path: [
       { lat: 33.49, lng: 126.421 },
       { lat: 33.49, lng: 126.411 },
@@ -169,7 +169,7 @@ export const jejuArea: Area[] = [
     ],
   },
   {
-    name: "구좌읍",
+    name: '구좌읍',
     path: [
       { lat: 33.427, lng: 126.732 },
       { lat: 33.424, lng: 126.733 },
@@ -203,8 +203,6 @@ export const jejuArea: Area[] = [
       { lat: 33.51, lng: 126.906 },
       { lat: 33.509, lng: 126.9 },
       { lat: 33.513, lng: 126.898 },
-      { lat: 33.519, lng: 126.901 },
-      { lat: 33.52, lng: 126.903 },
       { lat: 33.519, lng: 126.901 },
       { lat: 33.526, lng: 126.894 },
       { lat: 33.527, lng: 126.883 },
@@ -257,7 +255,7 @@ export const jejuArea: Area[] = [
   },
 
   {
-    name: "조천읍",
+    name: '조천읍',
     path: [
       { lat: 33.553, lng: 126.706 },
       { lat: 33.553, lng: 126.698 },
@@ -340,7 +338,7 @@ export const jejuArea: Area[] = [
     ],
   },
   {
-    name: "한경면",
+    name: '한경면',
     path: [
       { lat: 33.322, lng: 126.296 },
       { lat: 33.327, lng: 126.291 },
@@ -396,7 +394,7 @@ export const jejuArea: Area[] = [
     ],
   },
   {
-    name: "대정읍",
+    name: '대정읍',
     path: [
       { lat: 33.303, lng: 126.282 },
       { lat: 33.298, lng: 126.277 },
@@ -456,7 +454,7 @@ export const jejuArea: Area[] = [
     ],
   },
   {
-    name: "남원읍",
+    name: '남원읍',
     path: [
       { lat: 33.254, lng: 126.623 },
       { lat: 33.255, lng: 126.632 },
@@ -545,7 +543,7 @@ export const jejuArea: Area[] = [
   },
 
   {
-    name: "성산읍",
+    name: '성산읍',
     path: [
       { lat: 33.337, lng: 126.85 },
       { lat: 33.339, lng: 126.855 },
@@ -631,7 +629,7 @@ export const jejuArea: Area[] = [
     ],
   },
   {
-    name: "안덕면",
+    name: '안덕면',
     path: [
       { lat: 33.218, lng: 126.294 },
       { lat: 33.224, lng: 126.297 },
@@ -706,7 +704,7 @@ export const jejuArea: Area[] = [
     ],
   },
   {
-    name: "표선면",
+    name: '표선면',
     path: [
       { lat: 33.307, lng: 126.776 },
       { lat: 33.307, lng: 126.782 },
@@ -787,7 +785,7 @@ export const jejuArea: Area[] = [
     ],
   },
   {
-    name: "제주시",
+    name: '제주시',
     path: [
       { lat: 33.535, lng: 126.603 },
       { lat: 33.538, lng: 126.597 },
@@ -872,7 +870,7 @@ export const jejuArea: Area[] = [
     ],
   },
   {
-    name: "서귀포시",
+    name: '서귀포시',
     path: [
       { lat: 33.234, lng: 126.369 },
       { lat: 33.233, lng: 126.378 },
