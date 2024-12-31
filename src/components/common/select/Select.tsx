@@ -6,10 +6,13 @@ import { SelectDropdown } from './SelectDropdown';
 import { SelectProps } from './types';
 
 // Select 컴포넌트
-const Select: React.FC<SelectProps> = ({ setSelectedDate, optional }) => {
-  const [year, setYear] = useState<number | null>(null); // null로 초기화
-  const [month, setMonth] = useState<number | null>(null);
-  const [day, setDay] = useState<number | null>(null);
+const Select: React.FC<SelectProps> = ({ setSelectedDate, optional, defaultDate }) => {
+  // 기본값을 받아온 경우
+  const parsedDate = defaultDate ? dayjs(defaultDate, 'YYYY-MM-DD') : null;
+
+  const [year, setYear] = useState<number | null>(parsedDate?.year() || null); // null로 초기화
+  const [month, setMonth] = useState<number | null>(parsedDate ? parsedDate.month() + 1 : null);
+  const [day, setDay] = useState<number | null>(parsedDate?.date() || null);
 
   const generateYears = () => Array.from({ length: 101 }, (_, i) => 2024 - i); // 2024부터 1924까지
   const generateMonths = () => Array.from({ length: 12 }, (_, i) => i + 1);
@@ -28,8 +31,7 @@ const Select: React.FC<SelectProps> = ({ setSelectedDate, optional }) => {
   useEffect(() => {
     if (year && month && day) {
       const selectedDate = dayjs(`${year}-${month}-${day}`, 'YYYY-MM-DD');
-      console.log('Selected Date:', selectedDate.toDate());
-      setSelectedDate(selectedDate.toDate());
+      setSelectedDate(selectedDate.format('YYYY-MM-DD'));
     } else {
       setSelectedDate(null);
     }
