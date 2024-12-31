@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { jejuArea } from './jejumap';
 
 type KakaoMouseEvent = {
@@ -11,6 +11,8 @@ type KakaoMouseEvent = {
 };
 
 const RegionMap = () => {
+  const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
+
   useEffect(() => {
     const script = document.createElement('script');
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_KEY}&libraries=services&autoload=false`;
@@ -21,9 +23,13 @@ const RegionMap = () => {
       // 카카오맵 로드
       window.kakao.maps.load(() => {
         const container = document.getElementById('map') as HTMLElement;
+
+        const isMobile = window.innerWidth <= 640;
+        const level = isMobile ? 11 : 10;
+
         const options = {
-          center: new window.kakao.maps.LatLng(33.399, 126.531),
-          level: 10,
+          center: new window.kakao.maps.LatLng(33.369, 126.571),
+          level: level,
         };
 
         const map = new window.kakao.maps.Map(container, options);
@@ -92,11 +98,13 @@ const RegionMap = () => {
               polygon.setOptions({
                 fillColor: '#DBEBCC',
               });
+              setSelectedAreas(prev => prev.filter(name => name !== area.name));
             } else {
               selectedPolygons.add(polygon);
               polygon.setOptions({
                 fillColor: '#9EC07F',
               });
+              setSelectedAreas(prev => [...prev, area.name]);
             }
           });
         });
@@ -108,7 +116,15 @@ const RegionMap = () => {
     };
   }, []);
 
-  return <div id="map" style={{ width: '100%', height: '500px' }} />;
+  return (
+    <div className="relative w-full h-[360px] md:h-[500px]">
+      <div className="absolute top-4 left-4 z-10 max-w-[calc(100%-2rem)] p-2 border border-darkGray rounded-md shadow-md bg-white text-xs text-darkerGray md:text-base">
+        <strong className="text-logo">선택된 지역: </strong>{' '}
+        {selectedAreas.length > 0 ? selectedAreas.join(', ') : '없음'}
+      </div>
+      <div id="map" className="absolute top-0 left-0 w-full h-full rounded-lg" />
+    </div>
+  );
 };
 
 export default RegionMap;
