@@ -5,7 +5,7 @@ const TravelPlan = () => {
   return (
     <div className="grid grid-cols-1 gap-4 w-screen min-h-screen md:grid-cols-[360px_1fr]">
       <div className="flex flex-col gap-2 px-4 sm:px-8 sm:w-[560px]">
-        <header className="pt-6 text-base">
+        <header className="pt-8 text-base md:pt-6">
           <BackNavigation to="home" />
         </header>
         <TravelHeader

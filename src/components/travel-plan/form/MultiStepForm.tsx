@@ -26,7 +26,7 @@ const MultiStepForm = () => {
     <div>
       <ProgressIndicator currentStep={step} totalSteps={3} />
       {step < 3 && (
-        <div className="flex flex-col gap-2 flex-grow w-screen min-h-screen px-4 pt-6 pb-8 sm:px-8">
+        <div className="flex flex-col gap-2 flex-grow w-screen min-h-screen px-4 pt-8 pb-8 md:px-8 md:pt-6">
           <header className="text-base">
             <BackNavigation to="home" />
           </header>
