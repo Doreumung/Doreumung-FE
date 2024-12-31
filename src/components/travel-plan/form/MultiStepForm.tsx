@@ -26,22 +26,14 @@ const MultiStepForm = () => {
     <div>
       <ProgressIndicator currentStep={step} totalSteps={3} />
       {step < 3 && (
-        <div className="flex flex-col gap-2 w-screen min-h-screen px-4 pt-6 pb-8 sm:px-8">
+        <div className="flex flex-col gap-2 flex-grow w-screen min-h-screen px-4 pt-6 pb-8 sm:px-8">
           <header className="text-base">
             <BackNavigation to="home" />
           </header>
           <main className="flex-grow">
             <form>
-              {step === 1 && (
-                <div>
-                  <SelectRegion />
-                </div>
-              )}
-              {step === 2 && (
-                <div>
-                  <SelectSchedule />
-                </div>
-              )}
+              {step === 1 && <SelectRegion />}
+              {step === 2 && <SelectSchedule />}
             </form>
           </main>
           {step < 3 && (
