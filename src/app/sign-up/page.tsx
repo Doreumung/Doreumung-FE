@@ -10,7 +10,7 @@ import { useState } from 'react';
 
 const Page = () => {
   const genderOptions: string[] = ['여성', '남성', '선택안함'];
-  const [selectedDate, setSelectedDate] = useState<string | null>(null); // Select 컴포넌트에서 생년월일 데이터 받아오기
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null); // Select 컴포넌트에서 생년월일 데이터 받아오기
   const [selectedGender, setSelectedGender] = useState<string | null>(null); // 선택된 성별
   const handleGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedGender(event.target.value); // 선택된 값 업데이트

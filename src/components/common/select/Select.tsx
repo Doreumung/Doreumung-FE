@@ -8,7 +8,7 @@ import { SelectProps } from './types';
 // Select 컴포넌트
 const Select: React.FC<SelectProps> = ({ setSelectedDate, optional, defaultDate }) => {
   // 기본값을 받아온 경우
-  const parsedDate = defaultDate ? dayjs(defaultDate, 'YYYY-MM-DD') : null;
+  const parsedDate = defaultDate ? dayjs(defaultDate) : null;
 
   const [year, setYear] = useState<number | null>(parsedDate?.year() || null); // null로 초기화
   const [month, setMonth] = useState<number | null>(parsedDate ? parsedDate.month() + 1 : null);
@@ -31,7 +31,8 @@ const Select: React.FC<SelectProps> = ({ setSelectedDate, optional, defaultDate 
   useEffect(() => {
     if (year && month && day) {
       const selectedDate = dayjs(`${year}-${month}-${day}`, 'YYYY-MM-DD');
-      setSelectedDate(selectedDate.format('YYYY-MM-DD'));
+      setSelectedDate(selectedDate.toDate());
+      console.log(selectedDate.toDate());
     } else {
       setSelectedDate(null);
     }
