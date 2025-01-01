@@ -3,14 +3,18 @@
 import Button from '@/components/common/buttons/Button';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRouter } from 'next/navigation';
+import Page from './edit-profile/page';
+import { useState } from 'react';
 
 const Home = () => {
   const { scrollYProgress } = useScroll();
   const router = useRouter();
   const paddingTop = useTransform(scrollYProgress, [0, 0.5, 1], ['80px', '0px', '0px']);
+  const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
 
   return (
     <motion.div className="flex flex-col gap-28 w-full" style={{ paddingTop }}>
+      <Page />
       <section className="flex justify-between h-[900px]">
         <div className="w-3/4 h-full">{/* 서비스 사용 방법 gif 이미지 삽입 공간*/}</div>
         <div className="flex justify-center self-end w-1/4 pb-5">
@@ -18,7 +22,6 @@ const Home = () => {
             size="lg"
             color="green"
             label="일정 생성하기"
-            shadow="dropShadow"
             onClick={() => router.push('/travel-plan')}
           />
         </div>
