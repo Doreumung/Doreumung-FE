@@ -56,7 +56,7 @@ const LogoImage: React.FC<LogoTextAndImageProps> = ({ variant }) => {
   return (
     <>
       <motion.div style={motionStyle}>
-        <Image src={Dolmung} alt="dolmung" />
+        <Image src={Dolmung} alt="dolmung" priority />
       </motion.div>
     </>
   );
