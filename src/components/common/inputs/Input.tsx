@@ -3,12 +3,15 @@
 import clsx from 'clsx';
 import React, { useState, forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
-import { inputStyles, inputWrapperStyles, passwordStyle } from './inputStyles';
+import { inputStyles, inputWrapperStyles, labelStyles, passwordStyle } from './inputStyles';
 import { InputProps } from './types';
 import { Eye, EyeOff } from 'lucide-react';
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ id, label, type, placeholder, error, variant, width, className, ...props }, ref) => {
+  (
+    { id, label, type, placeholder, error, variant, width, labelColor, className, ...props },
+    ref,
+  ) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
     const isPasswordInput = type === 'password';
@@ -19,7 +22,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={id}
-            className={clsx('pl-3 text-logo ', variant === 'signin' && 'absolute top-1')}
+            className={clsx(
+              labelStyles({ labelColor: labelColor === 'darkerGray' ? 'darkGray' : labelColor }),
+              variant === 'signin' && 'absolute top-1',
+            )}
           >
             {label}
           </label>

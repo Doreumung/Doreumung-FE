@@ -19,6 +19,18 @@ export const inputWrapperStyles = cva('flex flex-col relative text-sm', {
   },
 });
 
+export const labelStyles = cva('pl-3', {
+  variants: {
+    labelColor: {
+      logo: 'text-logo',
+      darkGray: 'text-darkGray',
+    },
+  },
+  defaultVariants: {
+    labelColor: 'logo',
+  },
+});
+
 export const inputStyles = cva(
   'w-full p-4 border border-green rounded-2xl text-darkerGray focus:outline-green',
   {
