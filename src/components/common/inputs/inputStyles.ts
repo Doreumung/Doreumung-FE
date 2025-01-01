@@ -10,7 +10,7 @@ export const inputWrapperStyles = cva('flex flex-col relative text-sm', {
     },
     width: {
       default: 'w-full max-w-96',
-      wide: 'w-full md:w-[700px]',
+      wide: 'w-full',
     },
   },
   defaultVariants: {
