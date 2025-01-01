@@ -27,3 +27,5 @@ export const TOOLBAR_INNER_CONTAINER_STYLES =
 export const TOOLBAR_GROUP_STYLES = 'flex items-center gap-2' as const;
 
 export const COLOR_SWATCH_STYLES = 'duration-75 ease-in-out hover:scale-110' as const;
+
+export const REVIEW_INFO_STYLES = 'flex items-center gap-1 text-sm' as const;
