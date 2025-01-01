@@ -31,13 +31,13 @@ const MultiStepForm = () => {
             <BackNavigation to="home" />
           </header>
           <main className="flex-grow">
-            <form>
+            <form onSubmit={e => e.preventDefault()}>
               {step === 1 && <SelectRegion />}
               {step === 2 && <SelectSchedule />}
             </form>
           </main>
           {step < 3 && (
-            <footer className="flex justify-between">
+            <footer className="flex justify-between pt-6">
               {step > 1 ? (
                 <Button
                   size="md"

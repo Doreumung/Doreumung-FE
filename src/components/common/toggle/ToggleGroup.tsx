@@ -14,13 +14,17 @@ const ToggleGroup: React.FC<ToggleGroupProps> = ({ items = THEMES, onChange }) =
       const indices: number[] = prev.includes(index)
         ? prev.filter(i => i !== index)
         : [...prev, index];
-      onChange(indices);
+
+      setTimeout(() => {
+        onChange(indices);
+      }, 0);
+
       return indices;
     });
   };
 
   return (
-    <>
+    <div className="flex flex-wrap gap-x-4 gap-y-3 w-full md:justify-start md:gap-4 md:w-auto">
       {items.map((item, index) => (
         <button
           key={`${index}-${item}`}
@@ -33,7 +37,7 @@ const ToggleGroup: React.FC<ToggleGroupProps> = ({ items = THEMES, onChange }) =
           {item}
         </button>
       ))}
-    </>
+    </div>
   );
 };
 
