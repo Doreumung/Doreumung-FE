@@ -1,5 +1,5 @@
 export const INFO_CONTAINER_STYLES =
-  'flex flex-col md:flex-row items-start md:items-center gap-1 md:gap-4 text-darkerGray' as const;
+  'flex flex-col items-start gap-1 text-darkerGray md:flex-row md:items-center md:gap-4' as const;
 
 export const LABEL_STYLES = 'shrink-0 pl-2 md:pl-0';
 
