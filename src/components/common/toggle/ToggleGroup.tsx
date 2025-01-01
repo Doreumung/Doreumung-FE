@@ -24,7 +24,7 @@ const ToggleGroup: React.FC<ToggleGroupProps> = ({ items = THEMES, onChange }) =
   };
 
   return (
-    <div className="flex flex-wrap  gap-x-4 gap-y-3 w-full md:justify-start md:gap-4 md:w-auto">
+    <div className="flex flex-wrap gap-x-4 gap-y-3 w-full md:justify-start md:gap-4 md:w-auto">
       {items.map((item, index) => (
         <button
           key={`${index}-${item}`}
