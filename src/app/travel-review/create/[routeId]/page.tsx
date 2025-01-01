@@ -9,32 +9,39 @@ import RouteInfoContainer from '@/components/travel-review/RouteInfo';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import Button from '@/components/common/buttons/Button';
 import { useParams } from 'next/navigation';
+import Tiptap from '@/components/travel-review/textEditor/Tiptap';
+import Toolbar from '@/components/travel-review/textEditor/Toolbar';
+import useTiptap from '@/hooks/useTiptap';
 
 const Page = () => {
   const titleRef = useRef<HTMLInputElement | null>(null);
+  const { editor } = useTiptap();
   const { routeId: travel_route_id } = useParams();
   const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>('');
   const [rating, setRating] = useState<number | null>(0);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (titleRef.current) {
-      setTitle(titleRef.current.value);
-    }
-
     setShowLayerPopup(true);
   };
 
-  // 제출 버튼 클릭 시 후기 등록 요청 필요
   const postReview = () => {
-    const content = {
+    let title, content;
+
+    if (titleRef.current && editor) {
+      title = titleRef.current.value;
+      content = editor.getHTML();
+    }
+
+    const request = {
       travel_route_id,
       title,
       rating,
+      content,
+      // photo_urls
     };
-    console.log(content);
+
+    console.log(request);
   };
 
   return (
@@ -43,7 +50,7 @@ const Page = () => {
 
       <h3 className="block py-12 text-darkerGray text-3xl">후기 작성</h3>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-6 md:gap-4 noValidate">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full md:gap-4" noValidate>
         <div className={INFO_CONTAINER_STYLES}>
           <span className={LABEL_STYLES}>제목</span>
           <Input
@@ -53,6 +60,7 @@ const Page = () => {
             variant="title"
             width="wide"
             className="text-base border-green bg-white focus:outline-0"
+            maxLength={50}
             required
           />
         </div>
@@ -64,6 +72,11 @@ const Page = () => {
 
         <RouteInfoContainer label="일정" content={ROUTE_INFO_DUMMY_DATA.title} />
         <RouteInfoContainer label="경로" content={ROUTE_INFO_DUMMY_DATA.route} />
+
+        <section>
+          <Toolbar editor={editor} />
+          <Tiptap editor={editor} />
+        </section>
 
         <Button type="submit" size="sm" color="blue" label="등록" className="self-end" />
       </form>
