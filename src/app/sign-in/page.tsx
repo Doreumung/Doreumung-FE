@@ -54,7 +54,7 @@ const Page = () => {
   const errorMessageStyle = 'px-3 pb-4 text-xs text-red';
 
   return (
-    <div className="flex flex-col justify-center items-center h-[calc(100vh-80px)] scale-90 md:scale-100">
+    <div className="flex flex-col justify-center items-center h-[calc(100vh-80px)] scale-90 md:scale-100 pb-[80px]">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center justify-center">
         <p className="pb-8 text-3xl text-darkerGray">로그인</p>
         <div className="flex flex-col gap-3 w-96">
