@@ -41,21 +41,22 @@ const Page = () => {
     console.log(selectedGender);
   };
 
+  // 공통 tailwind
+  const errorMessageStyle = 'px-3 pb-3 text-xs text-red';
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col justify-center items-center h-[calc(100vh-80px)]"
+      className="flex flex-col justify-center items-center h-[calc(100vh-80px)] max-[375px]:h-[100%] scale-90 md:scale-100"
     >
       <div className="inline-block w-96">
         <p className="pb-8 text-3xl text-darkerGray text-center">회원가입</p>
         <div className="flex flex-col gap-3">
           <Input id="email" label="이메일" {...register('email')} type="email" variant="default" />
-          {errors.email && <p className="px-3 pb-3 text-xs text-red-600">{errors.email.message}</p>}
+          {errors.email && <p className={errorMessageStyle}>{errors.email.message}</p>}
 
           <Input id="text" label="닉네임" {...register('username')} type="text" variant="default" />
-          {errors.username && (
-            <p className="px-3 pb-3 text-xs text-red-600">{errors.username.message}</p>
-          )}
+          {errors.username && <p className={errorMessageStyle}>{errors.username.message}</p>}
 
           <Input
             id="password"
@@ -64,9 +65,7 @@ const Page = () => {
             type="password"
             variant="default"
           />
-          {errors.password && (
-            <p className="px-3 pb-3 text-xs text-red-600">{errors.password.message}</p>
-          )}
+          {errors.password && <p className={errorMessageStyle}>{errors.password.message}</p>}
 
           <Input
             id="confirmPassword"
@@ -76,7 +75,7 @@ const Page = () => {
             variant="default"
           />
           {errors.confirmPassword && (
-            <p className="px-3 pb-3 text-xs text-red-600">{errors.confirmPassword.message}</p>
+            <p className={errorMessageStyle}>{errors.confirmPassword.message}</p>
           )}
         </div>
 
