@@ -49,7 +49,7 @@ const LogoText: React.FC<LogoTextAndImageProps> = ({ variant }) => {
     <>
       <motion.div style={motionStyle}>
         <Link href="/">
-          <Image src={DoreumungLogo} alt="logo" />
+          <Image src={DoreumungLogo} alt="logo" priority />
         </Link>
       </motion.div>
     </>

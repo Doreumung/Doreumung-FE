@@ -25,7 +25,7 @@ export const buttonStyles = cva('border border-darkerGray rounded-2xl hover:brig
       none: '',
     },
     disabled: {
-      true: 'brightness-75 text-darkGray',
+      true: 'brightness-90 text-darkGray hover:brightness-90',
       false: '',
     },
   },

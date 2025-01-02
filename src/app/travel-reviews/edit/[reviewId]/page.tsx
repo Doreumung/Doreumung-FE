@@ -1,5 +1,5 @@
 const Page = () => {
-  return <>/travel-review</>;
+  return <>/travel-reviews/edit/:reviewId</>;
 };
 
 export default Page;

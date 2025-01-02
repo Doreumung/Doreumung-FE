@@ -35,7 +35,7 @@ const Header = () => {
 
   return (
     <header className={clsx(variant === 'travelPlan' && 'hidden')}>
-      <motion.div className="fixed z-50 top-0 left-0 w-full bg-background" style={{ height }}>
+      <motion.div className="fixed z-30 top-0 left-0 w-full bg-background" style={{ height }}>
         <Navbar />
         <Logo />
       </motion.div>
