@@ -75,6 +75,17 @@ const Toolbar = ({ editor }: ToolbarProps) => {
             ))}
           </div>
 
+          <div className={TOOLBAR_GROUP_STYLES}>
+            {getToolbarOptions(editor, 'list').map(option => (
+              <ToolbarIcon
+                key={option.type}
+                icon={option.icon}
+                isActive={editor.isActive(option.type)}
+                onClick={() => option.action()}
+              />
+            ))}
+          </div>
+
           {/* 이미지 추가 구현 필요 */}
           <ToolbarIcon icon={Image} />
         </section>

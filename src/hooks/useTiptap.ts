@@ -14,6 +14,8 @@ import {
   Heading3,
   Highlighter,
   Italic,
+  List,
+  ListOrdered,
   LucideIcon,
   Paintbrush,
   Strikethrough,
@@ -32,7 +34,9 @@ const LIMIT = 3000;
 const useTiptap = () => {
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({ heading: false }),
+      StarterKit.configure({
+        heading: false,
+      }),
       Underline,
       Image,
       Color,
@@ -59,10 +63,10 @@ const useTiptap = () => {
   });
 
   const getToolbarOptions = (
-    editor: Editor,
+    tiptap: Editor,
     group: ToolbarGroups,
   ): Array<{ type: string; icon: LucideIcon; action: () => boolean | ChainedCommands }> => {
-    const focusEditor = () => editor.chain().focus();
+    const focusEditor = () => tiptap.chain().focus();
 
     switch (group) {
       case 'heading':
@@ -98,6 +102,15 @@ const useTiptap = () => {
             action: () => focusEditor().toggleUnderline().run(),
           },
           { type: 'strike', icon: Strikethrough, action: () => focusEditor().toggleStrike().run() },
+        ];
+      case 'list':
+        return [
+          { type: 'bulletList', icon: List, action: () => focusEditor().toggleBulletList().run() },
+          {
+            type: 'orderedList',
+            icon: ListOrdered,
+            action: () => focusEditor().toggleOrderedList().run(),
+          },
         ];
       default:
         throw new Error('Invalid Toolbar Group');
