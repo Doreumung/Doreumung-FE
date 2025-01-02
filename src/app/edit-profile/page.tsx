@@ -17,7 +17,7 @@ const Page = () => {
   const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-[calc(100vh-80px)] pb-[80px]">
       <div className="flex flex-col items-center gap-6 w-96">
         <p className="pb-2 text-3xl text-darkerGray">회원정보 수정</p>
         <PasswordForm />
