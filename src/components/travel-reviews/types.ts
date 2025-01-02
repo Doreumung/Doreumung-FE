@@ -23,3 +23,10 @@ export type ToolbarIconProps = {
 };
 
 export type ColorSwatchesProps = { type: string; onClick: () => ChainedCommands };
+
+export type ReviewStatsProps = {
+  stats: string | number;
+  color: 'yellow' | 'fadedGreen' | 'fadedOrange';
+  icon: LucideIcon;
+  className?: string;
+};
