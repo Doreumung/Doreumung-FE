@@ -94,10 +94,10 @@ const SelectSchedule = () => {
         </section>
         <section className="flex flex-col gap-6 px-6 md:gap-10 md:p-0">
           <ScheduleArticle label="테마 선택">
-            <ToggleGroup items={THEMES} onChange={handleThemeToggleChange} />
+            <ToggleGroup items={THEMES} color="fadedSkyblue" onChange={handleThemeToggleChange} />
           </ScheduleArticle>
           <ScheduleArticle label="식사 여부">
-            <ToggleGroup items={MEALS} onChange={handleMealToggleChange} />
+            <ToggleGroup items={MEALS} color="fadedSkyblue" onChange={handleMealToggleChange} />
           </ScheduleArticle>
           <ScheduleArticle label="오전 일정">
             <div className="flex gap-6">
