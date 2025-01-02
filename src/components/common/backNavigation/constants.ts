@@ -4,7 +4,7 @@ export const BACK_NAVIGATION_PATHS = {
     label: '메인으로',
   },
   reviewList: {
-    path: '/travel-review',
+    path: '/travel-reviews',
     label: '목록으로',
   },
 };

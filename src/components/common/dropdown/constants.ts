@@ -5,7 +5,7 @@ const DROPDOWN_MENUS_USER = [
 ];
 
 const DROPDOWN_MENUS_TRAVEL = [
-  { label: '리뷰 작성', path: '/travel-review/create' },
+  { label: '리뷰 작성', path: '/travel-reviews/create' },
   { label: '삭제', action: 'deleteTravel' },
 ];
 
@@ -14,7 +14,7 @@ const SIGN_IN_AND_SIGN_UP_MENU = [
   { label: '회원가입', path: '/sign-up' },
 ];
 
-const REVIEW_MENU = [{ label: '여행 후기', path: '/travel-review', separator: true }];
+const REVIEW_MENU = [{ label: '여행 후기', path: '/travel-reviews', separator: true }];
 
 const MOBILE_DROPDOWN_MENUS = [...REVIEW_MENU, ...SIGN_IN_AND_SIGN_UP_MENU];
 
