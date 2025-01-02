@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^3.9.1",
     "@mui/icons-material": "^6.3.0",
     "@mui/material": "^6.3.0",
+    "@reduxjs/toolkit": "^2.5.0",
     "@tiptap/extension-character-count": "^2.11.0",
     "@tiptap/extension-color": "^2.11.0",
     "@tiptap/extension-heading": "^2.11.0",
@@ -33,6 +34,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
+    "react-redux": "^9.2.0",
     "tailwind-merge": "^2.6.0",
     "tailwind-scrollbar-hide": "^2.0.0",
     "zod": "^3.24.1"
