@@ -4,13 +4,13 @@ import BackNavigation from '@/components/common/backNavigation/BackNavigation';
 import Input from '@/components/common/inputs/Input';
 import { INFO_CONTAINER_STYLES, LABEL_STYLES, ROUTE_INFO_DUMMY_DATA } from './constants';
 import { useRef, useState } from 'react';
-import StarRating from '@/components/travel-review/StarRatings';
-import RouteInfoContainer from '@/components/travel-review/RouteInfo';
+import StarRating from '@/components/travel-reviews/StarRatings';
+import RouteInfoContainer from '@/components/travel-reviews/RouteInfo';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import Button from '@/components/common/buttons/Button';
 import { useParams } from 'next/navigation';
-import Tiptap from '@/components/travel-review/textEditor/Tiptap';
-import Toolbar from '@/components/travel-review/textEditor/Toolbar';
+import Tiptap from '@/components/travel-reviews/textEditor/Tiptap';
+import Toolbar from '@/components/travel-reviews/textEditor/Toolbar';
 import useTiptap from '@/hooks/useTiptap';
 
 const Page = () => {

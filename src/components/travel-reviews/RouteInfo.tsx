@@ -1,7 +1,7 @@
 import {
   INFO_CONTAINER_STYLES,
   LABEL_STYLES,
-} from '@/app/travel-review/create/[routeId]/constants';
+} from '@/app/travel-reviews/create/[routeId]/constants';
 import { RouteInfoProps } from './types';
 
 const RouteInfo = ({ label, content }: RouteInfoProps) => {

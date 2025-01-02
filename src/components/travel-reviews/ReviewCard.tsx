@@ -1,4 +1,4 @@
-import { ReviewInReviewListType } from '@/app/travel-review/types';
+import { ReviewInReviewListType } from '@/app/travel-reviews/types';
 import { Heart, MessageCircleMore, Star } from 'lucide-react';
 import { REVIEW_INFO_STYLES } from './constants';
 import Link from 'next/link';
@@ -6,7 +6,7 @@ import Link from 'next/link';
 const ReviewCard = ({ review }: { review: ReviewInReviewListType }) => {
   return (
     <div className="w-full max-w-72 h-[400px] border border-darkerGray rounded-2xl bg-white text-darkerGray overflow-hidden ">
-      <Link href={`travel-review/detail/${review.review_id}`}>
+      <Link href={`travel-reviews/detail/${review.review_id}`}>
         <section className="h-2/3 border-b border-darkerGray bg-fadedSkyblue">
           {/* 후기 대표 사진 삽입 필요*/}
         </section>
@@ -18,7 +18,7 @@ const ReviewCard = ({ review }: { review: ReviewInReviewListType }) => {
           <span>{review.rating}</span>
         </div>
 
-        <Link href={`travel-review/detail/${review.review_id}`} className="flex-grow">
+        <Link href={`travel-reviews/detail/${review.review_id}`} className="flex-grow">
           <span className="text-lg text-foreground">{review.title}</span>
         </Link>
 
