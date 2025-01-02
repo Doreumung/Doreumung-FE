@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { signInSchema, SignInSchema } from './signInSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const Page = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
@@ -41,13 +41,6 @@ const Page = () => {
     } else {
       setErrorMessage('이메일 혹은 비밀번호를 확인해주세요.');
     }
-  };
-
-  // 회원가입 버튼
-  const router = useRouter();
-
-  const goToSignup = () => {
-    router.push('/sign-up'); // '/sign-up' 페이지로 이동
   };
 
   // 공통 tailwind
@@ -121,12 +114,9 @@ const Page = () => {
           <Button label="로그인" className="w-96 text-sm" />
           <div className="flex justify-center gap-2 pb-10 text-lightGray">
             <p>아직 회원이 아니신가요?</p>
-            <span
-              className="text-darkerGray underline underline-offset-4"
-              onClick={() => goToSignup()}
-            >
-              회원가입
-            </span>
+            <Link href="/sign-up">
+              <p className="text-darkerGray underline underline-offset-4">회원가입</p>
+            </Link>
           </div>
         </div>
       </form>
