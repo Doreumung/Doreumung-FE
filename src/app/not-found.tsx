@@ -35,7 +35,7 @@ const NotFound = () => {
             color="orange"
             size={isMobile ? 'sm' : 'md'}
             shadow="dropShadow"
-            className="w-full px-3 py-1"
+            className="w-full px-3 py-1 mt-6"
           />
         </Link>
       </div>
