@@ -1,5 +1,5 @@
 import { cva } from 'class-variance-authority';
 
 export const layerPopupStyles = cva(
-  'flex justify-center items-center border border-darkerGray text-darkerGray rounded-2xl bg-background transition-all',
+  'w-[calc(100%-32px)] md:w-[535px] border border-darkerGray text-darkerGray rounded-2xl bg-background',
 );

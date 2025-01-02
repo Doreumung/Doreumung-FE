@@ -45,48 +45,49 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
     };
   }, [setShowLayerPopup]);
 
+  // 공통 Tailwind 클래스
+  const containerBaseStyles = 'relative w-full p-6';
+  const buttonContainerStyles = 'flex justify-end gap-2 md:gap-3';
+  const textContainerStyles = 'flex items-center text-sm md:text-base';
+
   return (
-    <div className="flex justify-center items-center fixed inset-0 bg-overlay transition-opacity z-50 opacity-100 pointer-events-auto">
-      {isConfirmPopup ? (
-        <div className={layerPopupStyles()} {...props}>
-          <div className="relative w-[500px] p-6 h-50 rounded-2xl">
-            <div className="flex flex-col gap-20">
-              <div className="flex justify-start items-center gap-5 text-base">
-                <Image src={Dolmung} alt="dolmung image" width={60} height={60} />
+    <div className="flex justify-center items-center fixed inset-0 bg-overlay z-50">
+      <div className={layerPopupStyles()} {...props}>
+        <div className={`${containerBaseStyles} ${isConfirmPopup ? 'h-50' : 'h-62'}`}>
+          {isConfirmPopup ? (
+            <div className="flex flex-col gap-10 md:gap-20">
+              <div className={`${textContainerStyles} gap-2 md:gap-5`}>
+                <Image src={Dolmung} alt="dolmung image" className="w-[45px] md:w-[60px] h-auto" />
                 {label}
               </div>
-              <div className="flex justify-end gap-3">
+              <div className={buttonContainerStyles}>
                 <Button label="취소" size="xs" color="lighterGray" onClick={handleCancel} />
                 <Button label="확인" size="xs" onClick={handleConfirm} />
               </div>
             </div>
-          </div>
-        </div>
-      ) : (
-        <div className={layerPopupStyles()} {...props}>
-          <div className="relative w-[500px] p-6 h-62 rounded-2xl">
-            <div className="flex flex-col items-center gap-5">
-              <div className="flex items-center self-start gap-3 pl-6 text-base">
-                <Image src={Dolmung} alt="dolmung image" width={50} height={50} />
+          ) : (
+            <div className="flex flex-col items-center gap-2 md:gap-5">
+              <div className={`${textContainerStyles} gap-3 pb-3 md:pl-6`}>
+                <Image src={Dolmung} alt="dolmung image" className="w-[45px] md:w-[50px] h-auto" />
                 {label}
               </div>
               <Input
                 id="title"
                 type="text"
                 variant="title"
-                className="w-96 self-center"
+                className="w-72 md:w-96 self-center"
                 placeholder="2024-12-31"
                 value={titleData}
                 onChange={event => setTitleData(event.target.value)}
               />
-              <div className="flex self-end gap-3 pt-5">
+              <div className={`${buttonContainerStyles} pt-5`}>
                 <Button label="취소" size="xs" color="lighterGray" onClick={handleCancel} />
                 <Button label="확인" size="xs" onClick={handleConfirm} />
               </div>
             </div>
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
