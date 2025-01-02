@@ -47,7 +47,7 @@ const Page = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col justify-center items-center h-[calc(100vh-80px)] max-[375px]:h-[100%] scale-90 md:scale-100"
+      className="flex flex-col justify-center items-center h-[calc(100vh-80px)] max-[375px]:h-[100%] scale-90 md:scale-100 pb-[80px]"
     >
       <div className="inline-block w-96">
         <p className="pb-8 text-3xl text-darkerGray text-center">회원가입</p>
