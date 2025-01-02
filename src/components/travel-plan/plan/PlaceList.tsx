@@ -77,7 +77,7 @@ const PlaceList = () => {
           {place?.isMeal ? (
             <Toggle label="고정불가" disabled />
           ) : (
-            <Toggle label="고정" onChange={handleToggleChange} />
+            <Toggle label="고정" color="yellow" onChange={handleToggleChange} />
           )}
         </div>
       ))}
