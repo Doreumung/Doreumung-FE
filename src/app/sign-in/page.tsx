@@ -50,8 +50,11 @@ const Page = () => {
     router.push('/sign-up'); // '/sign-up' 페이지로 이동
   };
 
+  // 공통 tailwind
+  const errorMessageStyle = 'px-3 pb-4 text-xs text-red';
+
   return (
-    <div className="flex flex-col justify-center items-center h-[calc(100vh-80px)]">
+    <div className="flex flex-col justify-center items-center h-[calc(100vh-80px)] scale-90 md:scale-100">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center justify-center">
         <p className="pb-8 text-3xl text-darkerGray">로그인</p>
         <div className="flex flex-col gap-3 w-96">
@@ -108,11 +111,11 @@ const Page = () => {
         </div>
         {/* 이메일 에러 우선 표시 */}
         {errors.email ? (
-          <p className="px-3 pb-4 text-xs text-red">{errors.email.message}</p>
+          <p className={errorMessageStyle}>{errors.email.message}</p>
         ) : errors.password ? (
-          <p className="px-3 pb-4 text-xs text-red">{errors.password.message}</p>
+          <p className={errorMessageStyle}>{errors.password.message}</p>
         ) : errorMessage ? (
-          <p className="px-3 pb-4 text-xs text-red">{errorMessage}</p>
+          <p className={errorMessageStyle}>{errorMessage}</p>
         ) : null}
         <div className="flex flex-col items-center gap-10">
           <Button label="로그인" className="w-96 text-sm" />
