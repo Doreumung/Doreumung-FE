@@ -51,7 +51,7 @@ const Page = () => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center h-[calc(100vh-80px)]">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center justify-center">
         <p className="pb-8 text-3xl text-darkerGray">로그인</p>
         <div className="flex flex-col gap-3 w-96">
