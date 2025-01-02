@@ -7,17 +7,19 @@ export const metadata: Metadata = {
   description: 'OZ_06_MERN_PROJECT',
 };
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <html lang="ko">
       <body>
         <Header />
-        {children}
+        <main className="flex justify-center w-full mt-16 md:mt-20">{children}</main>
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

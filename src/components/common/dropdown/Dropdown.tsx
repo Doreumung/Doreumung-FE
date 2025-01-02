@@ -1,11 +1,14 @@
 import React from 'react';
 import { DropdownOption, DropdownProps } from './types';
-import { DROPDOWN_MENUS_TRAVEL, DROPDOWN_MENUS_USER } from './constants';
+import { DROPDOWN_MENU } from './constants';
 import { useRouter } from 'next/navigation';
+import { dropdownStyles } from './dropdownStyles';
+import useIsMobile from '@/hooks/useIsMobile';
 
 const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen }) => {
+  const isMobile = useIsMobile();
   const router = useRouter();
-  const options = variant === 'userMenu' ? DROPDOWN_MENUS_USER : DROPDOWN_MENUS_TRAVEL;
+  const options: DropdownOption[] = DROPDOWN_MENU[variant];
 
   const handleSelect = (option: DropdownOption) => {
     if (option.action) {
@@ -27,14 +30,16 @@ const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen }) => {
   };
 
   return (
-    <div className="absolute left-1/2 -translate-x-1/2 z-50 w-36 border border-darkerGray bg-background">
+    <div className={dropdownStyles({ variant: isMobile ? 'mobile' : 'default' })}>
       {options.map((option, index) => (
-        <div
-          key={`${index}-${option.label}`}
-          className="h-9 px-4 py-2 text-base text-darkerGray cursor-pointer hover:bg-fadedOrange"
-          onClick={() => handleSelect(option)}
-        >
-          {option.label}
+        <div key={`${index}-${option.label}`}>
+          <div
+            className="h-9 px-4 py-2 text-base text-darkerGray cursor-pointer hover:bg-fadedOrange"
+            onClick={() => handleSelect(option)}
+          >
+            {option.label}
+          </div>
+          {isMobile && option.separator && <hr className="border-px border-darkGray" />}
         </div>
       ))}
     </div>

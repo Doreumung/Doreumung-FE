@@ -8,9 +8,12 @@ export type ToggleProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'o
   Omit<VariantProps<typeof toggleStyles>, 'size' | 'checked'> & {
     label: ToggleItem;
     onChange?: (checked: boolean) => void;
+    className?: string;
   };
 
-export type ToggleGroupProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> & {
-  items?: ToggleItem[];
-  onChange: (indices: number[]) => void;
-};
+export type ToggleGroupProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> &
+  VariantProps<typeof toggleStyles> & {
+    items?: ToggleItem[];
+    onChange: (indices: number[]) => void;
+    className?: string;
+  };

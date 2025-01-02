@@ -3,12 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { SelectDropdown } from './SelectDropdown';
+import { SelectProps } from './types';
 
 // Select 컴포넌트
-const Select = () => {
-  const [year, setYear] = useState<number | null>(null); // null로 초기화
-  const [month, setMonth] = useState<number | null>(null);
-  const [day, setDay] = useState<number | null>(null);
+const Select: React.FC<SelectProps> = ({ setSelectedDate, optional, defaultDate }) => {
+  // 기본값을 받아온 경우
+  const parsedDate = defaultDate ? dayjs(defaultDate) : null;
+
+  const [year, setYear] = useState<number | null>(parsedDate?.year() || null); // null로 초기화
+  const [month, setMonth] = useState<number | null>(parsedDate ? parsedDate.month() + 1 : null);
+  const [day, setDay] = useState<number | null>(parsedDate?.date() || null);
 
   const generateYears = () => Array.from({ length: 101 }, (_, i) => 2024 - i); // 2024부터 1924까지
   const generateMonths = () => Array.from({ length: 12 }, (_, i) => i + 1);
@@ -27,13 +31,16 @@ const Select = () => {
   useEffect(() => {
     if (year && month && day) {
       const selectedDate = dayjs(`${year}-${month}-${day}`, 'YYYY-MM-DD');
-      console.log('Selected Date:', selectedDate.toDate());
+      setSelectedDate(selectedDate.toDate());
+      console.log(selectedDate.toDate());
+    } else {
+      setSelectedDate(null);
     }
-  }, [year, month, day]);
+  }, [year, month, day, setSelectedDate]);
 
   return (
     <div>
-      <p className="px-2 py-1 text-logo text-sm">생년월일</p>
+      {optional ? <p className="px-4 py-1 text-logo text-sm">생년월일</p> : null}
       <div className="flex gap-2">
         {/* 년도 드롭다운 */}
         <SelectDropdown

@@ -7,6 +7,7 @@ import { buttonStyles } from './buttonStyles';
 const Button: React.FC<ButtonProps> = ({
   size,
   color,
+  shadow = 'none',
   disabled = false,
   label,
   className,
@@ -16,7 +17,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       {...props}
-      className={twMerge(buttonStyles({ size, color, disabled }), className)}
+      className={twMerge(buttonStyles({ size, color, shadow, disabled }), className)}
       onClick={onClick}
       disabled={disabled}
     >

@@ -1,10 +1,11 @@
 import { VariantProps } from 'class-variance-authority';
-import { inputStyles } from './inputStyles';
+import { inputWrapperStyles } from './inputStyles';
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
-  VariantProps<typeof inputStyles> & {
+  VariantProps<typeof inputWrapperStyles> & {
     id: string;
     label?: string;
     placeholder?: string;
     error?: string;
+    labelColor?: 'logo' | 'darkerGray';
   };

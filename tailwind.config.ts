@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import scrollbarHide from 'tailwind-scrollbar-hide';
 
 export default {
   content: [
@@ -21,6 +22,7 @@ export default {
         lighterGray: 'hsl(var(--lighter-gray))',
         lightGray: 'hsl(var(--light-gray))',
         logo: 'hsl(var(--logo))',
+        red: 'hsl(var(--red))',
         yellow: 'hsl(var(--yellow))',
         green: 'hsl(var(--green))',
         blue: 'hsl(var(--blue))',
@@ -38,8 +40,9 @@ export default {
       },
       dropShadow: {
         button: '3px 3px 0 hsl(var(--foreground))',
+        clickedButton: '2px 2px 0 hsl(var(--foreground))',
       },
     },
   },
-  plugins: [require('tailwind-scrollbar-hide')],
+  plugins: [scrollbarHide],
 } satisfies Config;
