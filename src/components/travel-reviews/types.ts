@@ -3,6 +3,7 @@ import { ChainedCommands, Editor } from '@tiptap/react';
 import { LucideIcon } from 'lucide-react';
 import { VariantProps } from 'class-variance-authority';
 import { routeInfoContainerStyles } from './RouteInfoStyles';
+import { reviewStatsIconStyles } from './ReviewStatsStyles';
 
 export type StarRatingProps = {
   rating: number | null;
@@ -26,9 +27,8 @@ export type ToolbarIconProps = {
 
 export type ColorSwatchesProps = { type: string; onClick: () => ChainedCommands };
 
-export type ReviewStatsProps = {
+export type ReviewStatsProps = VariantProps<typeof reviewStatsIconStyles> & {
   stats: string | number;
-  color: 'yellow' | 'fadedGreen' | 'fadedOrange';
   icon: LucideIcon;
   className?: string;
 };
