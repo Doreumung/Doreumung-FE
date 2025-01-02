@@ -1,6 +1,6 @@
 'use client';
 
-import ReviewCard from '@/components/travel-review/ReviewCard';
+import ReviewCard from '@/components/travel-reviews/ReviewCard';
 import { REVIEW_LIST } from './constants';
 
 const Page = () => {
