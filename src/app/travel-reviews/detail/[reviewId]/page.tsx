@@ -1,7 +1,7 @@
 'use client';
 
 import BackNavigation from '@/components/common/backNavigation/BackNavigation';
-import { REVIEW_DATA } from '../../constants';
+import { COMMENT_DATA, REVIEW_DATA } from '../../constants';
 import { Heart, Star } from 'lucide-react';
 import Button from '@/components/common/buttons/Button';
 import ReviewStats from '@/components/travel-reviews/ReviewStats';
@@ -10,6 +10,7 @@ import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import { useParams, useRouter } from 'next/navigation';
 import RouteInfoContainer from '@/components/travel-reviews/RouteInfoContainer';
 import { covertDateTime } from '@/utils/utils';
+import CommentList from '@/components/travel-reviews/comment/CommentList';
 
 const Page = () => {
   const router = useRouter();
@@ -69,7 +70,7 @@ const Page = () => {
           />
         </div>
 
-        <div className="flex flex-col gap-5 w-full my-8 py-8 border-y border-lighterGray">
+        <div className="flex flex-col gap-5 w-full py-8 border-y border-lighterGray">
           <div className="leading-10" dangerouslySetInnerHTML={{ __html: content }} />
           <div className="flex justify-between">
             <ReviewStats stats={`좋아요 ${like_count}`} color="fadedOrange" icon={Heart} />
@@ -93,7 +94,14 @@ const Page = () => {
         </div>
       </section>
 
-      <section>{/* 댓글 칸 */}</section>
+      <section className="w-full border-b border-lighterGray">
+        <div className="flex items-center gap-2 pt-8 pb-4">
+          <h3 className="text-xl">댓글</h3>
+          <span className="text-sm">{COMMENT_DATA.length}개</span>
+        </div>
+        <CommentList comments={COMMENT_DATA} />
+      </section>
+
       {showLayerPopup && (
         <LayerPopup
           label="후기를 삭제하시겠습니까?"
