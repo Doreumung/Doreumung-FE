@@ -5,8 +5,8 @@ export const reviewSchemas = z.object({
   review_id: z.number(),
   title: z.string().max(50, { message: '제목은 50자 이하로 작성해 주세요.' }),
   nickname: z.string(),
-  content: z.string().max(3000, { message: '후기 작성은 3000자 이하로 작성해 주세요.' }),
-  rating: z.number(),
+  content: z.string().min(1, { message: '내용을 입력해 주세요.' }),
+  rating: z.number().min(0).max(5),
   like_count: z.number(),
   comment_count: z.number(),
   photo_urls: z.string().array(),
@@ -72,13 +72,21 @@ export const likeReviewResponseSchema = reviewSchemas.pick({ review_id: true, me
 
 export const cancelLikeReviewResponseSchema = reviewSchemas.pick({ message: true });
 
-const commentSchema = z.object({
+export const commentSchema = z.object({
   comment_id: z.number(),
-  content: z.string(),
+  user_id: z.number(),
+  nickname: z.string(),
+  content: z
+    .string()
+    .min(1, { message: '댓글을 입력해 주세요' })
+    .max(255, { message: '255자 내로 작성해 주세요.' }),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime(),
   message: z.string(),
 });
 
 export const postCommentRequestSchema = commentSchema.pick({
+  user_id: true,
   content: true,
 });
 
@@ -95,4 +103,14 @@ export const editCommentResponseSchema = commentSchema;
 
 export const deleteCommentResponseSchema = commentSchema.pick({
   message: true,
+});
+
+export const reviewFormSchema = reviewSchemas.pick({
+  title: true,
+  rating: true,
+  content: true,
+});
+
+export const commentFormSchema = commentSchema.pick({
+  content: true,
 });
