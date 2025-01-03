@@ -59,7 +59,7 @@ const ResizeablePanel = ({
         onMouseDown={handleStart}
         onTouchStart={handleStart}
       />
-      <div className="overflow-auto h-[calc(100%-8px)] p-8">{children}</div>
+      <div className="overflow-auto h-[calc(100%-8px)] p-6">{children}</div>
     </div>
   );
 };
