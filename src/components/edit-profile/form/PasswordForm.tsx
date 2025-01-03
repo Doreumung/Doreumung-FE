@@ -97,6 +97,7 @@ const PasswordForm = () => {
           <Button
             label="취소"
             size={'sm'}
+            type="button"
             onClick={() => {
               reset({ password: '', confirmPassword: '' }); // 상태 초기화
               setIsPasswordChangeAcitve(false); // 상태 업데이트를 비동기로 처리
@@ -107,9 +108,10 @@ const PasswordForm = () => {
         <Button
           label={isPasswordChangeActive ? '저장' : '변경'}
           size={'sm'}
+          type="button"
           onClick={() => {
             if (isPasswordChangeActive) {
-              handleSubmit(onSubmit)(); // why
+              handleSubmit(onSubmit)();
               if (isValid) {
                 setIsPasswordChangeAcitve(false);
               }

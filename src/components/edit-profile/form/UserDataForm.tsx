@@ -156,6 +156,7 @@ const UserDataForm = () => {
         {isUserDataChangeActive ? (
           <Button
             label="취소"
+            type="button"
             onClick={() => {
               setIsUserDataChangeActive(false); // 수정 취소
               reset({
@@ -167,6 +168,7 @@ const UserDataForm = () => {
         ) : null}
         <Button
           label={isUserDataChangeActive ? '저장' : '변경'}
+          type="button"
           onClick={() => {
             if (isUserDataChangeActive) {
               const newNickname = getValues('nickname');
