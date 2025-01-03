@@ -51,15 +51,17 @@ const ResizeablePanel = ({
 
   return (
     <div
-      className="absolute -bottom-4 left-0 right-0 bg-white transition-transform duration-300 ease-out transform bottom-sheet"
+      className="absolute bottom-0 left-0 right-0 z-30 bg-white transition-transform duration-300 ease-out"
       style={{ height: `${height}px` }}
     >
       <div
-        className="h-3 w-full bg-gray-200 cursor-ns-resize"
+        className="flex items-center justify-center w-full h-7 cursor-ns-resize"
         onMouseDown={handleStart}
         onTouchStart={handleStart}
-      />
-      <div className="overflow-auto h-[calc(100%-8px)] p-8">{children}</div>
+      >
+        <div className="w-16 h-1.5 bg-[#A4D6EB] rounded-full" />
+      </div>
+      <div className="overflow-auto h-[calc(100%-28px)] p-6">{children}</div>
     </div>
   );
 };

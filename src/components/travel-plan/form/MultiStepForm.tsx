@@ -2,8 +2,8 @@
 
 import Button from '@/components/common/buttons/Button';
 import { useState } from 'react';
-import SelectRegion from './SelectRegion';
-import SelectSchedule from './SelectSchedule';
+import SelectRegion from './region/SelectRegion';
+import SelectSchedule from './schedules/SelectSchedule';
 import BackNavigation from '@/components/common/backNavigation/BackNavigation';
 import ProgressIndicator from './ProgressIndicator';
 import TravelPlan from '../plan/TravelPlan';
@@ -23,21 +23,21 @@ const MultiStepForm = () => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <ProgressIndicator currentStep={step} totalSteps={3} />
       {step < 3 && (
-        <div className="flex flex-col gap-2 flex-grow w-screen min-h-screen px-4 pt-8 pb-8 md:px-8 md:pt-6">
+        <div className="flex flex-col gap-2 flex-grow w-screen min-h-screen px-4 pt-8 md:px-8 md:pt-6">
           <header className="text-base">
             <BackNavigation to="home" />
           </header>
-          <main className="flex-grow">
-            <form onSubmit={e => e.preventDefault()}>
+          <main className="flex-grow flex flex-col">
+            <form onSubmit={e => e.preventDefault()} className="flex-grow flex flex-col">
               {step === 1 && <SelectRegion />}
               {step === 2 && <SelectSchedule />}
             </form>
           </main>
           {step < 3 && (
-            <footer className="flex justify-between pt-6">
+            <footer className="flex justify-between pt-6 pb-4 md:pb-8">
               {step > 1 ? (
                 <Button
                   size="md"

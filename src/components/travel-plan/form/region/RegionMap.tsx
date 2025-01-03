@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { jejuArea } from './jejumap';
-import { KakaoMouseEvent } from '../types';
+import { KakaoMouseEvent } from '../../types';
 
 const RegionMap = () => {
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
@@ -111,7 +111,7 @@ const RegionMap = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-[360px] md:h-[500px]">
+    <div className="absolute inset-0 flex flex-col z-0">
       <div className="absolute top-4 left-4 z-10 max-w-[calc(100%-2rem)] p-2 border border-darkGray rounded-md shadow-md bg-white text-xs text-darkerGray md:text-base">
         <strong className="text-logo">선택된 지역: </strong>{' '}
         {selectedAreas.length > 0 ? selectedAreas.join(', ') : '없음'}

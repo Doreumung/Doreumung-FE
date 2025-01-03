@@ -10,6 +10,8 @@ export type KakaoMouseEvent = {
   };
 };
 
+export type TimeType = 'morning' | 'afternoon';
+
 export type ResizeablePanelProps = {
   children: React.ReactNode;
   initialHeight: number;

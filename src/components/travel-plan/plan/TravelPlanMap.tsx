@@ -29,8 +29,8 @@ const TravelPlanMap = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-[400px] md:h-full">
-      <div id="map" className="absolute top-0 left-0 w-full h-full rounded-lg" />
+    <div className="relative w-full h-full">
+      <div id="map" className="absolute top-0 left-0 w-full h-full" />
     </div>
   );
 };
