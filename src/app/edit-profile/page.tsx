@@ -26,6 +26,7 @@ const Page = () => {
           color="darkerGray"
           label="회원 탈퇴"
           className="self-end"
+          type="button"
           onClick={() => {
             setShowLayerPopup(true);
           }}
