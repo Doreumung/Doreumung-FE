@@ -1,4 +1,4 @@
-import TravelHeader from '../TravelHeader';
+import TravelHeader from '../../TravelHeader';
 import RegionMap from './RegionMap';
 
 const SelectRegion = () => {

@@ -2,8 +2,8 @@
 
 import Button from '@/components/common/buttons/Button';
 import { useState } from 'react';
-import SelectRegion from './SelectRegion';
-import SelectSchedule from './SelectSchedule';
+import SelectRegion from './region/SelectRegion';
+import SelectSchedule from './schedules/SelectSchedule';
 import BackNavigation from '@/components/common/backNavigation/BackNavigation';
 import ProgressIndicator from './ProgressIndicator';
 import TravelPlan from '../plan/TravelPlan';

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { jejuArea } from './jejumap';
-import { KakaoMouseEvent } from '../types';
+import { KakaoMouseEvent } from '../../types';
 
 const RegionMap = () => {
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);

@@ -3,7 +3,7 @@ import ScheduleArticle from './SchedulesArticle';
 import ToggleGroup from '@/components/common/toggle/ToggleGroup';
 import { MEALS, THEMES } from '@/components/common/toggle/constants';
 import Button from '@/components/common/buttons/Button';
-import { TimeType } from '../types';
+import { TimeType } from '../../types';
 
 const SchedulesForm = () => {
   const [selectedMeals, setSelectedMeals] = useState<number[]>([]);
