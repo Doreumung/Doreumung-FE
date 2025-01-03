@@ -14,12 +14,15 @@ import {
   Heading3,
   Highlighter,
   Italic,
+  List,
+  ListOrdered,
   LucideIcon,
   Paintbrush,
   Strikethrough,
   Underline as UnderlineIcon,
 } from 'lucide-react';
 import { Level, ToolbarGroups } from './types';
+import { useCallback } from 'react';
 
 const HEADING_CLASSES: Record<Level, string> = {
   1: 'text-2xl',
@@ -32,7 +35,9 @@ const LIMIT = 3000;
 const useTiptap = () => {
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({ heading: false }),
+      StarterKit.configure({
+        heading: false,
+      }),
       Underline,
       Image,
       Color,
@@ -59,10 +64,10 @@ const useTiptap = () => {
   });
 
   const getToolbarOptions = (
-    editor: Editor,
+    tiptap: Editor,
     group: ToolbarGroups,
   ): Array<{ type: string; icon: LucideIcon; action: () => boolean | ChainedCommands }> => {
-    const focusEditor = () => editor.chain().focus();
+    const focusEditor = () => tiptap.chain().focus();
 
     switch (group) {
       case 'heading':
@@ -99,12 +104,31 @@ const useTiptap = () => {
           },
           { type: 'strike', icon: Strikethrough, action: () => focusEditor().toggleStrike().run() },
         ];
+      case 'list':
+        return [
+          { type: 'bulletList', icon: List, action: () => focusEditor().toggleBulletList().run() },
+          {
+            type: 'orderedList',
+            icon: ListOrdered,
+            action: () => focusEditor().toggleOrderedList().run(),
+          },
+        ];
       default:
         throw new Error('Invalid Toolbar Group');
     }
   };
 
-  return { editor, getToolbarOptions };
+  const addImage = useCallback((tiptap: Editor) => {
+    // S3에 이미지 업로드 로직 구현 필요
+
+    const url = '';
+
+    if (url) {
+      tiptap.chain().focus().setImage({ src: url }).run();
+    }
+  }, []);
+
+  return { editor, getToolbarOptions, addImage };
 };
 
 export default useTiptap;

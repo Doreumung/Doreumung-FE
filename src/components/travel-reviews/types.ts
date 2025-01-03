@@ -23,6 +23,7 @@ export type ToolbarIconProps = {
   icon: LucideIcon;
   isActive?: boolean;
   onClick?: () => void;
+  className?: string;
 };
 
 export type ColorSwatchesProps = { type: string; onClick: () => ChainedCommands };
