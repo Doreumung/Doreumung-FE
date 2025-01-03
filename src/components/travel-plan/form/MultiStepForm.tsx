@@ -26,7 +26,7 @@ const MultiStepForm = () => {
     <div className="flex flex-col h-screen">
       <ProgressIndicator currentStep={step} totalSteps={3} />
       {step < 3 && (
-        <div className="flex flex-col gap-2 flex-grow w-screen min-h-screen p-4 pt-8 md:px-8 md:pt-6 md:pb-8">
+        <div className="flex flex-col gap-2 flex-grow w-screen min-h-screen px-4 pt-8 md:px-8 md:pt-6">
           <header className="text-base">
             <BackNavigation to="home" />
           </header>
@@ -37,7 +37,7 @@ const MultiStepForm = () => {
             </form>
           </main>
           {step < 3 && (
-            <footer className="flex justify-between pt-6">
+            <footer className="flex justify-between pt-6 pb-4 md:pb-8">
               {step > 1 ? (
                 <Button
                   size="md"

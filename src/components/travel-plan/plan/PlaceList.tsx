@@ -66,13 +66,13 @@ const PlaceList = () => {
   const handleSubmit = () => {};
 
   return (
-    <div className="flex flex-col items-center gap-6 min-h-screen">
+    <div className="flex flex-col items-center gap-6 min-h-full">
       {places.map(place => (
         <div
           key={place?.id}
-          className="flex flex-row justify-around items-center gap-2 min-w-full md:gap-8 md:pt-4"
+          className="flex flex-row justify-around items-center gap-4 min-w-full md:gap-8 md:pt-4"
         >
-          <div className="w-12 h-12 border border-darkerGray rounded-2xl bg-lighterGray  md:w-16 md:h-16"></div>
+          <div className="w-14 h-14 border border-darkerGray rounded-2xl bg-lighterGray  md:w-16 md:h-16"></div>
           <div className="flex-grow text-base text-darkerGray md:text-lg">{place?.name}</div>
           {place?.isMeal ? (
             <Toggle label="고정불가" disabled />
