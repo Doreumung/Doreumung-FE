@@ -2,57 +2,74 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
+import clsx from 'clsx';
 import Dropdown from '../common/dropdown/Dropdown';
 
 type TravelCardProps = {
-  nickname: string;
-  title: string;
-  rating: number;
-  like_count: number;
+  title: string; // 제목
+  region: string[];
+  placeArray: string[];
 };
 
-const TravelCard = ({ nickname, title, rating, like_count }: TravelCardProps) => {
+const TravelCard = ({ title, region, placeArray }: TravelCardProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
-    <div>
-      <div className="flex justify-end items-start w-[300px] h-[300px] p-3 border border-green rounded-t-lg bg-fadedSkyblue">
+    <div className="flex flex-col md:flex-row items-center text-foreground">
+      {/* 이미지 영역 */}
+      <div
+        className={clsx(
+          'flex border border-darkerGray bg-fadedSkyblue p-3 rounded-t-2xl md:rounded-none md:rounded-l-2xl',
+          'w-80 h-56 md:w-96 md:h-72',
+        )}
+      >
         {/* 이미지 */}
-        <Image
-          src="/images/menu-dots.svg"
-          alt="chat image"
-          width={20}
-          height={20}
-          onClick={() => setIsOpen(prev => !prev)}
-        />
-        {isOpen && <Dropdown variant="travelMenu" setIsOpen={setIsOpen} />}
       </div>
-      <div className="flex flex-col justify-between p-3 w-[300px] h-[150px] border border-red rounded-b-lg">
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-1">
-            <Image src="/images/star.svg" alt="chat image" width={18} height={18} />
-            <p className="text-sm">{rating}</p>
+
+      {/* 텍스트 영역 */}
+      <div
+        className={clsx(
+          'flex flex-col justify-between border border-t-0 md:border-t md:border-l-0 border-darkerGray bg-white',
+          'pl-4 py-3 md:p-5 rounded-b-2xl md:rounded-none md:rounded-r-2xl',
+          'w-80 h-64 md:w-96 md:h-72',
+        )}
+      >
+        <div className="flex gap-3 md:gap-6">
+          <p className={clsx('w-64 md:w-80 pt-2', 'text-xl md:text-2xl', 'line-clamp-2')}>
+            {title}
+          </p>
+          <div className="relative pt-1">
+            <Image
+              src="/images/myTravelMenu.svg"
+              alt="menu image"
+              width={30}
+              height={30}
+              onClick={() => setIsOpen(prev => !prev)}
+              className="cursor-pointer"
+            />
+            {/* 점 3개 이미지 */}
+            {isOpen && (
+              <div className={clsx('absolute pt-2', 'scale-90 md:scale-100', 'left-7 md:-left-10')}>
+                <Dropdown variant="travelMenu" setIsOpen={setIsOpen} />
+              </div>
+            )}
           </div>
-          <p className="text-xl">{title}</p>
         </div>
-        <div className="flex justify-between">
-          <div className="flex gap-3">
-            <div className="flex items-center gap-1">
-              <Image src="/images/chat.svg" alt="chat image" width={18} height={18} />
-              <p className="text-sm">10</p>
-            </div>
-            <div className="flex items-center gap-1">
-              <Image
-                src="/images/filled-heart.svg"
-                alt="chat image"
-                width={16}
-                height={16}
-                className="pb-1"
-              />
-              <p className="text-sm">{like_count}</p>
-            </div>
+
+        <div className="flex flex-col gap-6 pr-4">
+          {/* 여행 지역 */}
+          <div className="flex flex-col gap-1">
+            <p className="md:text-xl">여행 지역</p>
+            <p className={clsx('text-darkGray', 'text-sm md:text-base')}>{region.join(' - ')}</p>
           </div>
-          <p className="text-sm">{nickname}</p>
+
+          {/* 여행 경로 */}
+          <div className="flex flex-col gap-1">
+            <p className="md:text-xl">여행 경로</p>
+            <p className={clsx('text-darkGray', 'text-sm md:text-base')}>
+              {placeArray.join(' - ')}
+            </p>
+          </div>
         </div>
       </div>
     </div>

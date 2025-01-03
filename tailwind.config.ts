@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss';
 import scrollbarHide from 'tailwind-scrollbar-hide';
+import lineClamp from '@tailwindcss/line-clamp';
 
 export default {
   content: [
@@ -44,5 +45,5 @@ export default {
       },
     },
   },
-  plugins: [scrollbarHide],
+  plugins: [scrollbarHide, lineClamp],
 } satisfies Config;
