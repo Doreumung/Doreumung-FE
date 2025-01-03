@@ -12,7 +12,7 @@ import { PaginationProps } from './types';
 const Pagination = ({ totalResults, currentPage, setPage }: PaginationProps) => {
   const totalPages = useMemo(() => Math.ceil(totalResults / PER_PAGE), [totalResults]);
   const pageGroup = Math.ceil(currentPage / PAGE_GROUP_SIZE);
-  const isSinglePageGroup = PER_PAGE * PAGE_GROUP_SIZE > totalResults;
+  const isSinglePageGroup = PER_PAGE * PAGE_GROUP_SIZE >= totalResults;
 
   const firstPageOfGroup = useMemo(() => (pageGroup - 1) * PAGE_GROUP_SIZE + 1, [pageGroup]);
 
