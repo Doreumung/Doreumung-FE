@@ -1,21 +1,15 @@
 import { useMemo } from 'react';
-import {
-  DISABLED_PAGE_BUTTON_STYLES,
-  PAGE_BUTTON_STYLES,
-  PAGE_GROUP_SIZE,
-  PER_PAGE,
-} from './constants';
+import { PAGE_GROUP_SIZE, DISABLED_PAGE_BUTTON_STYLES, PAGE_BUTTON_STYLES } from './constants';
 import clsx from 'clsx';
 import { ChevronFirst, ChevronLast, ChevronLeft, ChevronRight } from 'lucide-react';
 import { PaginationProps } from './types';
+import { twMerge } from 'tailwind-merge';
 
-const Pagination = ({ totalResults, currentPage, setPage }: PaginationProps) => {
-  const totalPages = useMemo(() => Math.ceil(totalResults / PER_PAGE), [totalResults]);
+const Pagination = ({ totalResults, currentPage, setPage, perPage = 9 }: PaginationProps) => {
   const pageGroup = Math.ceil(currentPage / PAGE_GROUP_SIZE);
-  const isSinglePageGroup = PER_PAGE * PAGE_GROUP_SIZE >= totalResults;
 
+  const totalPages = useMemo(() => Math.ceil(totalResults / perPage), [totalResults, perPage]);
   const firstPageOfGroup = useMemo(() => (pageGroup - 1) * PAGE_GROUP_SIZE + 1, [pageGroup]);
-
   const pages = useMemo(
     () =>
       Array.from({ length: PAGE_GROUP_SIZE }, () => firstPageOfGroup) //
@@ -34,24 +28,20 @@ const Pagination = ({ totalResults, currentPage, setPage }: PaginationProps) => 
   };
 
   return (
-    <div
-      className={clsx(
-        'flex gap-5 px-5 py-1 border border-darkerGray rounded-md bg-white text-darkGray',
-        totalPages === 1 && 'hidden',
-      )}
-    >
-      {!isSinglePageGroup && (
-        <>
-          <ChevronFirst
-            className={clsx(PAGE_BUTTON_STYLES, currentPage === 1 && DISABLED_PAGE_BUTTON_STYLES)}
-            onClick={() => handlePageChange(1)}
-          />
-          <ChevronLeft
-            className={clsx(PAGE_BUTTON_STYLES, currentPage === 1 && DISABLED_PAGE_BUTTON_STYLES)}
-            onClick={() => handlePageChange(currentPage - 1)}
-          />
-        </>
-      )}
+    <div className="flex gap-5 px-5 py-1 border border-darkerGray rounded-md bg-white text-darkGray">
+      <ChevronFirst
+        className={twMerge(
+          clsx(PAGE_BUTTON_STYLES, currentPage === 1 && DISABLED_PAGE_BUTTON_STYLES),
+        )}
+        onClick={() => handlePageChange(1)}
+      />
+      <ChevronLeft
+        className={twMerge(
+          clsx(PAGE_BUTTON_STYLES, currentPage === 1 && DISABLED_PAGE_BUTTON_STYLES),
+        )}
+        onClick={() => handlePageChange(currentPage - 1)}
+      />
+
       {pages.map(page => (
         <span
           key={page}
@@ -65,24 +55,21 @@ const Pagination = ({ totalResults, currentPage, setPage }: PaginationProps) => 
           {page}
         </span>
       ))}
-      {!isSinglePageGroup && (
-        <>
-          <ChevronRight
-            className={clsx(
-              PAGE_BUTTON_STYLES,
-              totalPages === currentPage && DISABLED_PAGE_BUTTON_STYLES,
-            )}
-            onClick={() => handlePageChange(currentPage + 1)}
-          />
-          <ChevronLast
-            className={clsx(
-              PAGE_BUTTON_STYLES,
-              totalPages === currentPage && DISABLED_PAGE_BUTTON_STYLES,
-            )}
-            onClick={() => handlePageChange(totalPages)}
-          />
-        </>
-      )}
+
+      <>
+        <ChevronRight
+          className={twMerge(
+            clsx(PAGE_BUTTON_STYLES, totalPages === currentPage && DISABLED_PAGE_BUTTON_STYLES),
+          )}
+          onClick={() => handlePageChange(currentPage + 1)}
+        />
+        <ChevronLast
+          className={twMerge(
+            clsx(PAGE_BUTTON_STYLES, totalPages === currentPage && DISABLED_PAGE_BUTTON_STYLES),
+          )}
+          onClick={() => handlePageChange(totalPages)}
+        />
+      </>
     </div>
   );
 };
