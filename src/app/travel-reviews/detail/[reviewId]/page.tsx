@@ -11,6 +11,7 @@ import { useParams, useRouter } from 'next/navigation';
 import RouteInfoContainer from '@/components/travel-reviews/RouteInfoContainer';
 import { covertDateTime } from '@/utils/utils';
 import CommentList from '@/components/travel-reviews/comment/CommentList';
+import CommentForm from '@/components/travel-reviews/comment/CommentForm';
 
 const Page = () => {
   const router = useRouter();
@@ -99,6 +100,7 @@ const Page = () => {
           <h3 className="text-xl">댓글</h3>
           <span className="text-sm">{COMMENT_DATA.length}개</span>
         </div>
+        <CommentForm />
         <CommentList comments={COMMENT_DATA} />
       </section>
 
