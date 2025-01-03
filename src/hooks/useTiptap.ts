@@ -22,6 +22,7 @@ import {
   Underline as UnderlineIcon,
 } from 'lucide-react';
 import { Level, ToolbarGroups } from './types';
+import { useCallback } from 'react';
 
 const HEADING_CLASSES: Record<Level, string> = {
   1: 'text-2xl',
@@ -117,7 +118,17 @@ const useTiptap = () => {
     }
   };
 
-  return { editor, getToolbarOptions };
+  const addImage = useCallback((tiptap: Editor) => {
+    // S3에 이미지 업로드 로직 구현 필요
+
+    const url = '';
+
+    if (url) {
+      tiptap.chain().focus().setImage({ src: url }).run();
+    }
+  }, []);
+
+  return { editor, getToolbarOptions, addImage };
 };
 
 export default useTiptap;
