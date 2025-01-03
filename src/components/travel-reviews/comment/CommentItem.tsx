@@ -3,6 +3,7 @@ import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import { covertDateTime } from '@/utils/utils';
 import { CommentType } from '@/app/travel-reviews/types';
 import clsx from 'clsx';
+import CommentForm from './CommentForm';
 
 const USER_ID = 102;
 
@@ -11,6 +12,7 @@ const CommentItem = ({
 }: {
   comment: CommentType;
 }) => {
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
 
   const sendDeleteCommentRequest = () => {
@@ -25,7 +27,9 @@ const CommentItem = ({
           <div
             className={clsx(USER_ID !== user_id && 'hidden', 'flex gap-2 text-sm text-darkGray')}
           >
-            <span className="cursor-pointer hover:underline">수정</span>
+            <span className="cursor-pointer hover:underline" onClick={() => setIsEditMode(true)}>
+              수정
+            </span>
             <span
               className="cursor-pointer hover:underline"
               onClick={() => setShowLayerPopup(true)}
@@ -37,7 +41,8 @@ const CommentItem = ({
         <span className="text-darkGray text-xs">{covertDateTime(created_at)}</span>
       </div>
 
-      <p>{content}</p>
+      {isEditMode && <CommentForm content={content} setShowForm={setIsEditMode} />}
+      {!isEditMode && <p>{content}</p>}
 
       {showLayerPopup && (
         <LayerPopup
