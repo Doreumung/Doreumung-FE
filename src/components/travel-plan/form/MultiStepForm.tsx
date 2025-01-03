@@ -23,15 +23,15 @@ const MultiStepForm = () => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <ProgressIndicator currentStep={step} totalSteps={3} />
       {step < 3 && (
-        <div className="flex flex-col gap-2 flex-grow w-screen min-h-screen px-4 pt-8 pb-8 md:px-8 md:pt-6">
+        <div className="flex flex-col gap-2 flex-grow w-screen min-h-screen p-4 pt-8 md:px-8 md:pt-6 md:pb-8">
           <header className="text-base">
             <BackNavigation to="home" />
           </header>
-          <main className="flex-grow">
-            <form onSubmit={e => e.preventDefault()}>
+          <main className="flex-grow flex flex-col">
+            <form onSubmit={e => e.preventDefault()} className="flex-grow flex flex-col">
               {step === 1 && <SelectRegion />}
               {step === 2 && <SelectSchedule />}
             </form>
