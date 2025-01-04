@@ -75,9 +75,9 @@ const SchedulesForm = () => {
 
   return (
     <>
-      <section className="sticky z-20 top-0 w-full bg-background md:static">
+      <section className="sticky z-20 top-0 w-full bg-background">
         <article className="flex flex-col items-center border-b border-b-lighterGray pb-4 text-darkerGray md:border-none">
-          <label className="py-4 text-xl md:pt-0 md:text-2xl">최종 일정</label>
+          <label className="py-4 text-xl md:text-2xl">최종 일정</label>
           <div className="flex flex-wrap justify-center gap-2 min-h-12">{renderSchedule()}</div>
 
           {/* 테마 선택 확인용 코드 */}
