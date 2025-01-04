@@ -3,5 +3,5 @@ export type UserDataType = {
   password: string;
   age: number;
   gender: 'male' | 'female' | 'none';
-  birthday: Date;
+  birthday: string;
 };

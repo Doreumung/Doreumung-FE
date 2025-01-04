@@ -65,11 +65,11 @@ export const SelectDropdown = <T extends number>({
         </svg>
       </div>
       {isOpen && options.length > 0 && (
-        <ul className="absolute z-10 overflow-y-scroll w-full h-48 border border-green bg-white scrollbar-hide">
+        <ul className="absolute z-10 overflow-y-scroll w-full h-48 pl-0 border border-green bg-white scrollbar-hide">
           {options.map(option => (
             <li
               key={option}
-              className="px-4 py-2 text-darkGray text-sm hover:bg-fadedOrange"
+              className="flex justify-start pl-4 py-2 w-full text-darkGray text-sm hover:bg-fadedOrange list-none"
               onClick={() => handleOptionClick(option)}
             >
               {option}

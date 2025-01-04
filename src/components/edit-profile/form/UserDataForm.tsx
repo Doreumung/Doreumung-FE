@@ -17,7 +17,7 @@ const UserDataForm = () => {
     password: 'qwer1234',
     age: 123,
     gender: 'male',
-    birthday: new Date('1997-12-14'),
+    birthday: '1997-12-14',
   });
 
   // 확인용
@@ -37,7 +37,7 @@ const UserDataForm = () => {
     setNewGender(event.target.value as 'female' | 'male' | 'none'); // 선택된 값 업데이트
   };
 
-  const [newBirthday, setNewBirthday] = useState<Date | null>(null); // 새로운 생년월일 관리
+  const [newBirthday, setNewBirthday] = useState<string | null>(null); // 새로운 생년월일 관리
   const [isUserDataChangeActive, setIsUserDataChangeActive] = useState<boolean>(false);
 
   const {
