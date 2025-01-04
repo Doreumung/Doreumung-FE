@@ -18,7 +18,7 @@ const PasswordForm = () => {
     password: 'qwer1234',
     age: 123,
     gender: 'male',
-    birthday: new Date('1997-12-14'),
+    birthday: '1997-12-14',
   });
 
   // 확인용

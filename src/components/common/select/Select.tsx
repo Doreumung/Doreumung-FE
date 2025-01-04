@@ -27,12 +27,12 @@ const Select: React.FC<SelectProps> = ({ setSelectedDate, optional, defaultDate 
   const months = generateMonths();
   const days = generateDays(year, month);
 
-  // 날짜 선택 후 콘솔에 날짜 타입으로 반환
+  // 날짜 선택 후 콘솔에 날짜 형식의 string 타입으로 반환
   useEffect(() => {
     if (year && month && day) {
-      const selectedDate = dayjs(`${year}-${month}-${day}`, 'YYYY-MM-DD');
-      setSelectedDate(selectedDate.toDate());
-      console.log(selectedDate.toDate());
+      const selectedDate = dayjs(`${year}-${month}-${day}`).format('YYYY-MM-DD');
+      setSelectedDate(selectedDate);
+      console.log(selectedDate);
     } else {
       setSelectedDate(null);
     }
