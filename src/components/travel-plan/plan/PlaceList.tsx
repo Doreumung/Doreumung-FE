@@ -1,37 +1,44 @@
 import Button from '@/components/common/buttons/Button';
+import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import Toggle from '@/components/common/toggle/Toggle';
+import { useState } from 'react';
+
+const data = {
+  schedule: {
+    breakfast: {
+      id: 1,
+      name: '제주 전복죽',
+    },
+    morning: [
+      { id: 2, name: '한라산 등반' },
+      { id: 3, name: '성산 일출봉' },
+      { id: 4, name: '협재 해수욕장' },
+    ],
+    lunch: {
+      id: 5,
+      name: '흑돼지 불고기',
+    },
+    afternoon: [
+      { id: 6, name: '카페 아메리카노' },
+      { id: 7, name: '용두암' },
+      { id: 8, name: '천지연 폭포' },
+    ],
+    dinner: {
+      id: 9,
+      name: '갈치조림',
+    },
+  },
+  config: {
+    regions: ['제주시', '서귀포시'],
+    themes: ['자연', '카페'],
+  },
+};
 
 const PlaceList = () => {
-  const data = {
-    schedule: {
-      breakfast: {
-        id: 1,
-        name: '제주 전복죽',
-      },
-      morning: [
-        { id: 2, name: '한라산 등반' },
-        { id: 3, name: '성산 일출봉' },
-        { id: 4, name: '협재 해수욕장' },
-      ],
-      lunch: {
-        id: 5,
-        name: '흑돼지 불고기',
-      },
-      afternoon: [
-        { id: 6, name: '카페 아메리카노' },
-        { id: 7, name: '용두암' },
-        { id: 8, name: '천지연 폭포' },
-      ],
-      dinner: {
-        id: 9,
-        name: '갈치조림',
-      },
-    },
-    config: {
-      regions: ['제주시', '서귀포시'],
-      themes: ['자연', '카페'],
-    },
-  };
+  const [showRandomLayerPopup, setShowRandomLayerPopup] = useState<boolean>(false);
+  const [showSaveLayerPopup, setShowSaveLayerPopup] = useState<boolean>(false);
+  // 로그인 여부 확인하고 저장하기 눌렀을 때 사용할 state
+  // const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
 
   const places = [
     data.schedule.breakfast
@@ -61,10 +68,6 @@ const PlaceList = () => {
 
   const handleToggleChange = () => {};
 
-  const handleRamdom = () => {};
-
-  const handleSubmit = () => {};
-
   return (
     <div className="flex flex-col items-center gap-6 min-h-full">
       {places.map(place => (
@@ -87,16 +90,54 @@ const PlaceList = () => {
           color="skyblue"
           shadow="dropShadow"
           label="다시 뽑기"
-          onClick={handleRamdom}
+          onClick={() => setShowRandomLayerPopup(true)}
         />
         <Button
           size="md"
           color="blue"
           shadow="dropShadow"
           label="저장하기"
-          onClick={handleSubmit}
+          onClick={() => setShowSaveLayerPopup(true)}
         />
       </div>
+
+      {showRandomLayerPopup && (
+        <LayerPopup
+          label={
+            <>
+              고정되지 않은 여행지 및 식당이 랜덤으로 다시 배정됩니다. <br />
+              계속하시겠습니까?
+            </>
+          }
+          onConfirm={() => console.log('랜덤으로 다시 뽑기')}
+          setShowLayerPopup={setShowRandomLayerPopup}
+        />
+      )}
+
+      {showSaveLayerPopup && (
+        <LayerPopup
+          label={
+            <>
+              일정의 제목을 입력해 주세요. <br />
+              제목을 지정하지 않으면 오늘 날짜로 지정됩니다.
+            </>
+          }
+          type="input"
+          onConfirm={title => console.log(`일정 저장하기: ${title || '오늘 날짜'}`)}
+          setShowLayerPopup={setShowSaveLayerPopup}
+        />
+      )}
+
+      {/* <LayerPopup
+        label={
+          <>
+            회원만 이용이 가능한 서비스 입니다.<br />
+            로그인 페이지로 이동하시겠습니까?
+          </>
+        }
+        onConfirm={ => }
+        setShowLayerPopup={}
+      /> */}
     </div>
   );
 };
