@@ -18,11 +18,22 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
   const isConfirmPopup = type === 'confirm'; // 입력창 없는 팝업
   const [titleData, setTitleData] = useState<string>(''); // 제목 지정
 
+  // 오늘 날짜
+  const getToday = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+
+    return `${year}.${month}.${day}`;
+  };
+
   const handleConfirm = () => {
     if (isConfirmPopup) {
       onConfirm();
     } else {
-      onConfirm(titleData); // 부모 컴포넌트에 데이터 전달
+      const titleToSave = titleData || getToday();
+      onConfirm(titleToSave); // 부모 컴포넌트에 데이터 전달
     }
     setShowLayerPopup(false); // 팝업 닫기
   };
@@ -76,7 +87,7 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
                 type="text"
                 variant="title"
                 className="w-72 md:w-96 self-center"
-                placeholder="2024-12-31"
+                placeholder={getToday()}
                 value={titleData}
                 onChange={event => setTitleData(event.target.value)}
               />
