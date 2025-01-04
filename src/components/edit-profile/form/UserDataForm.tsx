@@ -172,7 +172,7 @@ const UserDataForm = () => {
           onClick={() => {
             if (isUserDataChangeActive) {
               const newNickname = getValues('nickname');
-              if (newNickname) {
+              if (newNickname !== userData.nickname) {
                 // 닉네임 변경 시
                 handleSubmit(handleSave)();
               } else {

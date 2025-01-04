@@ -6,13 +6,6 @@ import UserDataForm from '@/components/edit-profile/form/UserDataForm';
 import Button from '@/components/common/buttons/Button';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 
-export type UserDataType = {
-  nickname: string;
-  password: string;
-  age: number;
-  gender: 'male' | 'female' | 'none';
-  birthday: Date;
-};
 const Page = () => {
   const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
 
