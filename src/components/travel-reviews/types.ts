@@ -1,13 +1,12 @@
-import { Dispatch, SetStateAction } from 'react';
 import { ChainedCommands, Editor } from '@tiptap/react';
 import { LucideIcon } from 'lucide-react';
 import { VariantProps } from 'class-variance-authority';
 import { routeInfoContainerStyles } from './RouteInfoStyles';
-import { reviewStatsIconStyles } from './ReviewStatsStyles';
+import { reviewStatsIconStyles } from './reviewCard/ReviewStatsStyles';
 
 export type StarRatingProps = {
-  rating: number | null;
-  setRating: Dispatch<SetStateAction<number | null>>;
+  value: number;
+  onChange: (value: number | null) => void;
 };
 
 export type RouteInfoProps = VariantProps<typeof routeInfoContainerStyles> & {
@@ -32,4 +31,8 @@ export type ReviewStatsProps = VariantProps<typeof reviewStatsIconStyles> & {
   stats: string | number;
   icon: LucideIcon;
   className?: string;
+};
+
+export type ReviewFormProps = {
+  mode: 'create' | 'edit';
 };
