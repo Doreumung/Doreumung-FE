@@ -14,7 +14,7 @@ const Select: React.FC<SelectProps> = ({ setSelectedDate, optional, defaultDate 
   const [month, setMonth] = useState<number | null>(parsedDate ? parsedDate.month() + 1 : null);
   const [day, setDay] = useState<number | null>(parsedDate?.date() || null);
 
-  const generateYears = () => Array.from({ length: 101 }, (_, i) => 2024 - i); // 2024부터 1924까지
+  const generateYears = () => Array.from({ length: 101 }, (_, i) => new Date().getFullYear() - i); // 현재 연도부터 현재 연도-100까지
   const generateMonths = () => Array.from({ length: 12 }, (_, i) => i + 1);
   const generateDays = (year: number | null, month: number | null) => {
     if (!year || !month) return [];
