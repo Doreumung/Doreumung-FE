@@ -1,6 +1,6 @@
 import Rating from '@mui/material/Rating';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
-import { StarRatingProps } from './types';
+import { StarRatingProps } from '../types';
 
 const StarRating = ({ rating, setRating }: StarRatingProps) => {
   const getRatingLabel = (rating: number | null): string => {
