@@ -1,6 +1,4 @@
 import SpeechBubble from '@/components/common/speechBubble/SpeechBubble';
-import Image from 'next/image';
-import Dolmung from '@public/images/dolmung.svg';
 import { TravelHeaderProps } from './types';
 
 const TravelHeader: React.FC<TravelHeaderProps> = ({ step, stepName }) => {
@@ -10,7 +8,7 @@ const TravelHeader: React.FC<TravelHeaderProps> = ({ step, stepName }) => {
         <SpeechBubble text={step} />
       </div>
       <div className="flex items-center gap-4">
-        <Image src={Dolmung} alt="dolmung" width={50} />
+        <div className="w-12 h-12 bg-center bg-no-repeat bg-contain bg-[url('/images/dolmung.svg')]" />
         <h3 className="text-2xl sm:text-3xl">{stepName}</h3>
       </div>
     </div>
