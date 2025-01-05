@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const reviewSchemas = z.object({
+  user_id: z.number(),
   travel_route_id: z.number(),
   review_id: z.number(),
   title: z
@@ -20,7 +21,8 @@ export const reviewSchemas = z.object({
   message: z.string(),
 });
 
-export const getReviewResponseSchema = reviewSchemas.omit({
+export const getReviewDetailResponseSchema = reviewSchemas.omit({
+  travel_route_id: true,
   message: true,
 });
 
@@ -38,7 +40,8 @@ export const postReviewResponseSchema = reviewSchemas.pick({
   message: true,
 });
 
-export const reviewInReviewListSchema = reviewSchemas.pick({
+export const singleReviewSchema = reviewSchemas.pick({
+  user_id: true,
   nickname: true,
   review_id: true,
   title: true,
@@ -54,7 +57,7 @@ export const getReviewListResponseSchema = z.object({
   size: z.number(),
   total_pages: z.number(),
   total_reviews: z.number(),
-  reviews: reviewInReviewListSchema.array(),
+  reviews: singleReviewSchema.array(),
 });
 
 export const editReviewRequestSchema = reviewSchemas.pick({

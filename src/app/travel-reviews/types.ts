@@ -8,26 +8,26 @@ import {
   editReviewRequestSchema,
   editReviewResponseSchema,
   getCommentsResponseSchema,
-  getReviewResponseSchema,
+  getReviewDetailResponseSchema,
   getReviewListResponseSchema,
   likeReviewResponseSchema,
   postCommentRequestSchema,
   postCommentResponseSchema,
   postReviewRequestSchema,
   postReviewResponseSchema,
-  reviewInReviewListSchema,
+  singleReviewSchema,
   commentSchema,
   reviewFormSchema,
   commentFormSchema,
 } from './schemas';
 
-export type GetReviewResponseType = z.infer<typeof getReviewResponseSchema>;
+export type GetReviewDetailResponseType = z.infer<typeof getReviewDetailResponseSchema>;
 
 export type PostReviewRequestType = z.infer<typeof postReviewRequestSchema>;
 
 export type PostReviewResponseType = z.infer<typeof postReviewResponseSchema>;
 
-export type ReviewInReviewListType = z.infer<typeof reviewInReviewListSchema>;
+export type SingleReviewType = z.infer<typeof singleReviewSchema>;
 
 export type GetReviewListResponseType = z.infer<typeof getReviewListResponseSchema>;
 

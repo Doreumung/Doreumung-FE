@@ -4,6 +4,7 @@ import {
   EditReviewRequestType,
   EditReviewResponseType,
   GetReviewListResponseType,
+  GetReviewDetailResponseType,
   PostReviewRequestType,
   PostReviewResponseType,
 } from '@/app/travel-reviews/types';
@@ -32,6 +33,13 @@ const reviewApi = createApi({
     getReviewList: build.query<GetReviewListResponseType, void>({
       query: () => ({
         url: '/reviews',
+        method: 'GET',
+      }),
+      providesTags: ['Reviews'],
+    }),
+    getReviewDetail: build.query<GetReviewDetailResponseType, string>({
+      query: review_id => ({
+        url: `/reviews/${review_id}`,
         method: 'GET',
       }),
       providesTags: ['Reviews'],
