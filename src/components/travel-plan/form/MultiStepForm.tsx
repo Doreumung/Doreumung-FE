@@ -1,14 +1,25 @@
 'use client';
 
 import Button from '@/components/common/buttons/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SelectRegion from './region/SelectRegion';
 import SelectSchedule from './schedules/SelectSchedule';
 import BackNavigation from '@/components/common/backNavigation/BackNavigation';
 import ProgressIndicator from './ProgressIndicator';
 import TravelPlan from '../plan/TravelPlan';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { resetTravelPlan } from '@/store/travelPlanSlice';
 
 const MultiStepForm = () => {
+  const dispatch = useAppDispatch();
+  const travelPlanConfig = useAppSelector(state => state.travelPlan.config);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetTravelPlan());
+    };
+  }, [dispatch]);
+
   const [step, setStep] = useState(1);
 
   const handelNextStep = () => {
@@ -19,6 +30,7 @@ const MultiStepForm = () => {
   };
 
   const handleSubmit = () => {
+    console.log('여행 일정 폼: ', travelPlanConfig);
     setStep(step + 1);
   };
 
