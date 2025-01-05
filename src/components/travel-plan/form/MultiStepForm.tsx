@@ -9,18 +9,20 @@ import ProgressIndicator from './ProgressIndicator';
 import TravelPlan from '../plan/TravelPlan';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { resetTravelPlan } from '@/store/travelPlanSlice';
+import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 
 const MultiStepForm = () => {
   const dispatch = useAppDispatch();
   const travelPlanConfig = useAppSelector(state => state.travelPlan.config);
+
+  const [step, setStep] = useState(1);
+  const [showLayerPopup, setShowLayerPopup] = useState(false);
 
   useEffect(() => {
     return () => {
       dispatch(resetTravelPlan());
     };
   }, [dispatch]);
-
-  const [step, setStep] = useState(1);
 
   const handelNextStep = () => {
     setStep(step + 1);
@@ -30,8 +32,12 @@ const MultiStepForm = () => {
   };
 
   const handleSubmit = () => {
-    console.log('여행 일정 폼: ', travelPlanConfig);
-    setStep(step + 1);
+    if (travelPlanConfig.schedule.morning === 0 && travelPlanConfig.schedule.afternoon === 0) {
+      setShowLayerPopup(true);
+    } else {
+      console.log('여행 일정 폼: ', travelPlanConfig);
+      setStep(step + 1);
+    }
   };
 
   return (
@@ -83,6 +89,15 @@ const MultiStepForm = () => {
         </div>
       )}
       {step === 3 && <TravelPlan />}
+
+      {showLayerPopup && (
+        <LayerPopup
+          type="confirm-only"
+          label={<>오전, 오후 일정 중 최소 1개 이상 선택해야합니다.</>}
+          onConfirm={() => setShowLayerPopup(false)}
+          setShowLayerPopup={setShowLayerPopup}
+        />
+      )}
     </div>
   );
 };
