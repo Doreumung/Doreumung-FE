@@ -1,11 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { jejuArea } from './jejumap';
 import { KakaoMouseEvent } from '../../types';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setRegions } from '@/store/travelPlanSlice';
 
 const RegionMap = () => {
-  const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
+  const dispatch = useAppDispatch();
+  const { regions } = useAppSelector(state => state.travelPlan.config);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -32,8 +35,6 @@ const RegionMap = () => {
           content: '',
         });
 
-        const selectedPolygons = new Set();
-
         // 제주 구역 다각형 생성
         jejuArea.forEach(area => {
           const polygon = new window.kakao.maps.Polygon({
@@ -42,7 +43,7 @@ const RegionMap = () => {
             strokeWeight: 2,
             strokeColor: '#6D6D6D',
             strokeOpacity: 0.8,
-            fillColor: '#DBEBCC',
+            fillColor: regions.includes(area.name) ? '#9EC07F' : '#DBEBCC',
             fillOpacity: 0.7,
           });
 
@@ -51,7 +52,7 @@ const RegionMap = () => {
             polygon,
             'mouseover',
             (mouseEvent: KakaoMouseEvent) => {
-              if (!selectedPolygons.has(polygon)) {
+              if (!regions.includes(area.name)) {
                 polygon.setOptions({
                   fillColor: '#BEDAA3',
                 });
@@ -77,29 +78,29 @@ const RegionMap = () => {
           );
 
           window.kakao.maps.event.addListener(polygon, 'mouseout', () => {
-            if (!selectedPolygons.has(polygon)) {
+            if (!regions.includes(area.name)) {
               polygon.setOptions({
                 fillColor: '#DBEBCC',
               });
             }
-
             customOverlay.setMap(null);
           });
 
           window.kakao.maps.event.addListener(polygon, 'click', () => {
-            if (selectedPolygons.has(polygon)) {
-              selectedPolygons.delete(polygon);
+            let updatedRegions;
+
+            if (regions.includes(area.name)) {
+              updatedRegions = regions.filter(region => region !== area.name);
               polygon.setOptions({
                 fillColor: '#DBEBCC',
               });
-              setSelectedAreas(prev => prev.filter(name => name !== area.name));
             } else {
-              selectedPolygons.add(polygon);
+              updatedRegions = Array.from(new Set([...regions, area.name]));
               polygon.setOptions({
                 fillColor: '#9EC07F',
               });
-              setSelectedAreas(prev => [...prev, area.name]);
             }
+            dispatch(setRegions(updatedRegions));
           });
         });
       });
@@ -108,13 +109,13 @@ const RegionMap = () => {
     return () => {
       document.head.removeChild(script);
     };
-  }, []);
+  }, [dispatch, regions]);
 
   return (
     <div className="absolute inset-0 flex flex-col z-0">
       <div className="absolute top-4 left-4 z-10 max-w-[calc(100%-2rem)] p-2 border border-darkGray rounded-md shadow-md bg-white text-xs text-darkerGray md:text-base">
         <strong className="text-logo">선택된 지역: </strong>{' '}
-        {selectedAreas.length > 0 ? selectedAreas.join(', ') : '없음'}
+        {regions.length > 0 ? regions.join(', ') : '없음'}
       </div>
       <div id="map" className="absolute top-0 left-0 w-full h-full rounded-lg" />
     </div>

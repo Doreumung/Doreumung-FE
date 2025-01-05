@@ -1,47 +1,59 @@
-import { useState } from 'react';
+'use client';
+
 import ScheduleArticle from './SchedulesArticle';
 import ToggleGroup from '@/components/common/toggle/ToggleGroup';
 import { MEALS, THEMES } from '@/components/common/toggle/constants';
 import Button from '@/components/common/buttons/Button';
-import { TimeType } from '../../types';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import {
+  setMealToggles,
+  setThemes,
+  setThemeToggles,
+  updateSchedule,
+} from '@/store/travelPlanSlice';
 
 const SchedulesForm = () => {
-  const [selectedMeals, setSelectedMeals] = useState<number[]>([]);
-  const [selectedThemes, setSelectedThemes] = useState<number[]>([]);
-  const [morningSchedule, setMorningSchedule] = useState<string[]>([]);
-  const [afternoonSchedule, setAfternoonSchedule] = useState<string[]>([]);
+  const dispatch = useAppDispatch();
+  const { schedule, themes } = useAppSelector(state => state.travelPlan.config);
+  const themeToggles = useAppSelector(state => state.travelPlan.themeToggles);
+  const mealToggles = useAppSelector(state => state.travelPlan.mealToggles);
 
+  // 식사 여부 토글 변경 핸들러
   const handleMealToggleChange = (indices: number[]) => {
-    setSelectedMeals(indices);
+    dispatch(setMealToggles(indices));
+    dispatch(updateSchedule({ breakfast: indices.includes(0) }));
+    dispatch(updateSchedule({ lunch: indices.includes(1) }));
+    dispatch(updateSchedule({ dinner: indices.includes(2) }));
   };
 
+  // 테마 선택 토글 변경 핸들러
   const handleThemeToggleChange = (indices: number[]) => {
-    setSelectedThemes(indices);
+    dispatch(setThemeToggles(indices));
+    dispatch(setThemes(indices.map(index => THEMES[index])));
   };
 
-  const addSchedule = (time: TimeType) => {
-    if (time === 'morning' && morningSchedule.length < 3) {
-      setMorningSchedule([...morningSchedule, '오전']);
-    } else if (time === 'afternoon' && afternoonSchedule.length < 3) {
-      setAfternoonSchedule([...afternoonSchedule, '오후']);
+  // 오전/오후 일정 추가
+  const addSchedule = (time: 'morning' | 'afternoon') => {
+    if (schedule[time] < 3) {
+      dispatch(updateSchedule({ [time]: schedule[time] + 1 }));
     }
   };
 
-  const removeSchedule = (time: TimeType) => {
-    if (time === 'morning' && morningSchedule.length > 0) {
-      setMorningSchedule(morningSchedule.slice(0, -1));
-    } else if (time === 'afternoon' && afternoonSchedule.length > 0) {
-      setAfternoonSchedule(afternoonSchedule.slice(0, -1));
+  // 오전/오후 일정 삭제
+  const removeSchedule = (time: 'morning' | 'afternoon') => {
+    if (schedule[time] > 0) {
+      dispatch(updateSchedule({ [time]: schedule[time] - 1 }));
     }
   };
 
+  // 최종 일정 렌더링
   const renderSchedule = () => {
     const scheduleOrder = [
-      ...(selectedMeals.includes(0) ? ['아침'] : []),
-      ...morningSchedule,
-      ...(selectedMeals.includes(1) ? ['점심'] : []),
-      ...afternoonSchedule,
-      ...(selectedMeals.includes(2) ? ['저녁'] : []),
+      ...(schedule.breakfast ? ['아침'] : []),
+      ...Array(schedule.morning).fill('오전'),
+      ...(schedule.lunch ? ['점심'] : []),
+      ...Array(schedule.afternoon).fill('오후'),
+      ...(schedule.dinner ? ['저녁'] : []),
     ];
 
     if (scheduleOrder.length === 0) {
@@ -52,13 +64,13 @@ const SchedulesForm = () => {
       );
     }
 
-    return scheduleOrder.map((schedule, index) => {
+    return scheduleOrder.map((item, index) => {
       let bgColor = '';
-      if (['아침', '점심', '저녁'].includes(schedule)) {
+      if (['아침', '점심', '저녁'].includes(item)) {
         bgColor = 'bg-skyblue';
-      } else if (schedule.startsWith('오전')) {
+      } else if (item.startsWith('오전')) {
         bgColor = 'bg-green';
-      } else if (schedule.startsWith('오후')) {
+      } else if (item.startsWith('오후')) {
         bgColor = 'bg-logo';
       }
 
@@ -67,7 +79,7 @@ const SchedulesForm = () => {
           key={index}
           className={`flex justify-center items-center h-8 px-3 border border-darkerGray rounded-2xl text-base md:min-w-24 md:h-10 md:text-xl ${bgColor}`}
         >
-          {schedule}
+          {item}
         </div>
       );
     });
@@ -80,18 +92,26 @@ const SchedulesForm = () => {
           <label className="py-4 text-xl md:text-2xl">최종 일정</label>
           <div className="flex flex-wrap justify-center gap-2 min-h-12">{renderSchedule()}</div>
 
-          {/* 테마 선택 확인용 코드 */}
-          <div>
-            {selectedThemes.length > 0 ? selectedThemes.map(i => THEMES[i]).join(', ') : '없음'}
-          </div>
+          {/* 선택된 테마 확인 */}
+          <div>{themes.length > 0 ? themes.join(', ') : '없음'}</div>
         </article>
       </section>
       <section className="flex flex-col gap-6 px-6 md:gap-10 md:p-0">
         <ScheduleArticle label="테마 선택">
-          <ToggleGroup items={THEMES} color="fadedSkyblue" onChange={handleThemeToggleChange} />
+          <ToggleGroup
+            items={THEMES}
+            color="fadedSkyblue"
+            onChange={handleThemeToggleChange}
+            activeToggles={themeToggles}
+          />
         </ScheduleArticle>
         <ScheduleArticle label="식사 여부">
-          <ToggleGroup items={MEALS} color="fadedSkyblue" onChange={handleMealToggleChange} />
+          <ToggleGroup
+            items={MEALS}
+            color="fadedSkyblue"
+            onChange={handleMealToggleChange}
+            activeToggles={mealToggles}
+          />
         </ScheduleArticle>
         <ScheduleArticle label="오전 일정">
           <div className="flex gap-6">
@@ -99,13 +119,13 @@ const SchedulesForm = () => {
               color="fadedGreen"
               label="추가"
               onClick={() => addSchedule('morning')}
-              disabled={morningSchedule.length >= 3}
+              disabled={schedule.morning >= 3}
             />
             <Button
               color="fadedGreen"
               label="삭제"
               onClick={() => removeSchedule('morning')}
-              disabled={morningSchedule.length === 0}
+              disabled={schedule.morning === 0}
             />
           </div>
         </ScheduleArticle>
@@ -114,16 +134,14 @@ const SchedulesForm = () => {
             <Button
               color="fadedYellow"
               label="추가"
-              type="button"
               onClick={() => addSchedule('afternoon')}
-              disabled={afternoonSchedule.length >= 3}
+              disabled={schedule.afternoon >= 3}
             />
             <Button
               color="fadedYellow"
               label="삭제"
-              type="button"
               onClick={() => removeSchedule('afternoon')}
-              disabled={afternoonSchedule.length === 0}
+              disabled={schedule.afternoon === 0}
             />
           </div>
         </ScheduleArticle>
