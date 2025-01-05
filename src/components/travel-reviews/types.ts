@@ -6,7 +6,7 @@ import { reviewStatsIconStyles } from './reviewCard/ReviewStatsStyles';
 
 export type StarRatingProps = {
   value: number;
-  onChange: (value: number | null) => void;
+  onChange?: (value: number | null) => void;
 };
 
 export type RouteInfoProps = VariantProps<typeof routeInfoContainerStyles> & {
