@@ -3,6 +3,7 @@ import baseQuery from './baseQuery';
 import {
   EditReviewRequestType,
   EditReviewResponseType,
+  GetReviewListResponseType,
   PostReviewRequestType,
   PostReviewResponseType,
 } from '@/app/travel-reviews/types';
@@ -28,9 +29,16 @@ const reviewApi = createApi({
       }),
       invalidatesTags: ['Reviews'],
     }),
+    getReviewList: build.query<GetReviewListResponseType, void>({
+      query: () => ({
+        url: '/reviews',
+        method: 'GET',
+      }),
+      providesTags: ['Reviews'],
+    }),
   }),
 });
 
-export const { usePostReviewMutation, useEditReviewMutation } = reviewApi;
+export const { usePostReviewMutation, useEditReviewMutation, useGetReviewListQuery } = reviewApi;
 
 export default reviewApi;
