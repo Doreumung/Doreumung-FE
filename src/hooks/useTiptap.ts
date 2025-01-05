@@ -32,7 +32,7 @@ const HEADING_CLASSES: Record<Level, string> = {
 
 const LIMIT = 3000;
 
-const useTiptap = () => {
+const useTiptap = (content?: string) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -61,6 +61,7 @@ const useTiptap = () => {
       },
     },
     immediatelyRender: false,
+    content,
   });
 
   const getToolbarOptions = (
