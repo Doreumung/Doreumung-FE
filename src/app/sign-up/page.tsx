@@ -91,8 +91,8 @@ const Page = () => {
           <div className="flex-grow h-px bg-lighterGray"></div>
         </div>
 
-        <div className="flex flex-col gap-3">
-          <Select setSelectedDate={setSelectedDate} />
+        <div className="flex flex-col gap-4">
+          <Select setSelectedDate={setSelectedDate} optional={true} />
 
           <div>
             <p className="px-5 pb-2 text-sm text-logo">성별</p>
