@@ -1,3 +1,4 @@
 export type BackNavigationProps = {
-  to: 'home' | 'reviewList';
+  to: 'home' | 'reviewList' | 'review';
+  reviewId?: string;
 };
