@@ -2,8 +2,8 @@ import { useState } from 'react';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import { covertDateTime } from '@/utils/utils';
 import { CommentType } from '@/app/travel-reviews/types';
-import clsx from 'clsx';
 import CommentForm from './CommentForm';
+import EditAndDelete from '../EditAndDelete';
 
 const USER_ID = 102;
 
@@ -24,19 +24,13 @@ const CommentItem = ({
       <div className="flex flex-col gap-1">
         <div className="flex justify-between items-center gap-2">
           <span className="text-darkerGray text-sm">{nickname}</span>
-          <div
-            className={clsx(USER_ID !== user_id && 'hidden', 'flex gap-2 text-sm text-darkGray')}
-          >
-            <span className="cursor-pointer hover:underline" onClick={() => setIsEditMode(true)}>
-              수정
-            </span>
-            <span
-              className="cursor-pointer hover:underline"
-              onClick={() => setShowLayerPopup(true)}
-            >
-              삭제
-            </span>
-          </div>
+          {USER_ID === user_id && (
+            <EditAndDelete
+              onClickEdit={() => setIsEditMode(true)}
+              onClickDelete={() => setShowLayerPopup(true)}
+              className="text-sm text-darkGray"
+            />
+          )}
         </div>
         <span className="text-darkGray text-xs">{covertDateTime(created_at)}</span>
       </div>
