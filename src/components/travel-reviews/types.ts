@@ -36,3 +36,9 @@ export type ReviewStatsProps = VariantProps<typeof reviewStatsIconStyles> & {
 export type ReviewFormProps = {
   mode: 'create' | 'edit';
 };
+
+export type EditAndDeleteProps = {
+  onClickEdit: () => void;
+  onClickDelete: () => void;
+  className?: string;
+};
