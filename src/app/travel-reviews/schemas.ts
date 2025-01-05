@@ -3,7 +3,10 @@ import { z } from 'zod';
 export const reviewSchemas = z.object({
   travel_route_id: z.number(),
   review_id: z.number(),
-  title: z.string().max(50, { message: '제목은 50자 이하로 작성해 주세요.' }),
+  title: z
+    .string()
+    .min(1, { message: '제목을 입력해 주세요.' })
+    .max(50, { message: '제목은 50자 이하로 작성해 주세요.' }),
   nickname: z.string(),
   content: z.string().min(1, { message: '내용을 입력해 주세요.' }),
   rating: z.number().min(0).max(5),
