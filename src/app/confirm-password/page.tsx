@@ -28,16 +28,16 @@ const Page = () => {
   };
 
   return (
-    <div className="flex justify-center w-screen h-screen px-4 md:px-0">
+    <div className="flex justify-center w-screen h-[calc(100vh-80px)] px-4 md:px-0 pb-60">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col justify-center items-center gap-3 w-96"
+        className="flex flex-col justify-center items-center gap-5 w-96"
       >
         <p className="text-xl text-darkerGray">비밀번호 확인</p>
         <Input
           id="confirmPassword"
           type="password"
-          variant="default"
+          variant="eye"
           placeholder="비밀번호 확인"
           value={confirmPassword}
           onChange={e => setConfirmPassword(e.target.value)} // 상태 업데이트
