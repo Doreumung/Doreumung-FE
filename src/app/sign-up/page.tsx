@@ -7,6 +7,8 @@ import { SignUpSchema, signUpSchema } from './signUpSchema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
+import { useSignUpMutation } from '@/api/userApi';
+import { omit } from 'lodash';
 
 const Page = () => {
   const genderOptions: string[] = ['여성', '남성', '선택안함'];
@@ -15,6 +17,7 @@ const Page = () => {
   const handleGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedGender(event.target.value); // 선택된 값 업데이트
   };
+  const [signUpUser, { isLoading }] = useSignUpMutation();
 
   const {
     register, // 연결하여 유효성 검사 진행
@@ -26,19 +29,23 @@ const Page = () => {
     reValidateMode: 'onChange', // 유효성 검사 진행
   });
 
-  const onSubmit = (data: SignUpSchema) => {
-    // 제출했을 때 data 반환
-    // 필수 항목 + 선택 항목 데이터 합쳐서 반환
-    const genderData: string =
-      selectedGender === '여자' ? 'female' : selectedGender === '남자' ? 'male' : 'Unknown';
+  const onSubmit = async (data: SignUpSchema) => {
+    try {
+      // 필수 항목 + 선택 항목 데이터 합치기
+      const userData = {
+        ...omit(data, 'confirmPassword'), // confirmPassword 제거
+        birthday: selectedDate || '1925-01-01',
+        ...(selectedGender && selectedGender !== '선택안함'
+          ? { gender: selectedGender === '여성' ? 'female' : 'male' }
+          : {}),
+      };
 
-    const userData = { ...data, selectedDate, genderData };
-    console.log(userData);
-
-    // 확인용
-    console.log('Form Data:', data);
-    console.log(selectedDate);
-    console.log(selectedGender);
+      // API 호출
+      const result = await signUpUser(JSON.stringify(userData)).unwrap();
+      console.log('회원가입 성공:', result);
+    } catch (err) {
+      console.error('회원가입 실패:', err);
+    }
   };
 
   // 공통 tailwind
@@ -55,8 +62,8 @@ const Page = () => {
           <Input id="email" label="이메일" {...register('email')} type="email" variant="default" />
           {errors.email && <p className={errorMessageStyle}>{errors.email.message}</p>}
 
-          <Input id="text" label="닉네임" {...register('username')} type="text" variant="default" />
-          {errors.username && <p className={errorMessageStyle}>{errors.username.message}</p>}
+          <Input id="text" label="닉네임" {...register('nickname')} type="text" variant="default" />
+          {errors.nickname && <p className={errorMessageStyle}>{errors.nickname.message}</p>}
 
           <Input
             id="password"
@@ -110,7 +117,12 @@ const Page = () => {
             </div>
           </div>
 
-          <Button label="가입하기" onClick={() => {}} className="w-96 text-sm" />
+          <Button
+            label="가입하기"
+            onClick={() => {}}
+            className="w-96 text-sm"
+            disabled={isLoading}
+          />
         </div>
       </div>
     </form>
