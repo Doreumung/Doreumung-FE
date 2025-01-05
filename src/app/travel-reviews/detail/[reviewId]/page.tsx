@@ -1,9 +1,7 @@
 'use client';
 
 import BackNavigation from '@/components/common/backNavigation/BackNavigation';
-import { Heart, Star } from 'lucide-react';
-import Button from '@/components/common/buttons/Button';
-import ReviewStats from '@/components/travel-reviews/reviewCard/ReviewStats';
+import { Heart } from 'lucide-react';
 import React, { useState } from 'react';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import { useParams, useRouter } from 'next/navigation';
@@ -12,6 +10,8 @@ import { covertDateTime } from '@/utils/utils';
 import CommentList from '@/components/travel-reviews/comment/CommentList';
 import CommentForm from '@/components/travel-reviews/comment/CommentForm';
 import { COMMENT_DATA, REVIEW_DATA } from '@/components/travel-reviews/mockData';
+import StarRating from '@/components/travel-reviews/reviewForm/StarRatings';
+import EditAndDelete from '@/components/travel-reviews/EditAndDelete';
 
 const Page = () => {
   const router = useRouter();
@@ -34,7 +34,7 @@ const Page = () => {
   };
 
   // 여행 후기 삭제 요청 구현 필요
-  const handleDeleteRequest = () => {
+  const sendDeleteReviewRequest = () => {
     console.log('후기 삭제 요청');
   };
 
@@ -42,21 +42,14 @@ const Page = () => {
     <div className="flex flex-col items-center w-full">
       <BackNavigation to="reviewList" />
 
-      <h3 className="block py-12 text-darkerGray text-3xl">여행 후기</h3>
+      <h3 className="block pt-12 pb-1 text-darkerGray text-3xl text-center">{title}</h3>
+      <p className="flex items-center gap-3 pb-12 text-sm text-darkerGray">
+        <span>{nickname}</span>
+        <span>{covertDateTime(created_at)}</span>
+      </p>
 
-      <section className="flex flex-col items-start w-full">
-        <ReviewStats stats={rating} color="yellow" icon={Star} className="self-end" />
-        <div className="flex flex-col gap-1">
-          <p className="text-2xl">{title}</p>
-          <p className="flex items-center gap-3 text-sm text-darkerGray">
-            <span>{nickname}</span>
-            <span>{covertDateTime(created_at)}</span>
-          </p>
-        </div>
-
-        <div className="h-96 w-full my-8 border border-darkerGray bg-fadedSkyblue">
-          {/* 지도 또는 후기 대표 사진 */}
-        </div>
+      <div className="flex flex-col items-start gap-4 w-full">
+        <StarRating value={rating} />
 
         <div className="flex flex-col gap-3 sm:gap-1">
           <RouteInfoContainer
@@ -71,32 +64,27 @@ const Page = () => {
           />
         </div>
 
-        <div className="flex flex-col gap-5 w-full py-8 border-y border-lighterGray">
+        <div className="h-96 w-full border border-darkerGray bg-fadedSkyblue">
+          {/* 지도 또는 후기 대표 사진 */}
+        </div>
+
+        <div className="flex flex-col gap-8 w-full pt-8 pb-4 border-b border-lighterGray">
           <div className="leading-10" dangerouslySetInnerHTML={{ __html: content }} />
-          <div className="flex justify-between">
-            <ReviewStats stats={`좋아요 ${like_count}`} color="fadedOrange" icon={Heart} />
-            <div className="flex gap-3">
-              <Button
-                size="xs"
-                color="lighterGray"
-                label="수정"
-                onClick={handleClickEdit}
-                className="w-16 text-sm"
-              />
-              <Button
-                size="xs"
-                color="lighterGray"
-                label="삭제"
-                onClick={() => setShowLayerPopup(true)}
-                className="w-16 text-sm"
-              />
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2 text-darkerGray cursor-pointer">
+              <Heart className="fill-fadedOrange hover:fill-logo hover:scale-110 transition duration-75 ease-in" />
+              <span>{`좋아요 ${like_count}`}</span>
             </div>
+            <EditAndDelete
+              onClickEdit={handleClickEdit}
+              onClickDelete={() => setShowLayerPopup(true)}
+            />
           </div>
         </div>
-      </section>
+      </div>
 
       <section className="w-full border-b border-lighterGray">
-        <div className="flex items-center gap-2 pt-8 pb-4">
+        <div className="flex items-center gap-2 py-4">
           <h3 className="text-xl">댓글</h3>
           <span className="text-sm">{COMMENT_DATA.length}개</span>
         </div>
@@ -108,7 +96,7 @@ const Page = () => {
         <LayerPopup
           label="후기를 삭제하시겠습니까?"
           setShowLayerPopup={setShowLayerPopup}
-          onConfirm={handleDeleteRequest}
+          onConfirm={sendDeleteReviewRequest}
         />
       )}
     </div>
