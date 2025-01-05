@@ -6,7 +6,7 @@ import { reviewStatsIconStyles } from './reviewCard/ReviewStatsStyles';
 
 export type StarRatingProps = {
   value: number;
-  onChange: (value: number | null) => void;
+  onChange?: (value: number | null) => void;
 };
 
 export type RouteInfoProps = VariantProps<typeof routeInfoContainerStyles> & {
@@ -35,4 +35,10 @@ export type ReviewStatsProps = VariantProps<typeof reviewStatsIconStyles> & {
 
 export type ReviewFormProps = {
   mode: 'create' | 'edit';
+};
+
+export type EditAndDeleteProps = {
+  onClickEdit: () => void;
+  onClickDelete: () => void;
+  className?: string;
 };

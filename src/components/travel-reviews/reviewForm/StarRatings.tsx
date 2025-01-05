@@ -15,10 +15,13 @@ const StarRating = ({ value, onChange }: StarRatingProps) => {
         max={5}
         size="large"
         onChange={(_, newRating) => {
-          onChange(newRating || 0);
+          if (onChange) {
+            onChange(newRating || 0);
+          }
         }}
         icon={<StarRoundedIcon className="text-logo" fontSize="inherit" />}
         emptyIcon={<StarRoundedIcon className="text-lighterGray" fontSize="inherit" />}
+        readOnly={!onChange}
       />
       <span className="relative top-px text-darkerGray text-sm">{getRatingLabel(value)}</span>
     </div>

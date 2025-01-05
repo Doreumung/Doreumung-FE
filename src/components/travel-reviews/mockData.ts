@@ -96,7 +96,7 @@ export const REVIEW_LIST = [
 export const REVIEW_DATA = {
   travel_route_id: '123',
   review_id: 1,
-  title: '일정 추천합니다!',
+  title: '일정을 정말로 진짜로 진정으로 진심으로 진실로 추천합니다!',
   nickname: '정돌멍',
   content: `<h1 class="font-bold text-2xl"><span style="color: #FF9B36">도르멍 첫 사용 후기</span></h1><p>지난 주 친구와 다녀온 일정입니다.</p><p></p><h2 class="font-bold text-xl"><strong><mark data-color="#F8EAC1" style="background-color: #F8EAC1; color: inherit">용머리해안</mark></strong></h2><p>장관이네요. 절경이구요. 신이 주신 선물이네요.</p><p></p><h2 class="font-bold text-xl"><span style="color: #FFFFFF"><mark data-color="#0E72D5" style="background-color: #0E72D5; color: inherit">한담해변 카약</mark></span></h2><p><s>물이 굉장히 얕은 걸 몰라서</s></p><p>너무 무서웠어요.</p>`,
   rating: 4.5,
