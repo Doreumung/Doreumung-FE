@@ -110,7 +110,6 @@ export const REVIEW_DATA = {
 };
 
 // 여행 후기 댓글 더미데이터
-
 export const COMMENT_DATA = [
   {
     comment_id: 1,
@@ -212,3 +211,9 @@ export const COMMENT_DATA = [
     message: '',
   },
 ];
+
+// 임시 더미 데이터
+export const ROUTE_INFO_DUMMY_DATA = {
+  title: '카약 타러 가는 일정',
+  route: '용머리 해안 - 성이시돌 목장 - 한담해변 카약 - 애월 놀맨 - 이호테우 해변',
+} as const;

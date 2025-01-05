@@ -1,10 +1,9 @@
 'use client';
 
 import BackNavigation from '@/components/common/backNavigation/BackNavigation';
-import { COMMENT_DATA, REVIEW_DATA } from '../../constants';
 import { Heart, Star } from 'lucide-react';
 import Button from '@/components/common/buttons/Button';
-import ReviewStats from '@/components/travel-reviews/ReviewStats';
+import ReviewStats from '@/components/travel-reviews/reviewCard/ReviewStats';
 import React, { useState } from 'react';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import { useParams, useRouter } from 'next/navigation';
@@ -12,6 +11,7 @@ import RouteInfoContainer from '@/components/travel-reviews/RouteInfoContainer';
 import { covertDateTime } from '@/utils/utils';
 import CommentList from '@/components/travel-reviews/comment/CommentList';
 import CommentForm from '@/components/travel-reviews/comment/CommentForm';
+import { COMMENT_DATA, REVIEW_DATA } from '@/components/travel-reviews/mockData';
 
 const Page = () => {
   const router = useRouter();

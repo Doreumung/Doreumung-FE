@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import { ReviewStatsProps } from './types';
+import { ReviewStatsProps } from '../types';
 import { reviewStatsIconStyles } from './ReviewStatsStyles';
 
 const ReviewStats = ({ stats, color, icon: Icon, className }: ReviewStatsProps) => {

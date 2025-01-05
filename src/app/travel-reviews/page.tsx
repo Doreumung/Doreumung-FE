@@ -1,7 +1,7 @@
 'use client';
 
-import ReviewCard from '@/components/travel-reviews/ReviewCard';
-import { REVIEW_LIST } from './constants';
+import ReviewCard from '@/components/travel-reviews/reviewCard/ReviewCard';
+import { REVIEW_LIST } from '../../components/travel-reviews/mockData';
 import Pagination from '@/components/common/pagination/Pagination';
 import { useState } from 'react';
 
