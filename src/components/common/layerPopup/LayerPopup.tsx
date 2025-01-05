@@ -4,9 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { LayerPopupProps } from './types';
 import { layerPopupStyles } from './layerPopupStyles';
 import Button from '../buttons/Button';
-import Image from 'next/image';
 import Input from '../inputs/Input';
-import Dolmung from '@public/images/dolmung.svg';
 
 const LayerPopup: React.FC<LayerPopupProps> = ({
   label,
@@ -75,8 +73,11 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
           {isConfirmPopup || isConfirmOnlyPopup ? (
             <div className="flex flex-col gap-10 md:gap-20">
               <div className={`${textContainerStyles} gap-2 md:gap-5`}>
-                <Image src={Dolmung} alt="dolmung image" className="w-[45px] md:w-[60px] h-auto" />
-                {label}
+                <div
+                  className="bg-[url('/images/dolmung.svg')] bg-cover bg-center w-[45px] h-[45px] md:w-[60px] md:h-[60px] flex-shrink-0"
+                  aria-hidden="true"
+                ></div>
+                <span>{label}</span>
               </div>
               <div className={buttonContainerStyles}>
                 {!isConfirmOnlyPopup && (
@@ -88,8 +89,11 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
           ) : (
             <div className="flex flex-col items-center gap-2 md:gap-5">
               <div className={`${textContainerStyles} gap-3 pb-3 md:pl-6`}>
-                <Image src={Dolmung} alt="dolmung image" className="w-[45px] md:w-[50px] h-auto" />
-                {label}
+                <div
+                  className="bg-[url('/images/dolmung.svg')] bg-cover bg-center w-[45px] h-[45px] md:w-[60px] md:h-[60px] flex-shrink-0"
+                  aria-hidden="true"
+                ></div>
+                <span>{label}</span>
               </div>
               <Input
                 id="title"
