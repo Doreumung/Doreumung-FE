@@ -7,6 +7,7 @@ import {
   GetReviewDetailResponseType,
   PostReviewRequestType,
   PostReviewResponseType,
+  DeleteReviewResponseType,
 } from '@/app/travel-reviews/types';
 
 const reviewApi = createApi({
@@ -44,9 +45,22 @@ const reviewApi = createApi({
       }),
       providesTags: ['Reviews'],
     }),
+    deleteReview: build.mutation<DeleteReviewResponseType, string>({
+      query: review_id => ({
+        url: `/reviews/${review_id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Reviews'],
+    }),
   }),
 });
 
-export const { usePostReviewMutation, useEditReviewMutation, useGetReviewListQuery } = reviewApi;
+export const {
+  usePostReviewMutation,
+  useEditReviewMutation,
+  useGetReviewListQuery,
+  useGetReviewDetailQuery,
+  useDeleteReviewMutation,
+} = reviewApi;
 
 export default reviewApi;
