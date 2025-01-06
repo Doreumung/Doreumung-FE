@@ -8,6 +8,8 @@ import {
   PostReviewRequestType,
   PostReviewResponseType,
   DeleteReviewResponseType,
+  LikeReviewResponseType,
+  CancelLikeReviewResponseType,
 } from '@/app/travel-reviews/types';
 
 const reviewApi = createApi({
@@ -52,6 +54,26 @@ const reviewApi = createApi({
       }),
       invalidatesTags: ['Reviews'],
     }),
+    likeReview: build.mutation<LikeReviewResponseType, number>({
+      query: review_id => ({
+        url: `/reviews/${review_id}/likes`,
+        method: 'POST',
+      }),
+      invalidatesTags: (result, _, id) => [
+        { type: 'Reviews', id },
+        { type: 'Reviews', id: 'ReviewList' },
+      ],
+    }),
+    cancelLikeReview: build.mutation<CancelLikeReviewResponseType, number>({
+      query: review_id => ({
+        url: `/reviews/${review_id}/likes`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (result, _, id) => [
+        { type: 'Reviews', id },
+        { type: 'Reviews', id: 'ReviewList' },
+      ],
+    }),
   }),
 });
 
@@ -61,6 +83,8 @@ export const {
   useGetReviewListQuery,
   useGetReviewDetailQuery,
   useDeleteReviewMutation,
+  useLikeReviewMutation,
+  useCancelLikeReviewMutation,
 } = reviewApi;
 
 export default reviewApi;
