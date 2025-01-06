@@ -19,8 +19,8 @@ const TravelPlan = () => {
 
   return (
     <div className="w-screen h-screen flex flex-col md:flex-row">
-      <div className="md:w-[440px] md:overflow-auto px-4 md:px-8 flex-shrink-0">
-        <div className="sticky top-0 pb-4 bg-background z-10">
+      <div className="px-4 flex-shrink-0 md:flex md:flex-col md:w-[440px] md:px-0">
+        <div className="pb-4 md:px-8">
           <header className="pt-8 text-base md:pt-6">
             <BackNavigation to="home" />
           </header>
@@ -29,7 +29,7 @@ const TravelPlan = () => {
             stepName="일정 확인"
           />
         </div>
-        {!isMobile && <PlaceList />}
+        <div className="flex-grow overflow-auto">{!isMobile && <PlaceList />}</div>
       </div>
 
       <div className="flex-1 relative z-0 h-full">
