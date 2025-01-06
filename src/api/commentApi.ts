@@ -10,6 +10,8 @@ import {
   PostCommentResponseType,
 } from '@/app/travel-reviews/types';
 
+const COMMENT_TAG_TYPE = { type: 'Comment', id: 'CommentList' } as const;
+
 const commentApi = createApi({
   reducerPath: 'commentApi',
   baseQuery,
@@ -21,7 +23,7 @@ const commentApi = createApi({
         method: 'POST',
         body: comment,
       }),
-      invalidatesTags: ['Comment'],
+      invalidatesTags: [COMMENT_TAG_TYPE],
     }),
     editComment: build.mutation<EditCommentResponseType, EditCommentRequestType>({
       query: ({ comment, review_id }) => ({
@@ -29,21 +31,33 @@ const commentApi = createApi({
         method: 'PATCH',
         body: comment,
       }),
-      invalidatesTags: ['Comment'],
+      invalidatesTags: (result, _, { comment: { comment_id: id } }) => [
+        { type: 'Comment', id },
+        COMMENT_TAG_TYPE,
+      ],
     }),
-    getComments: build.query<GetCommentsResponseType, string>({
+    getComments: build.query<GetCommentsResponseType, number>({
       query: review_id => ({
         url: `/reviews/${review_id}/comment`,
         method: 'GET',
       }),
-      providesTags: ['Comment'],
+      providesTags: result =>
+        result
+          ? [
+              ...result.map(({ comment_id: id }) => ({ type: 'Comment', id } as const)),
+              COMMENT_TAG_TYPE,
+            ]
+          : [COMMENT_TAG_TYPE],
     }),
     deleteComment: build.mutation<DeleteCommentResponseType, DeleteCommentRequestType>({
       query: ({ review_id, comment_id }) => ({
         url: `/reviews/${review_id}/comment/${comment_id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Comment'],
+      invalidatesTags: (result, _, { comment_id: id }) => [
+        { type: 'Comment', id },
+        COMMENT_TAG_TYPE,
+      ],
     }),
   }),
 });
