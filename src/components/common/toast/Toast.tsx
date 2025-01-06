@@ -53,7 +53,7 @@ const Toast = () => {
   if (toast.length === 0) return null;
 
   return (
-    <div className="flex flex-col-reverse gap-4 fixed right-4 bottom-4 w-full max-w-96">
+    <div className="flex flex-col-reverse gap-4 fixed right-0 sm:right-4 bottom-4 w-full max-w-96 px-4">
       {toasts.map(({ id, type, message, visible }) => (
         <div
           key={id}
@@ -67,7 +67,7 @@ const Toast = () => {
           <div className="flex items-center gap-3">
             <div
               className={clsx(
-                'size-14 bg-cover',
+                'size-12 sm:size-14 bg-cover',
                 type === 'success' && 'bg-[url(/images/dolmung.svg)]',
                 type === 'error' && 'bg-[url(/images/sadDolmung.svg)]',
               )}
@@ -75,6 +75,7 @@ const Toast = () => {
             <p>{message}</p>
           </div>
           <X
+            size={18}
             className={clsx('absolute top-3 right-3 text-darkerGray cursor-pointer')}
             onClick={() => handleClickClose(id)}
           />
