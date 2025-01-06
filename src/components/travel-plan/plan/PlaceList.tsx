@@ -69,22 +69,24 @@ const PlaceList = () => {
   const handleToggleChange = () => {};
 
   return (
-    <div className="flex flex-col items-center gap-6 min-h-full">
-      {places.map(place => (
-        <div
-          key={place?.id}
-          className="flex flex-row justify-around items-center gap-4 min-w-full md:gap-8 md:pt-4"
-        >
-          <div className="w-14 h-14 border border-darkerGray rounded-2xl bg-lighterGray  md:w-16 md:h-16"></div>
-          <div className="flex-grow text-base text-darkerGray md:text-lg">{place?.name}</div>
-          {place?.isMeal ? (
-            <Toggle label="고정불가" disabled />
-          ) : (
-            <Toggle label="고정" color="yellow" onChange={handleToggleChange} />
-          )}
-        </div>
-      ))}
-      <div className="flex flex-row justify-between w-full pt-2 md:justify-around md:gap-10 md:py-8 md:sticky md:bottom-0 md:bg-background">
+    <div className="flex flex-col h-full">
+      <div className="flex flex-col gap-8 pb-8 md:flex-grow md:px-8 md:py-4 md:overflow-auto">
+        {places.map(place => (
+          <div
+            key={place?.id}
+            className="flex flex-row justify-around items-center gap-4 min-w-full md:gap-8"
+          >
+            <div className="w-14 h-14 border border-darkerGray rounded-2xl bg-lighterGray md:w-16 md:h-16"></div>
+            <div className="flex-grow text-base text-darkerGray md:text-lg">{place?.name}</div>
+            {place?.isMeal ? (
+              <Toggle label="고정불가" disabled />
+            ) : (
+              <Toggle label="고정" color="yellow" onChange={handleToggleChange} />
+            )}
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-row justify-around w-full pt-2 md:justify-between md:gap-10 md:px-8 md:py-8 md:bg-background">
         <Button
           size="md"
           color="skyblue"

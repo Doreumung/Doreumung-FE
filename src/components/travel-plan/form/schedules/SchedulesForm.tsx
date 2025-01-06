@@ -14,7 +14,7 @@ import {
 
 const SchedulesForm = () => {
   const dispatch = useAppDispatch();
-  const { schedule, themes } = useAppSelector(state => state.travelPlan.config);
+  const { schedule } = useAppSelector(state => state.travelPlan.config);
   const themeToggles = useAppSelector(state => state.travelPlan.themeToggles);
   const mealToggles = useAppSelector(state => state.travelPlan.mealToggles);
 
@@ -88,15 +88,12 @@ const SchedulesForm = () => {
   return (
     <>
       <section className="sticky z-20 top-0 w-full bg-background">
-        <article className="flex flex-col items-center border-b border-b-lighterGray pb-4 text-darkerGray md:border-none">
-          <label className="py-4 text-xl md:text-2xl">최종 일정</label>
+        <article className="flex flex-col items-center border-b border-b-lighterGray text-darkerGray md:border-none">
+          <label className="pb-4 text-xl md:text-2xl">최종 일정</label>
           <div className="flex flex-wrap justify-center gap-2 min-h-12">{renderSchedule()}</div>
-
-          {/* 선택된 테마 확인 */}
-          <div>{themes.length > 0 ? themes.join(', ') : '없음'}</div>
         </article>
       </section>
-      <section className="flex flex-col gap-6 px-6 md:gap-10 md:p-0">
+      <section className="flex flex-col gap-6 px-6 md:gap-10 md:p-0 md:pb-16">
         <ScheduleArticle label="테마 선택">
           <ToggleGroup
             items={THEMES}

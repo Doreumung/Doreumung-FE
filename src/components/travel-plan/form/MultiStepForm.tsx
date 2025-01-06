@@ -93,7 +93,7 @@ const MultiStepForm = () => {
       {showLayerPopup && (
         <LayerPopup
           type="confirm-only"
-          label={<>오전, 오후 일정 중 최소 1개 이상 선택해야합니다.</>}
+          label={<>오전, 오후 일정 중 최소 1개 이상 선택해야 합니다.</>}
           onConfirm={() => setShowLayerPopup(false)}
           setShowLayerPopup={setShowLayerPopup}
         />
