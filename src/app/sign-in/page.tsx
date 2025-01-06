@@ -3,23 +3,22 @@
 import Button from '@/components/common/buttons/Button';
 import SocialLoginButton from '@/components/common/buttons/SocialLoginButton';
 import Input from '@/components/common/inputs/Input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { signInSchema, SignInSchema } from './signInSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
+import { useGetUserInfoQuery, useLoginMutation } from '@/api/userApi';
+import { useDispatch } from 'react-redux';
+import { setUser } from '@/store/userSlice';
 
 const Page = () => {
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean>(false); // 자동 로그인 체크 여부
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
-
-  const sampleUserData = {
-    // 샘플 데이터
-    email: 'dumpling0227@naver.com',
-    password: 'abc12345!',
-  };
+  const [loginUser, { isLoading }] = useLoginMutation(); // isSuccess, isError
+  const dispatch = useDispatch();
 
   const {
     register, // 연결하여 유효성 검사 진행
@@ -31,15 +30,48 @@ const Page = () => {
     reValidateMode: 'onChange', // 유효성 검사 진행
   });
 
-  const onSubmit = (data: SignInSchema) => {
-    if (email === sampleUserData.email && password === sampleUserData.password) {
-      setErrorMessage('');
+  // Access Token 가져오기
+  const token =
+    typeof window !== 'undefined' &&
+    (localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken'));
 
-      // 로그인 성공했을 때 data 반환
-      const userData = { ...data, isChecked };
-      console.log(userData);
-    } else {
-      setErrorMessage('이메일 혹은 비밀번호를 확인해주세요.');
+  // RTK Query 훅으로 사용자 정보 가져오기
+  const { data: userInfo } = useGetUserInfoQuery(undefined, {
+    skip: !token, // Access Token이 없으면 요청하지 않음
+  });
+
+  // 사용자 정보가 변경되면 Redux에 저장
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(setUser({ user: userInfo }));
+    }
+  }, [userInfo, dispatch]);
+
+  const onSubmit = async (data: SignInSchema) => {
+    try {
+      const result = await loginUser(JSON.stringify(data)).unwrap();
+      console.log('로그인 성공', result);
+      setErrorMessage(''); // 에러 초기화
+
+      // 자동 로그인 체크 -> 로컬 스토리지
+      // 자동 로그인 체크 X -> 세션 스토리지
+      const storage = isChecked ? localStorage : sessionStorage;
+
+      // 액세스 토큰 저장
+      storage.setItem('accessToken', result?.access_token);
+    } catch (err) {
+      console.error('로그인 실패:', err);
+
+      const errorObj = JSON.parse(JSON.stringify(err));
+      const status = errorObj?.status; // status에 접근
+
+      switch (status) {
+        case 401:
+          setErrorMessage('이메일 혹은 비밀번호를 확인해주세요.');
+          break;
+        case 500:
+          setErrorMessage('알 수 없는 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.');
+      }
     }
   };
 
@@ -111,7 +143,7 @@ const Page = () => {
           <p className={errorMessageStyle}>{errorMessage}</p>
         ) : null}
         <div className="flex flex-col items-center gap-10">
-          <Button label="로그인" className="w-96 text-sm" />
+          <Button label="로그인" className="w-96 text-sm" disabled={isLoading} />
           <div className="flex justify-center gap-2 pb-10 text-lightGray">
             <p>아직 회원이 아니신가요?</p>
             <Link href="/sign-up">
