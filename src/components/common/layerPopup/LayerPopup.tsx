@@ -88,7 +88,7 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2 md:gap-5">
-              <div className={`${textContainerStyles} gap-3 pb-3 md:pl-6`}>
+              <div className={`${textContainerStyles} gap-3 pb-3`}>
                 <div
                   className="bg-[url('/images/dolmung.svg')] bg-cover bg-center w-[45px] h-[45px] md:w-[60px] md:h-[60px] flex-shrink-0"
                   aria-hidden="true"
@@ -99,7 +99,7 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
                 id="title"
                 type="text"
                 variant="title"
-                className="w-72 md:w-96 self-center"
+                className="w-full md:w-96 self-center"
                 placeholder={getToday()}
                 value={titleData}
                 onChange={event => setTitleData(event.target.value)}
