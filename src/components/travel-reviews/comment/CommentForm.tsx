@@ -4,6 +4,7 @@ import { CommentFormType } from '@/app/travel-reviews/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Dispatch, SetStateAction } from 'react';
+import ErrorMessage from '@/components/common/errorMessage/ErrorMessage';
 
 const CommentForm = ({
   content = '',
@@ -47,9 +48,7 @@ const CommentForm = ({
           className="h-28 p-2 border border-darkGray rounded-2xl outline-none resize-none"
         />
         <div className="flex justify-between">
-          <p role="alert" className="text-sm text-red">
-            {errors.content?.message}
-          </p>
+          <div>{errors.content?.message && <ErrorMessage message={errors.content.message} />}</div>
           <div className="flex gap-3">
             {setShowForm && (
               <Button
