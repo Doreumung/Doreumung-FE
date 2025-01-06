@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
 import Header from '@/components/common/header/Header';
-import ClientProvider from './ClientProvider';
+import Providers from '@/components/providers/Providers';
 
 export const metadata: Metadata = {
   title: '도르멍',
@@ -16,10 +16,10 @@ const RootLayout = ({
   return (
     <html lang="ko">
       <body>
-        <ClientProvider>
+        <Providers>
           <Header />
           <main className="flex justify-center w-full mt-16 md:mt-20">{children}</main>
-        </ClientProvider>
+        </Providers>
       </body>
     </html>
   );
