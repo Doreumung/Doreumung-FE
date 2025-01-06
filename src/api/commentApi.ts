@@ -3,6 +3,7 @@ import baseQuery from './baseQuery';
 import {
   EditCommentRequestType,
   EditCommentResponseType,
+  GetCommentsResponseType,
   PostCommentRequestType,
   PostCommentResponseType,
 } from '@/app/travel-reviews/types';
@@ -28,9 +29,16 @@ const commentApi = createApi({
       }),
       invalidatesTags: ['Comment'],
     }),
+    getComments: build.query<GetCommentsResponseType, string>({
+      query: review_id => ({
+        url: `/reviews/${review_id}/comment`,
+        method: 'GET',
+      }),
+      providesTags: ['Comment'],
+    }),
   }),
 });
 
-export const { usePostCommentMutation, useEditCommentMutation } = commentApi;
+export const { usePostCommentMutation, useEditCommentMutation, useGetCommentsQuery } = commentApi;
 
 export default commentApi;
