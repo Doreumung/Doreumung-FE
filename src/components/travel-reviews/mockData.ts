@@ -121,6 +121,7 @@ export const REVIEW_DATA = {
 // 여행 후기 댓글 더미데이터
 export const COMMENT_DATA = [
   {
+    review_id: 1,
     comment_id: 1,
     content:
       '이 여행 후기 너무 좋아요! 저도 가보고 싶네요. 정말 멋진 여행지인 것 같아요. 언제가 될지 모르겠지만 꼭 가보고 싶어요.',
@@ -131,6 +132,7 @@ export const COMMENT_DATA = [
     message: '',
   },
   {
+    review_id: 1,
     comment_id: 2,
     content:
       '사진이 정말 멋지네요. 여행지 추천 감사합니다! 이렇게 상세하게 설명해주셔서 다음 여행지 선택에 큰 도움이 될 것 같습니다.',
@@ -141,6 +143,7 @@ export const COMMENT_DATA = [
     message: '',
   },
   {
+    review_id: 1,
     comment_id: 3,
     content:
       '여행 경비는 어느 정도 들었나요? 궁금합니다. 예산을 어떻게 계획해야 할지 잘 모르겠어요. 조금 더 구체적인 정보가 필요합니다.',
@@ -151,6 +154,7 @@ export const COMMENT_DATA = [
     message: '',
   },
   {
+    review_id: 1,
     comment_id: 4,
     content:
       '저도 비슷한 코스로 다녀왔는데 정말 좋았어요. 이 여행지에 대해 좀 더 알고 싶어요. 좋은 정보 감사합니다!',
@@ -161,6 +165,7 @@ export const COMMENT_DATA = [
     message: '',
   },
   {
+    review_id: 1,
     comment_id: 5,
     content: '다음에는 꼭 여기에 가봐야겠어요. 좋은 정보 감사합니다!',
     created_at: '2025-01-03T12:30:00Z',
@@ -170,6 +175,7 @@ export const COMMENT_DATA = [
     message: '',
   },
   {
+    review_id: 1,
     comment_id: 6,
     content:
       '이 코스는 너무 멋지네요. 친구들과 함께 가면 정말 재미있을 것 같아요. 추가 정보가 더 있으면 알려주세요.',
@@ -180,6 +186,7 @@ export const COMMENT_DATA = [
     message: '',
   },
   {
+    review_id: 1,
     comment_id: 7,
     content:
       '여기 음식도 맛있다고 들었는데, 어떤 음식이 가장 추천되나요? 여행하면서 먹을 것을 고민 중이에요.',
@@ -190,6 +197,7 @@ export const COMMENT_DATA = [
     message: '',
   },
   {
+    review_id: 1,
     comment_id: 8,
     content:
       '비슷한 여행지를 찾고 있었는데 정말 좋은 정보네요. 특히 이 지역의 문화가 정말 매력적이에요.',
@@ -200,6 +208,7 @@ export const COMMENT_DATA = [
     message: '',
   },
   {
+    review_id: 1,
     comment_id: 9,
     content:
       '이 여행지를 선택한 이유가 궁금해요. 다른 사람들은 어떤 이유로 이곳을 선택했는지 알고 싶습니다.',
@@ -210,6 +219,7 @@ export const COMMENT_DATA = [
     message: '',
   },
   {
+    review_id: 1,
     comment_id: 10,
     content:
       '정말 멋진 여행지네요! 사진도 너무 예쁘고, 다른 사람들에게도 추천하고 싶어요. 다음 여행지로 여기로 정해야겠어요.',

@@ -80,6 +80,7 @@ export const cancelLikeReviewResponseSchema = reviewSchemas.pick({ message: true
 
 export const commentSchema = z.object({
   comment_id: z.number(),
+  review_id: z.number(),
   user_id: z.number(),
   nickname: z.string(),
   content: z
@@ -92,20 +93,33 @@ export const commentSchema = z.object({
 });
 
 export const postCommentRequestSchema = commentSchema.pick({
-  user_id: true,
+  review_id: true,
   content: true,
 });
 
-export const postCommentResponseSchema = commentSchema;
+export const postCommentResponseSchema = commentSchema.pick({
+  comment_id: true,
+  content: true,
+  created_at: true,
+  message: true,
+});
 
 export const getCommentsResponseSchema = commentSchema.array();
 
-export const editCommentRequestSchema = commentSchema.pick({
-  comment_id: true,
-  content: true,
+export const editCommentRequestSchema = z.object({
+  comment: commentSchema.pick({
+    comment_id: true,
+    content: true,
+  }),
+  review_id: commentSchema.pick({ review_id: true }),
 });
 
 export const editCommentResponseSchema = commentSchema;
+
+export const deleteCommentRequestSchema = commentSchema.pick({
+  review_id: true,
+  comment_id: true,
+});
 
 export const deleteCommentResponseSchema = commentSchema.pick({
   message: true,
