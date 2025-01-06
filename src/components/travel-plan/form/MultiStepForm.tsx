@@ -10,15 +10,20 @@ import TravelPlan from '../plan/TravelPlan';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { resetTravelPlan } from '@/store/travelPlanSlice';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
+import { useRouter } from 'next/navigation';
 
 const MultiStepForm = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const travelPlanConfig = useAppSelector(state => state.travelPlan.config);
 
   const [step, setStep] = useState(1);
   const [showLayerPopup, setShowLayerPopup] = useState(false);
+  const [showNavigationPopup, setShowNavigationPopup] = useState(false);
+  const [navigationPath, setNavigationPath] = useState('');
 
   useEffect(() => {
+    // 새로고침 팝업
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
       e.returnValue = '';
@@ -48,13 +53,27 @@ const MultiStepForm = () => {
     }
   };
 
+  const handleNavigation = (path: string) => {
+    setNavigationPath(path);
+    setShowNavigationPopup(true);
+  };
+
+  const handleNavigationConfirm = () => {
+    setShowNavigationPopup(false);
+    if (navigationPath) {
+      router.push(navigationPath);
+    } else {
+      router.back();
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen">
       <ProgressIndicator currentStep={step} totalSteps={3} />
       {step < 3 && (
         <div className="flex flex-col gap-2 flex-grow w-screen min-h-screen px-4 pt-8 md:px-8 md:pt-6">
           <header className="text-base">
-            <BackNavigation to="home" />
+            <BackNavigation to="home" onNavigate={handleNavigation} />
           </header>
           <main className="flex-grow flex flex-col">
             <form onSubmit={e => e.preventDefault()} className="flex-grow flex flex-col">
@@ -104,6 +123,20 @@ const MultiStepForm = () => {
           label={<>오전, 오후 일정 중 최소 1개 이상 선택해야 합니다.</>}
           onConfirm={() => setShowLayerPopup(false)}
           setShowLayerPopup={setShowLayerPopup}
+        />
+      )}
+
+      {showNavigationPopup && (
+        <LayerPopup
+          type="confirm"
+          label={
+            <>
+              작성 중인 내용이 저장되지 않습니다.
+              <br /> 정말 나가시겠습니까?
+            </>
+          }
+          onConfirm={handleNavigationConfirm}
+          setShowLayerPopup={setShowNavigationPopup}
         />
       )}
     </div>
