@@ -1,6 +1,8 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import baseQuery from './baseQuery';
 import {
+  DeleteCommentRequestType,
+  DeleteCommentResponseType,
   EditCommentRequestType,
   EditCommentResponseType,
   GetCommentsResponseType,
@@ -36,9 +38,21 @@ const commentApi = createApi({
       }),
       providesTags: ['Comment'],
     }),
+    deleteComment: build.mutation<DeleteCommentResponseType, DeleteCommentRequestType>({
+      query: ({ review_id, comment_id }) => ({
+        url: `/reviews/${review_id}/comment/${comment_id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Comment'],
+    }),
   }),
 });
 
-export const { usePostCommentMutation, useEditCommentMutation, useGetCommentsQuery } = commentApi;
+export const {
+  usePostCommentMutation,
+  useEditCommentMutation,
+  useGetCommentsQuery,
+  useDeleteCommentMutation,
+} = commentApi;
 
 export default commentApi;
