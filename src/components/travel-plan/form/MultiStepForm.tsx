@@ -19,7 +19,15 @@ const MultiStepForm = () => {
   const [showLayerPopup, setShowLayerPopup] = useState(false);
 
   useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
     return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
       dispatch(resetTravelPlan());
     };
   }, [dispatch]);
