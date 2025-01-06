@@ -12,6 +12,8 @@ import {
   CancelLikeReviewResponseType,
 } from '@/app/travel-reviews/types';
 
+const REVIEW_LIST_TAG = { type: 'Reviews', id: 'ReviewList' } as const;
+
 const reviewApi = createApi({
   reducerPath: 'reviewApi',
   baseQuery,
@@ -23,7 +25,7 @@ const reviewApi = createApi({
         method: 'POST',
         body: review,
       }),
-      invalidatesTags: ['Reviews'],
+      invalidatesTags: [REVIEW_LIST_TAG],
     }),
     editReview: build.mutation<EditReviewResponseType, EditReviewRequestType>({
       query: review => ({
@@ -31,48 +33,48 @@ const reviewApi = createApi({
         method: 'PATCH',
         body: review,
       }),
-      invalidatesTags: ['Reviews'],
+      invalidatesTags: (result, _, { review_id: id }) => [{ type: 'Reviews', id }],
     }),
     getReviewList: build.query<GetReviewListResponseType, void>({
       query: () => ({
         url: '/reviews',
         method: 'GET',
       }),
-      providesTags: ['Reviews'],
+      providesTags: result =>
+        result
+          ? [
+              ...result.reviews.map(({ review_id: id }) => ({ type: 'Reviews', id } as const)),
+              REVIEW_LIST_TAG,
+            ]
+          : [REVIEW_LIST_TAG],
     }),
-    getReviewDetail: build.query<GetReviewDetailResponseType, string>({
+    getReviewDetail: build.query<GetReviewDetailResponseType, number>({
       query: review_id => ({
         url: `/reviews/${review_id}`,
         method: 'GET',
       }),
-      providesTags: ['Reviews'],
+      providesTags: (result, _, id) => [{ type: 'Reviews', id }],
     }),
-    deleteReview: build.mutation<DeleteReviewResponseType, string>({
+    deleteReview: build.mutation<DeleteReviewResponseType, number>({
       query: review_id => ({
         url: `/reviews/${review_id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Reviews'],
+      invalidatesTags: (result, _, id) => [{ type: 'Reviews', id }],
     }),
     likeReview: build.mutation<LikeReviewResponseType, number>({
       query: review_id => ({
         url: `/reviews/${review_id}/likes`,
         method: 'POST',
       }),
-      invalidatesTags: (result, _, id) => [
-        { type: 'Reviews', id },
-        { type: 'Reviews', id: 'ReviewList' },
-      ],
+      invalidatesTags: (result, _, id) => [{ type: 'Reviews', id }, REVIEW_LIST_TAG],
     }),
     cancelLikeReview: build.mutation<CancelLikeReviewResponseType, number>({
       query: review_id => ({
         url: `/reviews/${review_id}/likes`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, _, id) => [
-        { type: 'Reviews', id },
-        { type: 'Reviews', id: 'ReviewList' },
-      ],
+      invalidatesTags: (result, _, id) => [{ type: 'Reviews', id }, REVIEW_LIST_TAG],
     }),
   }),
 });
