@@ -4,25 +4,24 @@ import type { NextRequest } from 'next/server';
 const membersOnlyRoutes = ['/my-travel'];
 const guestsOnlyRoutes = ['/sign-up', '/sign-in'];
 
-export function middleware(request: NextRequest) {
+export const middleware = (request: NextRequest) => {
   const token = request.cookies.get('accessToken');
   const { pathname } = request.nextUrl;
-  const url = request.nextUrl.clone();
 
   if (!token && membersOnlyRoutes.includes(pathname)) {
-    url.pathname = '/redirect';
-    url.searchParams.set('mode', 'NOT_SIGNED_IN');
-    return NextResponse.redirect(url);
+    const response = NextResponse.redirect(`${request.nextUrl.origin}/redirect`);
+    response.cookies.set('redirectMode', 'NOT_SIGNED_IN');
+    return response;
   }
 
   if (token && guestsOnlyRoutes.includes(pathname)) {
-    url.pathname = '/redirect';
-    url.searchParams.set('mode', 'SIGNED_IN');
-    return NextResponse.redirect(url);
+    const response = NextResponse.redirect(`${request.nextUrl.origin}/redirect`);
+    response.cookies.set('redirectMode', 'SIGNED_IN');
+    return response;
   }
 
   return NextResponse.next();
-}
+};
 
 export const config = {
   matcher: [...membersOnlyRoutes, ...guestsOnlyRoutes],
