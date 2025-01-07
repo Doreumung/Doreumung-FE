@@ -1,11 +1,20 @@
 'use client';
 
 import RedirectNotice from '@/components/common/redirectNotice/RedirectNotice';
-import { useSearchParams } from 'next/navigation';
+import { RedirectMode } from '@/components/common/redirectNotice/types';
+import { useEffect, useState } from 'react';
 
 const Page = () => {
-  const query = useSearchParams().get('mode') || 'NOT_FOUND';
-  const mode = query === 'SIGNED_IN' || query === 'NOT_SIGNED_IN' ? query : 'NOT_FOUND';
+  const [mode, setMode] = useState<RedirectMode>('NOT_FOUND');
+  useEffect(() => {
+    const cookies = document.cookie.split('; ');
+    const redirectModeCookie = cookies.find(row => row.startsWith('redirectMode='));
+    const redirectMode = redirectModeCookie ? redirectModeCookie.split('=')[1] : 'NOT_FOUND';
+
+    setMode(
+      redirectMode === 'SIGNED_IN' || redirectMode === 'NOT_SIGNED_IN' ? redirectMode : 'NOT_FOUND',
+    );
+  }, []);
 
   return <RedirectNotice mode={mode} />;
 };
