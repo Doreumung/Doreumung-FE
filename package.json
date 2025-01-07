@@ -15,7 +15,6 @@
     "@mui/icons-material": "^6.3.0",
     "@mui/material": "^6.3.0",
     "@reduxjs/toolkit": "^2.5.0",
-    "@tailwindcss/line-clamp": "^0.4.4",
     "@tiptap/extension-character-count": "^2.11.0",
     "@tiptap/extension-color": "^2.11.0",
     "@tiptap/extension-heading": "^2.11.0",
