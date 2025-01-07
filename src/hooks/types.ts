@@ -8,3 +8,7 @@ export type UseOutsideClickProps = {
 export type Level = 1 | 2 | 3;
 
 export type ToolbarGroups = 'heading' | 'color' | 'style' | 'list';
+
+export type UseBeforeUnloadOption = {
+  message?: string;
+};
