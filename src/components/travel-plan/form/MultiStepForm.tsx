@@ -10,29 +10,25 @@ import TravelPlan from '../plan/TravelPlan';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { resetTravelPlan } from '@/store/travelPlanSlice';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
-import { useRouter } from 'next/navigation';
+import useBeforeUnload from '@/hooks/useBeforeUnload';
+import useNavigationPopup from '@/hooks/useNavigationPopup';
 
 const MultiStepForm = () => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const travelPlanConfig = useAppSelector(state => state.travelPlan.config);
 
   const [step, setStep] = useState(1);
   const [showLayerPopup, setShowLayerPopup] = useState(false);
-  const [showNavigationPopup, setShowNavigationPopup] = useState(false);
-  const [navigationPath, setNavigationPath] = useState('');
+
+  // 메인으로(백네비게이션) 클릭 시 팝업
+  const { showNavigationPopup, handleNavigation, handleNavigationConfirm, handleNavigationCancel } =
+    useNavigationPopup();
+
+  // 새로고칩 시 팝업
+  useBeforeUnload();
 
   useEffect(() => {
-    // 새로고침 팝업
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      e.returnValue = '';
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
       dispatch(resetTravelPlan());
     };
   }, [dispatch]);
@@ -50,20 +46,6 @@ const MultiStepForm = () => {
     } else {
       console.log('여행 일정 폼: ', travelPlanConfig);
       setStep(step + 1);
-    }
-  };
-
-  const handleNavigation = (path: string) => {
-    setNavigationPath(path);
-    setShowNavigationPopup(true);
-  };
-
-  const handleNavigationConfirm = () => {
-    setShowNavigationPopup(false);
-    if (navigationPath) {
-      router.push(navigationPath);
-    } else {
-      router.back();
     }
   };
 
@@ -136,7 +118,7 @@ const MultiStepForm = () => {
             </>
           }
           onConfirm={handleNavigationConfirm}
-          setShowLayerPopup={setShowNavigationPopup}
+          setShowLayerPopup={handleNavigationCancel}
         />
       )}
     </div>
