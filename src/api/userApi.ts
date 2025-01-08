@@ -25,6 +25,16 @@ export const userApi = createApi({
         },
       }),
     }),
+    logout: builder.mutation({
+      query: newUser => ({
+        url: '/user/logout', // 로그아웃 엔드포인트
+        method: 'POST',
+        body: newUser, // 요청 데이터
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
     // 서버로 GET 요청으로 인증 코드 전달
     sendKakaoCode: builder.query({
       query: (code: string) => ({
@@ -52,6 +62,7 @@ export const userApi = createApi({
 export const {
   useSignUpMutation,
   useLoginMutation,
+  useLogoutMutation,
   useGetUserInfoMutation,
   useSendKakaoCodeQuery,
   useSendGoogleCodeQuery,

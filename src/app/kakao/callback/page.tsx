@@ -26,7 +26,14 @@ const KakaoCallback = () => {
   useEffect(() => {
     if (data) {
       console.log('토큰 정보:', data);
-      setCookie(null, 'access_token', data.access_token); // 쿠키에 저장
+      setCookie(null, 'access_token', data.access_token, {
+        maxAge: 30 * 24 * 60 * 60, // 쿠키 유효기간
+        path: '/', // 쿠키 경로
+      });
+      setCookie(null, 'refresh_token', data.refresh_token, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: '/',
+      });
 
       // 로그인 성공 후 유저 데이터 받아오기
       getUserInfo({})

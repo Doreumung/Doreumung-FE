@@ -6,13 +6,15 @@ import { dropdownStyles } from './dropdownStyles';
 import useIsMobile from '@/hooks/useIsMobile';
 import { useDispatch } from 'react-redux';
 import { clearUser } from '@/store/userSlice';
-import { destroyCookie } from 'nookies';
+import { destroyCookie, parseCookies } from 'nookies';
+import { useLogoutMutation } from '@/api/userApi';
 
 const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen }) => {
   const isMobile = useIsMobile();
   const router = useRouter();
   const options: DropdownOption[] = DROPDOWN_MENU[variant];
   const dispatch = useDispatch();
+  const [logoutUser] = useLogoutMutation();
 
   const handleSelect = (option: DropdownOption) => {
     if (option.action) {
@@ -20,8 +22,21 @@ const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen }) => {
         case 'signOut':
           // 로그아웃 로직 구현
           localStorage.removeItem('persist:user');
-          destroyCookie(null, 'access_token', { path: '/' });
           dispatch(clearUser());
+
+          logoutUser(
+            JSON.stringify({
+              access_token: parseCookies().access_token,
+              refresh_token: parseCookies().refresh_token,
+            }),
+          )
+            .unwrap()
+            .then(res => console.log(res))
+            .catch(err => console.log('로그아웃 실패', err));
+
+          destroyCookie(null, 'access_token', { path: '/' });
+          destroyCookie(null, 'refresh_token', { path: '/' });
+
           router.push('/'); // 메인으로 이동
           break;
         case 'deleteTravel':
