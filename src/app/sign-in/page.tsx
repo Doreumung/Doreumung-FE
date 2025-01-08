@@ -3,14 +3,16 @@
 import Button from '@/components/common/buttons/Button';
 import SocialLoginButton from '@/components/common/buttons/SocialLoginButton';
 import Input from '@/components/common/inputs/Input';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { signInSchema, SignInSchema } from './signInSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useGetUserInfoQuery, useLoginMutation } from '@/api/userApi';
+import { useGetUserInfoMutation, useLoginMutation } from '@/api/userApi';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/userSlice';
+import { setCookie } from 'nookies';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false); // 자동 로그인 체크 여부
@@ -18,7 +20,9 @@ const Page = () => {
   const [password, setPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [loginUser, { isLoading }] = useLoginMutation(); // isSuccess, isError
+  const [getUserInfo] = useGetUserInfoMutation();
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const {
     register, // 연결하여 유효성 검사 진행
@@ -30,22 +34,18 @@ const Page = () => {
     reValidateMode: 'onChange', // 유효성 검사 진행
   });
 
-  // Access Token 가져오기
-  const token =
-    typeof window !== 'undefined' &&
-    (localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken'));
-
-  // RTK Query 훅으로 사용자 정보 가져오기
-  const { data: userInfo } = useGetUserInfoQuery(undefined, {
-    skip: !token, // Access Token이 없으면 요청하지 않음
-  });
-
-  // 사용자 정보가 변경되면 Redux에 저장
-  useEffect(() => {
-    if (userInfo) {
-      dispatch(setUser({ user: userInfo }));
+  const handleLogin = (provider: string) => {
+    switch (provider) {
+      case 'kakao':
+        // 서버의 카카오 로그인 엔드포인트로 이동
+        window.location.href = 'https://api.doreumung.site/api/v1/social/kakao/login';
+        break;
+      case 'google':
+        // 서버의 구글 로그인 엔드포인트로 이동
+        window.location.href = 'https://api.doreumung.site/api/v1/social/google/login';
+        break;
     }
-  }, [userInfo, dispatch]);
+  };
 
   const onSubmit = async (data: SignInSchema) => {
     try {
@@ -53,12 +53,25 @@ const Page = () => {
       console.log('로그인 성공', result);
       setErrorMessage(''); // 에러 초기화
 
-      // 자동 로그인 체크 -> 로컬 스토리지
-      // 자동 로그인 체크 X -> 세션 스토리지
-      const storage = isChecked ? localStorage : sessionStorage;
+      // // 자동 로그인 체크 -> 로컬 스토리지
+      // // 자동 로그인 체크 X -> 세션 스토리지
+      // const storage = isChecked ? localStorage : sessionStorage;
 
-      // 액세스 토큰 저장
-      storage.setItem('accessToken', result?.access_token);
+      // // 액세스 토큰 저장
+      // storage.setItem('accessToken', result?.access_token);
+      // // 자동 로그인 체크 -> 쿠키 만료 시간 다르게 설정
+
+      // 액세스 토큰을 쿠키에 저장
+      // 쿠키 설정
+      setCookie(null, 'access_token', result?.access_token, {
+        maxAge: 60 * 60 * 24 * 30, // 30일
+        path: '/', // 전체 도메인에서 유효
+      });
+
+      const userData = await getUserInfo({});
+      dispatch(setUser({ user: userData.data, loginType: 'email' }));
+
+      router.push('/'); // 홈으로 이동
     } catch (err) {
       console.error('로그인 실패:', err);
 
@@ -143,7 +156,7 @@ const Page = () => {
           <p className={errorMessageStyle}>{errorMessage}</p>
         ) : null}
         <div className="flex flex-col items-center gap-10">
-          <Button label="로그인" className="w-96 text-sm" disabled={isLoading} />
+          <Button label="로그인" className="w-96" disabled={isLoading} />
           <div className="flex justify-center gap-2 pb-10 text-lightGray">
             <p>아직 회원이 아니신가요?</p>
             <Link href="/sign-up">
@@ -153,9 +166,19 @@ const Page = () => {
         </div>
       </form>
       <div className="flex flex-col items-center gap-4">
-        <SocialLoginButton provider="kakao" onClick={() => {}} />
+        <SocialLoginButton
+          provider="kakao"
+          onClick={() => {
+            handleLogin('kakao');
+          }}
+        />
         <SocialLoginButton provider="naver" onClick={() => {}} />
-        <SocialLoginButton provider="google" onClick={() => {}} />
+        <SocialLoginButton
+          provider="google"
+          onClick={() => {
+            handleLogin('google');
+          }}
+        />
       </div>
     </div>
   );
