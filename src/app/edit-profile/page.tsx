@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import PasswordForm from '@/components/edit-profile/form/PasswordForm';
+// import PasswordForm from '@/components/edit-profile/form/PasswordForm';
 import UserDataForm from '@/components/edit-profile/form/UserDataForm';
 import Button from '@/components/common/buttons/Button';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
@@ -26,7 +26,7 @@ const Page = () => {
         )}
       >
         <p className="pb-2 text-3xl text-darkerGray">회원정보 수정</p>
-        <PasswordForm />
+        {/*<PasswordForm /> */}
         <UserDataForm />
         <Button
           color="darkerGray"
