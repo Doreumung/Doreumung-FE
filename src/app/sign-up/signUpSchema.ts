@@ -5,8 +5,8 @@ export const signUpSchema = z
     email: z.string().email('이메일 형식을 확인해 주세요.'),
     nickname: z
       .string()
-      .min(3, '닉네임은 3글자 이상, 12글자 이하로 입력 가능합니다.')
-      .max(12, '닉네임은 3글자 이상, 12글자 이하로 입력 가능합니다.'),
+      .min(1, '닉네임은 1글자 이상, 12글자 이하로 입력 가능합니다.')
+      .max(12, '닉네임은 1글자 이상, 12글자 이하로 입력 가능합니다.'),
     password: z
       .string()
       .trim()
