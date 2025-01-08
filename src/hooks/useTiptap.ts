@@ -22,7 +22,8 @@ import {
   Underline as UnderlineIcon,
 } from 'lucide-react';
 import { Level, ToolbarGroups } from './types';
-import { useCallback } from 'react';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setAddedImages, setCurrentImages, setDeletedImages } from '@/store/reviewImagesSlice';
 
 const HEADING_CLASSES: Record<Level, string> = {
   1: 'text-2xl',
@@ -33,6 +34,23 @@ const HEADING_CLASSES: Record<Level, string> = {
 const LIMIT = 3000;
 
 const useTiptap = (content?: string) => {
+  const dispatch = useAppDispatch();
+  const addedImages = useAppSelector(state => state.reviewImages.addedImages);
+
+  const extractImages = (html: string) => {
+    const imgTags = html.match(/<img [^>]*src="[^"]*"[^>]*>/g) || [];
+    return imgTags
+      .map(tag => {
+        const srcMatch = tag.match(/src="([^"]*)"/);
+        return srcMatch ? srcMatch[1] : null;
+      })
+      .filter(el => el !== null);
+  };
+
+  const handleImageDeletion = (currentImages: string[]) => {
+    dispatch(setDeletedImages(addedImages.filter(img => !currentImages.includes(img))));
+  };
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -59,6 +77,11 @@ const useTiptap = (content?: string) => {
       attributes: {
         class: 'h-full p-4 prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl',
       },
+    },
+    onUpdate: ({ editor }) => {
+      const currentImages = extractImages(editor.getHTML());
+      dispatch(setCurrentImages(currentImages));
+      handleImageDeletion(currentImages);
     },
     immediatelyRender: false,
     content,
@@ -119,15 +142,16 @@ const useTiptap = (content?: string) => {
     }
   };
 
-  const addImage = useCallback((tiptap: Editor) => {
+  const addImage = (tiptap: Editor) => {
     // S3에 이미지 업로드 로직 구현 필요
 
-    const url = '';
+    const url = 'https://doreumung-06.s3.ap-northeast-2.amazonaws.com/doreumung.png';
 
     if (url) {
       tiptap.chain().focus().setImage({ src: url }).run();
+      dispatch(setAddedImages(url));
     }
-  }, []);
+  };
 
   return { editor, getToolbarOptions, addImage };
 };

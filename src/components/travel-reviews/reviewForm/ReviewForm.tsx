@@ -20,6 +20,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { REVIEW_DATA, ROUTE_INFO_DUMMY_DATA } from '@/components/travel-reviews/mockData';
 import ErrorMessage from '@/components/common/errorMessage/ErrorMessage';
+import ImagePreview from './ImagePreview';
 
 const ReviewForm = ({ mode = 'create' }: ReviewFormProps) => {
   const router = useRouter();
@@ -30,6 +31,7 @@ const ReviewForm = ({ mode = 'create' }: ReviewFormProps) => {
   const { editor } = useTiptap(content);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
+  const [thumbnailImageUrl, setThumbnailImageUrl] = useState<string>('');
 
   const {
     register,
@@ -133,6 +135,11 @@ const ReviewForm = ({ mode = 'create' }: ReviewFormProps) => {
               </div>
             );
           }}
+        />
+
+        <ImagePreview
+          thumbnailImageUrl={thumbnailImageUrl}
+          setThumbnailImageUrl={setThumbnailImageUrl}
         />
 
         <Button

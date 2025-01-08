@@ -5,6 +5,7 @@ import commentApi from '@/api/commentApi';
 import { userApi } from '@/api/userApi';
 import { persistedUserReducer } from './persistConfig';
 import persistStore from 'redux-persist/es/persistStore';
+import reviewImages from './reviewImagesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     [commentApi.reducerPath]: commentApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     user: persistedUserReducer,
+    reviewImages,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
