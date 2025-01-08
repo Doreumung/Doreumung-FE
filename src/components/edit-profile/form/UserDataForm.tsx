@@ -9,16 +9,14 @@ import Select from '@/components/common/select/Select';
 import Button from '@/components/common/buttons/Button';
 import Input from '@/components/common/inputs/Input';
 import { UserDataType } from '../types';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+import Image from 'next/image';
+import kakaoLogin from '@public/images/kakaoLogin.svg';
+import googleLogin from '@public/images/googleLogo.png';
 
 const UserDataForm = () => {
-  const [userData, setUserData] = useState<UserDataType>({
-    // 임시 데이터
-    nickname: 'jjangs',
-    password: 'qwer1234',
-    age: 123,
-    gender: 'male',
-    birthday: '1997-12-14',
-  });
+  const { user: userData, loginType } = useSelector((state: RootState) => state.user);
 
   // 확인용
   useEffect(() => {
@@ -31,7 +29,7 @@ const UserDataForm = () => {
     { value: 'none', label: '선택안함' },
   ];
 
-  const [newGender, setNewGender] = useState(userData.gender); // 초기값 설정
+  const [newGender, setNewGender] = useState(userData?.gender); // 초기값 설정
 
   const handleGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewGender(event.target.value as 'female' | 'male' | 'none'); // 선택된 값 업데이트
@@ -50,20 +48,25 @@ const UserDataForm = () => {
     resolver: zodResolver(nicknameChangeSchema),
     mode: 'onBlur',
     defaultValues: {
-      nickname: userData.nickname, // 초기값 설정
+      nickname: userData?.nickname, // 초기값 설정
     },
   });
+
+  // userData가 없으면 null 반환
+  if (!userData) {
+    return null; // 렌더링 중단
+  }
 
   const handleSave = (data: NicknameChangeSchema) => {
     // 모든 데이터를 한 번에 업데이트
     const updatedData: UserDataType = {
       ...userData,
       nickname: data.nickname, // 닉네임은 유효성 검사를 통과한 데이터로 업데이트
-      gender: newGender, // 상태로 관리 중인 성별
-      birthday: newBirthday || userData.birthday, // 상태로 관리 중인 생년월일
+      gender: newGender ?? 'none', // 상태로 관리 중인 성별
+      birthday: newBirthday || (userData?.birthday ?? '1925-01-01'), // 상태로 관리 중인 생년월일
     };
 
-    setUserData(updatedData);
+    // setUserData(updatedData);
     setIsUserDataChangeActive(false);
 
     // React Hook Form 필드 초기화
@@ -72,20 +75,33 @@ const UserDataForm = () => {
 
   const handleSaveWithoutNickname = () => {
     // 닉네임 변경 없이 다른 데이터만 업데이트
-    const updatedData: UserDataType = {
-      ...userData,
-      gender: newGender,
-      birthday: newBirthday || userData.birthday,
+    const updatedData = {
+      nickname: userData.nickname,
+      // gender: newGender || 'none',
+      birthday: newBirthday || (userData?.birthday ?? '1925-01-01'),
     };
 
-    setUserData(updatedData);
+    console.log(updatedData);
+
+    // setUserData(updatedData);
     setIsUserDataChangeActive(false);
   };
 
-  const divStyle = `flex flex-col gap-3`;
+  const divStyle = `flex flex-col gap-2`;
 
   return (
-    <div className="flex flex-col justify-between px-7 py-5 w-96 h-96 rounded-2xl border border-black bg-fadedGreen">
+    <div className="flex flex-col justify-between px-7 py-5 w-96 h-[440px] rounded-2xl border border-black bg-fadedGreen">
+      <div className={divStyle}>
+        <p className="text-xl">이메일</p>
+        <div className="flex items-center gap-2">
+          {loginType == 'kakao' ? (
+            <Image src={kakaoLogin} alt="kakao Login" width={20} height={20} />
+          ) : loginType == 'google' ? (
+            <Image src={googleLogin} alt="google Login" className="w-5 h-5" />
+          ) : null}
+          <p className="text-darkerGray">{userData?.email}</p>
+        </div>
+      </div>
       <div className={divStyle}>
         <p className="text-xl">닉네임</p>
         {isUserDataChangeActive ? (
@@ -93,11 +109,11 @@ const UserDataForm = () => {
             id="nickname"
             variant="default"
             className="self-start w-80"
-            placeholder={userData.nickname}
+            placeholder={userData?.nickname}
             {...register('nickname')}
           />
         ) : (
-          <p className="text-darkerGray">{userData.nickname}</p>
+          <p className="text-darkerGray">{userData?.nickname}</p>
         )}
         {isUserDataChangeActive && errors.nickname && (
           <p className="px-3 pb-3 text-xs text-red">{errors.nickname.message}</p>
@@ -109,10 +125,10 @@ const UserDataForm = () => {
           <Select
             setSelectedDate={setNewBirthday}
             optional={false}
-            defaultDate={userData.birthday}
+            defaultDate={userData?.birthday}
           />
         ) : (
-          <p className="text-darkerGray">{dayjs(userData.birthday).format('YYYY-MM-DD')}</p>
+          <p className="text-darkerGray">{dayjs(userData?.birthday).format('YYYY-MM-DD')}</p>
         )}
       </div>
 
@@ -143,9 +159,9 @@ const UserDataForm = () => {
           </div>
         ) : (
           <p className="text-darkerGray">
-            {userData.gender == 'male'
+            {userData?.gender == 'male'
               ? '남성'
-              : userData.gender == 'female'
+              : userData?.gender == 'female'
               ? '여성'
               : '선택 안 함'}
           </p>
@@ -160,7 +176,7 @@ const UserDataForm = () => {
             onClick={() => {
               setIsUserDataChangeActive(false); // 수정 취소
               reset({
-                nickname: userData.nickname, // 초기값 원래대로
+                nickname: userData?.nickname, // 초기값 원래대로
               });
             }}
             className="bg-lighterGray text-darkerGray"
@@ -172,7 +188,7 @@ const UserDataForm = () => {
           onClick={() => {
             if (isUserDataChangeActive) {
               const newNickname = getValues('nickname');
-              if (newNickname !== userData.nickname) {
+              if (newNickname !== userData?.nickname) {
                 // 닉네임 변경 시
                 handleSubmit(handleSave)();
               } else {

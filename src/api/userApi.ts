@@ -1,6 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import baseQuery from './baseQuery';
-import { UserState } from '@/store/userSlice';
 
 export const userApi = createApi({
   reducerPath: 'userApi', // 리듀서 경로 이름
@@ -26,7 +25,22 @@ export const userApi = createApi({
         },
       }),
     }),
-    getUserInfo: builder.query<UserState['user'], void>({
+    // 서버로 GET 요청으로 인증 코드 전달
+    sendKakaoCode: builder.query({
+      query: (code: string) => ({
+        url: `/social/kakao/callback?code=${code}`,
+        method: 'GET', // 기본값이 GET이므로 생략 가능
+        headers: {
+          Accept: 'application/json',
+        },
+      }),
+    }),
+    sendGoogleCode: builder.query({
+      query: (code: string) => ({
+        url: `/social/google/callback?code=${code}`,
+      }),
+    }),
+    getUserInfo: builder.mutation({
       query: () => ({
         url: '/user/me', // 회원정보 받아오기 엔드포인트
         method: 'GET',
@@ -35,4 +49,10 @@ export const userApi = createApi({
   }),
 });
 
-export const { useSignUpMutation, useLoginMutation, useGetUserInfoQuery } = userApi;
+export const {
+  useSignUpMutation,
+  useLoginMutation,
+  useGetUserInfoMutation,
+  useSendKakaoCodeQuery,
+  useSendGoogleCodeQuery,
+} = userApi;

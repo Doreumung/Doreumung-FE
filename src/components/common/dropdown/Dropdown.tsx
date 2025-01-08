@@ -4,17 +4,25 @@ import { DROPDOWN_MENU } from './constants';
 import { useRouter } from 'next/navigation';
 import { dropdownStyles } from './dropdownStyles';
 import useIsMobile from '@/hooks/useIsMobile';
+import { useDispatch } from 'react-redux';
+import { clearUser } from '@/store/userSlice';
+import { destroyCookie } from 'nookies';
 
 const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen }) => {
   const isMobile = useIsMobile();
   const router = useRouter();
   const options: DropdownOption[] = DROPDOWN_MENU[variant];
+  const dispatch = useDispatch();
 
   const handleSelect = (option: DropdownOption) => {
     if (option.action) {
       switch (option.action) {
         case 'signOut':
           // 로그아웃 로직 구현
+          localStorage.removeItem('persist:user');
+          destroyCookie(null, 'access_token', { path: '/' });
+          dispatch(clearUser());
+          router.push('/'); // 메인으로 이동
           break;
         case 'deleteTravel':
           // 저장 경로 삭제 로직 구현
