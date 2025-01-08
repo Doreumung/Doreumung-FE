@@ -5,7 +5,7 @@ const membersOnlyRoutes = ['/my-travel'];
 const guestsOnlyRoutes = ['/sign-up', '/sign-in'];
 
 export const middleware = (request: NextRequest) => {
-  const token = request.cookies.get('accessToken');
+  const token = request.cookies.get('access_token');
   const { pathname } = request.nextUrl;
 
   if (!token && membersOnlyRoutes.includes(pathname)) {
