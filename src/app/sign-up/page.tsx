@@ -46,14 +46,29 @@ const Page = () => {
       // API 호출
       const result = await signUpUser(JSON.stringify(userData)).unwrap();
       console.log('회원가입 성공:', result);
-      toast({ message: '회원가입에 성공하였습니다.' });
+      toast({
+        message: (
+          <>
+            회원가입이 완료되었습니다. <br />
+            로그인 페이지로 이동합니다.
+          </>
+        ),
+      });
 
       setTimeout(() => {
         router.push('/sign-in');
-      }, 2000); // 로그인 페이지로 이동
+      }, 2000); // 로그인 페이지로 이동ㅎㅎ
     } catch (err) {
       console.error('회원가입 실패:', err);
-      toast({ message: '회원가입에 실패하였습니다.', type: 'error' });
+      toast({
+        message: (
+          <>
+            회원가입에 실패하였습니다. <br />
+            잠시 후 다시 시도해 주세요.
+          </>
+        ),
+        type: 'error',
+      });
     }
   };
 
@@ -140,12 +155,7 @@ const Page = () => {
               </div>
             </div>
 
-            <Button
-              label="가입하기"
-              onClick={() => {}}
-              className="w-96 text-sm"
-              disabled={isLoading}
-            />
+            <Button label="가입하기" onClick={() => {}} className="w-96" disabled={isLoading} />
           </div>
         </div>
       </form>
