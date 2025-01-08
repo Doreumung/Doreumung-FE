@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server';
 const membersOnlyRoutes = ['/my-travel'];
 const guestsOnlyRoutes = ['/sign-up', '/sign-in'];
 
-export function middleware(request: NextRequest) {
+export const middleware = (request: NextRequest) => {
   const token = request.cookies.get('access_token');
   const { pathname } = request.nextUrl;
 
@@ -21,8 +21,8 @@ export function middleware(request: NextRequest) {
   }
 
   return NextResponse.next();
-}
+};
 
 export const config = {
-  matcher: [...membersOnlyRoutes, ...guestsOnlyRoutes],
+  matcher: ['/my-travel', '/sign-up', '/sign-in'],
 };
