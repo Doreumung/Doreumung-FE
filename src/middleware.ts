@@ -4,8 +4,8 @@ import type { NextRequest } from 'next/server';
 const membersOnlyRoutes = ['/my-travel'];
 const guestsOnlyRoutes = ['/sign-up', '/sign-in'];
 
-export const middleware = (request: NextRequest) => {
-  const token = request.cookies.get('accessToken');
+export function middleware(request: NextRequest) {
+  const token = request.cookies.get('access_token');
   const { pathname } = request.nextUrl;
 
   if (!token && membersOnlyRoutes.includes(pathname)) {
@@ -21,7 +21,7 @@ export const middleware = (request: NextRequest) => {
   }
 
   return NextResponse.next();
-};
+}
 
 export const config = {
   matcher: [...membersOnlyRoutes, ...guestsOnlyRoutes],
