@@ -1,7 +1,7 @@
 import ToolbarIcon from './ToolbarIcon';
 import { Heading, Image, Redo, Undo } from 'lucide-react';
 import ColorSwatches from './ColorSwatches';
-import { ChangeEvent, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import useOutsideClick from '@/hooks/useOutsideClick';
 import useTiptap from '@/hooks/useTiptap';
 import useIsMobile from '@/hooks/useIsMobile';
@@ -17,7 +17,7 @@ import { headingToolStyles } from './headingToolStyles';
 
 const Toolbar = ({ editor }: ToolbarProps) => {
   const isMobile = useIsMobile();
-  const { getToolbarOptions } = useTiptap();
+  const { getToolbarOptions, addImage } = useTiptap();
   const colorRef = useRef<HTMLDivElement | null>(null);
   const headingRef = useRef<HTMLDivElement | null>(null);
   const [colorSwatchMode, setColorSwatchMode] = useState<string | null>(null);
@@ -27,10 +27,11 @@ const Toolbar = ({ editor }: ToolbarProps) => {
 
   useOutsideClick({ ref: headingRef, callback: () => setShowHeadingOptions(false) });
 
-  const handleUploadImage = (e: ChangeEvent) => {
-    const image = (e.target as HTMLInputElement).files as FileList;
-    console.log(image);
-  };
+  // const handleUploadImage = (e: ChangeEvent<HTMLInputElement>) => {
+  //   if(e.target.files){
+  //     const image = e.target.files[0]
+  //   }
+  // };
 
   if (!editor) {
     return (
@@ -110,13 +111,13 @@ const Toolbar = ({ editor }: ToolbarProps) => {
 
           {/* 이미지 추가 시 S3에 업로드 로직 구현 필요 */}
           <div className="relative flex items-center">
-            <input
+            {/* <input
               type="file"
               accept="image/*"
               className="absolute top-0 left-0 size-5 opacity-0 file:cursor-pointer md:size-6"
               onChange={handleUploadImage}
-            />
-            <ToolbarIcon icon={Image} />
+            /> */}
+            <ToolbarIcon icon={Image} onClick={() => addImage(editor)} />
           </div>
         </div>
 
