@@ -1,15 +1,15 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { passwordChangeSchema, PasswordChangeSchema } from '../schema/passwordSchema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import Button from '@/components/common/buttons/Button';
-import Input from '@/components/common/inputs/Input';
-import { useEffect, useState } from 'react';
-import clsx from 'clsx';
-import { UserDataType } from '../types';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
+// import { useForm } from 'react-hook-form';
+// import { passwordChangeSchema, PasswordChangeSchema } from '../schema/passwordSchema';
+// import { zodResolver } from '@hookform/resolvers/zod';
+// import Button from '@/components/common/buttons/Button';
+// import Input from '@/components/common/inputs/Input';
+// import { useEffect, useState } from 'react';
+// import clsx from 'clsx';
+// import { UserDataType } from '../types';
+// import { useSelector } from 'react-redux';
+// import { RootState } from '@/store/store';
 
 const PasswordForm = () => {
   // const [isPasswordChangeActive, setIsPasswordChangeAcitve] = useState<boolean>(false);
