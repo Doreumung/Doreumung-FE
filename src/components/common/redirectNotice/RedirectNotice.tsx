@@ -9,11 +9,14 @@ import { useCallback, useEffect, useState } from 'react';
 import { REDIRECT_TITLE, REDIRECT_MESSAGE, REDIRECT_TO } from './constants';
 import { RedirectNoticeProps } from './types';
 import Button from '../buttons/Button';
+import { destroyCookie } from 'nookies';
 
 const RedirectNotice = ({ mode = 'NOT_FOUND' }: RedirectNoticeProps) => {
   const isMobile = useIsMobile();
   const [seconds, setSeconds] = useState(5);
   const router = useRouter();
+
+  destroyCookie(null, 'redirectMode');
 
   const redirect = useCallback(() => {
     if (mode === 'SIGNED_IN') router.back();
@@ -25,7 +28,9 @@ const RedirectNotice = ({ mode = 'NOT_FOUND' }: RedirectNoticeProps) => {
     const timer = setInterval(() => setSeconds(prev => (prev === 0 ? prev : prev - 1)), 1000);
     setTimeout(() => redirect(), 5000);
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+    };
   }, [redirect]);
 
   return (
