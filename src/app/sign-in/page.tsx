@@ -49,23 +49,20 @@ const Page = () => {
 
   const onSubmit = async (data: SignInSchema) => {
     try {
+      console.log(data); // 확인용
       const result = await loginUser(JSON.stringify(data)).unwrap();
       console.log('로그인 성공', result);
       setErrorMessage(''); // 에러 초기화
 
-      // // 자동 로그인 체크 -> 로컬 스토리지
-      // // 자동 로그인 체크 X -> 세션 스토리지
-      // const storage = isChecked ? localStorage : sessionStorage;
-
-      // // 액세스 토큰 저장
-      // storage.setItem('accessToken', result?.access_token);
-      // // 자동 로그인 체크 -> 쿠키 만료 시간 다르게 설정
-
       // 액세스 토큰을 쿠키에 저장
       // 쿠키 설정
       setCookie(null, 'access_token', result?.access_token, {
-        maxAge: 60 * 60 * 24 * 30, // 30일
-        path: '/', // 전체 도메인에서 유효
+        maxAge: 30 * 24 * 60 * 60, // 쿠키 유효기간
+        path: '/', // 쿠키 경로
+      });
+      setCookie(null, 'refresh_token', result?.refresh_token, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: '/',
       });
 
       const userData = await getUserInfo({});
