@@ -9,6 +9,7 @@ import {
   editReviewResponseSchema,
   getCommentsResponseSchema,
   getReviewDetailResponseSchema,
+  getReviewListRequestSchema,
   getReviewListResponseSchema,
   likeReviewResponseSchema,
   postCommentRequestSchema,
@@ -29,6 +30,8 @@ export type PostReviewRequestType = z.infer<typeof postReviewRequestSchema>;
 export type PostReviewResponseType = z.infer<typeof postReviewResponseSchema>;
 
 export type SingleReviewType = z.infer<typeof singleReviewSchema>;
+
+export type GetReviewListRequestType = z.infer<typeof getReviewListRequestSchema>;
 
 export type GetReviewListResponseType = z.infer<typeof getReviewListResponseSchema>;
 
