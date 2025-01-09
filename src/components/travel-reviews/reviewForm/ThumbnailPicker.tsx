@@ -1,20 +1,15 @@
 import { useAppSelector } from '@/store/hooks';
+import { RootState } from '@/store/store';
 import Image from 'next/image';
-import { Dispatch, SetStateAction } from 'react';
+import { ThumbnailPickerProps } from '../types';
 
-const ThumbnailPicker = ({
-  thumbnailImageUrl,
-  setThumbnailImageUrl,
-}: {
-  thumbnailImageUrl: string;
-  setThumbnailImageUrl: Dispatch<SetStateAction<string>>;
-}) => {
-  const imagesInEditor = useAppSelector(state => state.reviewImages.currentImages);
+const ThumbnailPicker = ({ thumbnailImageUrl, setThumbnailImageUrl }: ThumbnailPickerProps) => {
+  const imagesInEditor = useAppSelector((state: RootState) => state.reviewImages.currentImages);
 
   return (
     <section>
-      <h4 className="pl-2 pb-2">사진 미리보기</h4>
-      <div className="overflow-x-auto w-full min-h-32 p-3 border border-green rounded-2xl bg-white">
+      <h4 className="pl-2 pb-2">대표 사진 설정</h4>
+      <div className="content-center overflow-x-auto w-full h-32 px-4 border border-green rounded-2xl bg-white ">
         <div className="flex items-center gap-3 w-max">
           {imagesInEditor.map((url, index) => (
             <div
@@ -31,7 +26,7 @@ const ThumbnailPicker = ({
                 className="transition duration-300 hover:scale-105"
               />
               {(url === thumbnailImageUrl || (!thumbnailImageUrl && index === 0)) && (
-                <div className="absolute top-0 left-0 px-1 border border-darkerGray rounded-md bg-yellow text-sm">
+                <div className="absolute top-1 left-1 px-1 border border-darkerGray rounded-md bg-yellow text-sm">
                   대표
                 </div>
               )}

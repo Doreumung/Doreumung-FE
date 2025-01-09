@@ -3,6 +3,7 @@ import { LucideIcon } from 'lucide-react';
 import { VariantProps } from 'class-variance-authority';
 import { routeInfoContainerStyles } from './RouteInfoStyles';
 import { reviewStatsIconStyles } from './reviewCard/ReviewStatsStyles';
+import { Dispatch, SetStateAction } from 'react';
 
 export type StarRatingProps = {
   value: number;
@@ -41,4 +42,9 @@ export type EditAndDeleteProps = {
   onClickEdit: () => void;
   onClickDelete: () => void;
   className?: string;
+};
+
+export type ThumbnailPickerProps = {
+  thumbnailImageUrl: string;
+  setThumbnailImageUrl: Dispatch<SetStateAction<string>>;
 };
