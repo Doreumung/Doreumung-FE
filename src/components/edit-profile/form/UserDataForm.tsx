@@ -8,15 +8,22 @@ import dayjs from 'dayjs';
 import Select from '@/components/common/select/Select';
 import Button from '@/components/common/buttons/Button';
 import Input from '@/components/common/inputs/Input';
-import { UserDataType } from '../types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import Image from 'next/image';
 import kakaoLogin from '@public/images/kakaoLogin.svg';
 import googleLogin from '@public/images/googleLogo.png';
+import { useUpdateUserInfoMutation } from '@/api/userApi';
+import { updateUser } from '@/store/userSlice';
 
-const UserDataForm = () => {
+const UserDataForm = ({
+  setIsUserUpdate,
+}: {
+  setIsUserUpdate: React.Dispatch<React.SetStateAction<'success' | 'error' | null>>;
+}) => {
   const { user: userData, loginType } = useSelector((state: RootState) => state.user);
+  const [updateUserInfo, { isLoading }] = useUpdateUserInfoMutation();
+  const dispatch = useDispatch();
 
   // 확인용
   useEffect(() => {
@@ -57,34 +64,74 @@ const UserDataForm = () => {
     return null; // 렌더링 중단
   }
 
-  const handleSave = (data: NicknameChangeSchema) => {
-    // 모든 데이터를 한 번에 업데이트
-    const updatedData: UserDataType = {
-      ...userData,
-      nickname: data.nickname, // 닉네임은 유효성 검사를 통과한 데이터로 업데이트
-      gender: newGender ?? 'none', // 상태로 관리 중인 성별
-      birthday: newBirthday || (userData?.birthday ?? '1925-01-01'), // 상태로 관리 중인 생년월일
-    };
-
-    // setUserData(updatedData);
-    setIsUserDataChangeActive(false);
-
-    // React Hook Form 필드 초기화
-    reset({ nickname: updatedData.nickname });
-  };
-
-  const handleSaveWithoutNickname = () => {
-    // 닉네임 변경 없이 다른 데이터만 업데이트
+  const handleSave = async (data: NicknameChangeSchema) => {
+    // 닉네임 포함, 변경된 것들만 업데이트
     const updatedData = {
-      nickname: userData.nickname,
-      // gender: newGender || 'none',
-      birthday: newBirthday || (userData?.birthday ?? '1925-01-01'),
+      new_nickname: data.nickname,
+      ...(newBirthday !== userData.birthday ? { new_birthday: newBirthday } : {}),
+      ...(newGender !== userData.gender ? { new_gender: newGender } : {}),
     };
 
+    // 확인용
     console.log(updatedData);
 
-    // setUserData(updatedData);
-    setIsUserDataChangeActive(false);
+    try {
+      // PATCH 요청
+      const result = await updateUserInfo(JSON.stringify(updatedData)).unwrap();
+      console.log('회원정보 변경 성공: ', result.data);
+
+      // 비밀번호 필드를 제외한 새로운 객체 생성
+      const filteredData = { ...result.data }; // 원본 객체 복사
+      delete filteredData.password; // password 필드 제거
+
+      // 상태 업데이트
+      dispatch(updateUser(filteredData));
+
+      setIsUserDataChangeActive(false);
+      setIsUserUpdate('success');
+    } catch (err) {
+      console.log('회원정보 변경 실패', err);
+
+      setNewGender(userData.gender);
+      setNewBirthday(userData.birthday);
+
+      setIsUserDataChangeActive(false);
+      setIsUserUpdate('error');
+    }
+  };
+
+  const handleSaveWithoutNickname = async () => {
+    // 닉네임 변경 없이 다른 데이터만 업데이트
+    const updatedData = {
+      ...(newBirthday !== userData.birthday ? { new_birthday: newBirthday } : {}),
+      ...(newGender !== userData.gender ? { new_gender: newGender } : {}),
+    };
+
+    console.log(updatedData); // 확인용
+
+    try {
+      // PATCH 요청
+      const result = await updateUserInfo(JSON.stringify(updatedData)).unwrap(); // unwrap으로 성공 여부 확인
+      console.log('회원정보 변경 성공: ', result);
+
+      // 비밀번호 필드를 제외한 새로운 객체 생성
+      const filteredData = { ...result }; // 원본 객체 복사
+      delete filteredData.password; // password 필드 제거
+
+      // 상태 업데이트
+      dispatch(updateUser(filteredData));
+      setIsUserDataChangeActive(false);
+      setIsUserUpdate('success'); // 성공 상태로 업데이트
+    } catch (err) {
+      // 오류 처리
+      console.error('회원정보 변경 실패: ', err);
+
+      // 이전 상태로 되돌리기
+      setNewGender(userData.gender);
+      setNewBirthday(userData.birthday);
+      setIsUserDataChangeActive(false);
+      setIsUserUpdate('error'); // 실패 상태로 업데이트
+    }
   };
 
   const divStyle = `flex flex-col gap-2`;
@@ -191,14 +238,17 @@ const UserDataForm = () => {
               if (newNickname !== userData?.nickname) {
                 // 닉네임 변경 시
                 handleSubmit(handleSave)();
-              } else {
+              } else if (newBirthday !== userData?.birthday || newGender !== userData?.gender) {
                 // 닉네임 변경 없이 다른 데이터만 업데이트
                 handleSaveWithoutNickname();
+              } else {
+                setIsUserDataChangeActive(false);
               }
             } else {
               setIsUserDataChangeActive(true);
             }
           }}
+          disabled={isLoading}
         />
       </div>
     </div>

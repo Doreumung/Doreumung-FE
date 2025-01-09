@@ -13,6 +13,10 @@ export type UserState = {
   loginType: 'kakao' | 'google' | 'email';
 };
 
+type UpdateUserState = Partial<
+  Pick<NonNullable<UserState['user']>, 'email' | 'nickname' | 'gender' | 'birthday'>
+>;
+
 const initialState: UserState = {
   // 다시 수정
   user: {
@@ -46,11 +50,18 @@ const userSlice = createSlice({
         : null;
       state.loginType = action.payload.loginType; // 로그인 방식 저장
     },
+    updateUser(state, action: PayloadAction<UpdateUserState>) {
+      // 상태가 null인 경우 안전하게 처리
+      if (state.user) {
+        // 전달받은 필드만 업데이트
+        Object.assign(state.user, action.payload);
+      }
+    },
     clearUser(state) {
       state.user = null;
     },
   },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, clearUser, updateUser } = userSlice.actions;
 export default userSlice.reducer;
