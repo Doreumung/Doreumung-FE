@@ -63,13 +63,32 @@ export const singleReviewSchema = reviewSchemas.pick({
   updated_at: true,
 });
 
-export const getReviewListResponseSchema = z.object({
+const pagingSchema = z.object({
   page: z.number(),
-  size: z.number(),
+  size: z.number().optional(),
   total_pages: z.number(),
-  // total_reviews: z.number(),
-  reviews: singleReviewSchema.array(),
+  total_reviews: z.number(),
+  order_by: z.string().optional(),
+  order: z.string().optional(),
 });
+
+export const getReviewListRequestSchema = pagingSchema.pick({
+  page: true,
+  size: true,
+  order_by: true,
+  order: true,
+});
+
+export const getReviewListResponseSchema = pagingSchema
+  .pick({
+    page: true,
+    size: true,
+    total_pages: true,
+    total_reviews: true,
+  })
+  .extend({
+    reviews: singleReviewSchema.array(),
+  });
 
 export const editReviewRequestSchema = reviewSchemas.pick({
   id: true,
