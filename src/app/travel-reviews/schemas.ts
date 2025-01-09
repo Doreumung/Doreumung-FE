@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const reviewSchemas = z.object({
-  id: z.number(),
+  review_id: z.number(),
   user_id: z.string(),
   travel_route_id: z.number(),
   title: z
@@ -19,6 +19,7 @@ export const reviewSchemas = z.object({
   comment_count: z.number(),
   regions: z.string().array(),
   travel_route: z.string().array(),
+  themes: z.string().array(),
   thumbnail: z.string(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
@@ -27,6 +28,7 @@ export const reviewSchemas = z.object({
 
 export const getReviewDetailResponseSchema = reviewSchemas.omit({
   travel_route_id: true,
+  comment_count: true,
   message: true,
 });
 
@@ -40,7 +42,7 @@ export const postReviewRequestSchema = reviewSchemas.pick({
 
 export const postReviewResponseSchema = reviewSchemas
   .pick({
-    id: true,
+    review_id: true,
     user_id: true,
     nickname: true,
     like_count: true,
@@ -54,7 +56,7 @@ export const postReviewResponseSchema = reviewSchemas
 export const singleReviewSchema = reviewSchemas.pick({
   user_id: true,
   nickname: true,
-  id: true,
+  review_id: true,
   title: true,
   rating: true,
   like_count: true,
@@ -91,7 +93,7 @@ export const getReviewListResponseSchema = pagingSchema
   });
 
 export const editReviewRequestSchema = reviewSchemas.pick({
-  id: true,
+  review_id: true,
   title: true,
   content: true,
   rating: true,
@@ -103,7 +105,7 @@ export const editReviewResponseSchema = editReviewRequestSchema.extend({
 
 export const deleteReviewResponseSchema = reviewSchemas.pick({ message: true });
 
-export const likeReviewResponseSchema = reviewSchemas.pick({ id: true, message: true });
+export const likeReviewResponseSchema = reviewSchemas.pick({ review_id: true, message: true });
 
 export const cancelLikeReviewResponseSchema = reviewSchemas.pick({ message: true });
 
