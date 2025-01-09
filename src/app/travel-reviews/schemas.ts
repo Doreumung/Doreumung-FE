@@ -27,7 +27,6 @@ export const reviewSchemas = z.object({
 });
 
 export const getReviewDetailResponseSchema = reviewSchemas.omit({
-  travel_route_id: true,
   comment_count: true,
 });
 
@@ -111,6 +110,14 @@ export const likeReviewResponseSchema = reviewSchemas.pick({ review_id: true });
 
 export const cancelLikeReviewResponseSchema = reviewSchemas.pick({ review_id: true });
 
+export const getTravelRouteInfoRequestSchema = reviewSchemas.pick({ travel_route_id: true });
+
+export const getTravelRouteInfoResponseSchema = reviewSchemas.pick({
+  travel_route: true,
+  themes: true,
+  regions: true,
+});
+
 export const commentSchema = z.object({
   comment_id: z.number(),
   review_id: z.number(),
@@ -166,4 +173,36 @@ export const reviewFormSchema = reviewSchemas.pick({
 
 export const commentFormSchema = commentSchema.pick({
   content: true,
+});
+
+const placeInfoSchema = z.object({
+  place_id: z.number(),
+  name: z.string(),
+  latitude: z.number(),
+  longitude: z.number(),
+});
+
+export const travelRouteInfoSchema = z.object({
+  travel_route_id: z.number(),
+  user_id: z.string(),
+  title: z.string(),
+  schedule: z.object({
+    breakfast: placeInfoSchema.optional(),
+    morning: placeInfoSchema.array().optional(),
+    lunch: placeInfoSchema,
+    afternoon: placeInfoSchema.array().optional(),
+    dinner: placeInfoSchema,
+  }),
+  config: z.object({
+    regions: z.string().array(),
+    themes: z.string().array(),
+    schedule: z.object({
+      breakfast: z.boolean(),
+      morning: z.number(),
+      lunch: z.boolean(),
+      afternoon: z.number(),
+      dinner: z.boolean(),
+    }),
+  }),
+  travel_route: z.string().array(),
 });
