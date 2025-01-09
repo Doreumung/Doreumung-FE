@@ -18,20 +18,20 @@ const commentApi = createApi({
   tagTypes: ['Comment'],
   endpoints: build => ({
     postComment: build.mutation<PostCommentResponseType, PostCommentRequestType>({
-      query: comment => ({
-        url: `/reviews/${comment.review_id}/comment`,
+      query: ({ review_id, content }) => ({
+        url: `/reviews/${review_id}/comment`,
         method: 'POST',
-        body: comment,
+        body: { content },
       }),
       invalidatesTags: [COMMENT_TAG_TYPE],
     }),
     editComment: build.mutation<EditCommentResponseType, EditCommentRequestType>({
-      query: ({ comment, review_id }) => ({
-        url: `/reviews/${review_id}/comment/${comment.comment_id}`,
+      query: ({ content, comment_id }) => ({
+        url: `/comments/${comment_id}`,
         method: 'PATCH',
-        body: comment,
+        body: { content },
       }),
-      invalidatesTags: (result, _, { comment: { comment_id: id } }) => [
+      invalidatesTags: (result, _, { comment_id: id }) => [
         { type: 'Comment', id },
         COMMENT_TAG_TYPE,
       ],
@@ -50,8 +50,8 @@ const commentApi = createApi({
           : [COMMENT_TAG_TYPE],
     }),
     deleteComment: build.mutation<DeleteCommentResponseType, DeleteCommentRequestType>({
-      query: ({ review_id, comment_id }) => ({
-        url: `/reviews/${review_id}/comment/${comment_id}`,
+      query: ({ comment_id }) => ({
+        url: `/comments/${comment_id}`,
         method: 'DELETE',
       }),
       invalidatesTags: (result, _, { comment_id: id }) => [
