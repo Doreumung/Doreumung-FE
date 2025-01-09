@@ -1,5 +1,5 @@
 const DROPDOWN_MENUS_USER = [
-  { label: '회원정보 수정', path: '/edit-profile' },
+  { label: '회원정보 수정', path: '/confirm-password' },
   { label: '저장한 경로', path: '/my-travel' },
   { label: '로그아웃', action: 'signOut' },
 ];
