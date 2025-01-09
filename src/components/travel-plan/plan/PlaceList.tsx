@@ -69,12 +69,12 @@ const PlaceList = () => {
   const handleToggleChange = () => {};
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col justify-between h-full">
       <div className="flex flex-col gap-8 pb-8 md:flex-grow md:px-8 md:py-4 md:overflow-auto">
         {places.map(place => (
           <div
             key={place?.id}
-            className="flex flex-row justify-around items-center gap-4 min-w-full md:gap-8"
+            className="flex flex-row justify-around items-center gap-4 min-w-full"
           >
             <div className="w-14 h-14 border border-darkerGray rounded-2xl bg-lighterGray md:w-16 md:h-16"></div>
             <div className="flex-grow text-base text-darkerGray md:text-lg">{place?.name}</div>
@@ -86,7 +86,7 @@ const PlaceList = () => {
           </div>
         ))}
       </div>
-      <div className="flex flex-row justify-around w-full pt-2 md:justify-between md:gap-10 md:px-8 md:py-8 md:bg-background">
+      <div className="flex flex-row justify-between w-full pt-2 pb-6 md:gap-10 md:px-8 md:py-8 md:bg-background">
         <Button
           size="md"
           color="skyblue"
