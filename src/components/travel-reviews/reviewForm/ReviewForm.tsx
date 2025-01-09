@@ -21,22 +21,27 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { REVIEW_DATA, ROUTE_INFO_DUMMY_DATA } from '@/components/travel-reviews/mockData';
 import ErrorMessage from '@/components/common/errorMessage/ErrorMessage';
 import ThumbnailPicker from './ThumbnailPicker';
+import { useAppSelector } from '@/store/hooks';
+import { RootState } from '@/store/store';
+import { usePostReviewMutation } from '@/api/reviewApi';
+import Toast, { toast } from '@/components/common/toast/Toast';
 
 const ReviewForm = ({ mode = 'create' }: ReviewFormProps) => {
   const router = useRouter();
   const { routeId, reviewId } = useParams();
+  const user = useAppSelector((state: RootState) => state.user.user);
+  const [postReview] = usePostReviewMutation();
   const [title, setTitle] = useState<string>(mode === 'create' ? '' : REVIEW_DATA.title);
   const [rating, setRating] = useState<number>(mode === 'create' ? 0 : REVIEW_DATA.rating);
   const [content, setContent] = useState<string>(mode === 'create' ? '' : REVIEW_DATA.content);
-  const { editor } = useTiptap(content);
+  const [thumbnail, setThumbnail] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
-  const [thumbnailImageUrl, setThumbnailImageUrl] = useState<string>('');
+  const { editor } = useTiptap(content);
 
   const {
     register,
     handleSubmit,
-    reset,
     control,
     formState: { errors },
   } = useForm<ReviewFormType>({
@@ -52,34 +57,47 @@ const ReviewForm = ({ mode = 'create' }: ReviewFormProps) => {
     setShowLayerPopup(true);
   };
 
-  const postReview = () => {
-    setIsLoading(true);
+  const sendReviewRequest = () => {
+    if (user) {
+      setIsLoading(true);
+      if (mode === 'create') {
+        const newReview: PostReviewRequestType = {
+          travel_route_id: Number(routeId),
+          title,
+          content,
+          rating,
+          thumbnail,
+        };
 
-    if (mode === 'create') {
-      const newReview: PostReviewRequestType = {
-        travel_route_id: Number(routeId),
-        title,
-        content,
-        rating,
-        photo_urls: [],
-      };
-      console.log('PostReviewRequest', newReview);
-    } else {
-      const editedReview: EditReviewRequestType = {
-        review_id: Number(reviewId),
-        title,
-        content,
-        rating,
-        photo_urls: [],
-      };
-      console.log('EditReviewRequest', editedReview);
+        postReview(newReview)
+          .unwrap()
+          .then(res => {
+            toast({ message: '후기가 성공적으로 등록되었습니다!' });
+            router.push(`/travel-reviews/detail/${res.id}`);
+          })
+          .catch(() => {
+            setIsLoading(false);
+            toast({
+              message: (
+                <>
+                  후기 등록에 실패하였습니다.
+                  <br />
+                  잠시 후 다시 시도해 주세요.
+                </>
+              ),
+              type: 'error',
+            });
+          });
+      } else {
+        const editedReview: EditReviewRequestType = {
+          id: Number(reviewId),
+          title,
+          content,
+          rating,
+        };
+        console.log('EditReviewRequest', editedReview);
+      }
     }
-
-    reset({ title: '', rating: 0 });
-    editor?.commands.setContent('');
-
-    setIsLoading(false);
-    router.push('/travel-reviews');
   };
 
   return (
@@ -137,10 +155,7 @@ const ReviewForm = ({ mode = 'create' }: ReviewFormProps) => {
           }}
         />
 
-        <ThumbnailPicker
-          thumbnailImageUrl={thumbnailImageUrl}
-          setThumbnailImageUrl={setThumbnailImageUrl}
-        />
+        <ThumbnailPicker thumbnailImageUrl={thumbnail} setThumbnailImageUrl={setThumbnail} />
 
         <Button
           type="submit"
@@ -151,12 +166,12 @@ const ReviewForm = ({ mode = 'create' }: ReviewFormProps) => {
           disabled={isLoading}
         />
       </form>
-
+      <Toast />
       {showLayerPopup && (
         <LayerPopup
           label="후기를 등록하시겠습니까?"
           setShowLayerPopup={setShowLayerPopup}
-          onConfirm={postReview}
+          onConfirm={() => sendReviewRequest()}
         />
       )}
     </>
