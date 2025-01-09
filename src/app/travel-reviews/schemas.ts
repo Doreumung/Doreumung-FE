@@ -144,7 +144,15 @@ export const postCommentResponseSchema = commentSchema.pick({
   message: true,
 });
 
-export const getCommentsResponseSchema = commentSchema.array();
+export const singleCommentSchema = commentSchema.pick({
+  user_id: true,
+  comment_id: true,
+  nickname: true,
+  content: true,
+  created_at: true,
+});
+
+export const getCommentsResponseSchema = singleCommentSchema.array();
 
 export const editCommentRequestSchema = commentSchema.pick({
   comment_id: true,
