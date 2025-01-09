@@ -11,6 +11,10 @@ import {
   DeleteReviewResponseType,
   LikeReviewResponseType,
   CancelLikeReviewResponseType,
+  DeleteReviewRequestType,
+  GetTravelRouteInfoResponseType,
+  GetTravelRouteInfoRequestType,
+  TravelRouteInfoType,
 } from '@/app/travel-reviews/types';
 
 const REVIEW_LIST_TAG = { type: 'Reviews', id: 'ReviewList' } as const;
@@ -29,10 +33,10 @@ const reviewApi = createApi({
       invalidatesTags: [REVIEW_LIST_TAG],
     }),
     editReview: build.mutation<EditReviewResponseType, EditReviewRequestType>({
-      query: review => ({
-        url: `/reviews/${review.review_id}`,
+      query: ({ review_id, title, rating, content, thumbnail }) => ({
+        url: `/reviews/${review_id}`,
         method: 'PATCH',
-        body: review,
+        body: { title, rating, content, thumbnail },
       }),
       invalidatesTags: (result, _, { review_id: id }) => [{ type: 'Reviews', id }],
     }),
@@ -56,12 +60,12 @@ const reviewApi = createApi({
       }),
       providesTags: (result, _, id) => [{ type: 'Reviews', id }],
     }),
-    deleteReview: build.mutation<DeleteReviewResponseType, number>({
-      query: review_id => ({
+    deleteReview: build.mutation<DeleteReviewResponseType, DeleteReviewRequestType>({
+      query: ({ review_id }) => ({
         url: `/reviews/${review_id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, _, id) => [{ type: 'Reviews', id }],
+      invalidatesTags: (result, _, { review_id: id }) => [{ type: 'Reviews', id }],
     }),
     likeReview: build.mutation<LikeReviewResponseType, number>({
       query: review_id => ({
@@ -77,6 +81,18 @@ const reviewApi = createApi({
       }),
       invalidatesTags: (result, _, id) => [{ type: 'Reviews', id }, REVIEW_LIST_TAG],
     }),
+    getTravelRouteInfo: build.query<GetTravelRouteInfoResponseType, GetTravelRouteInfoRequestType>({
+      query: ({ travel_route_id }) => ({
+        url: `/travelroute/${travel_route_id}`,
+        method: 'GET',
+      }),
+      transformResponse: (response: TravelRouteInfoType) => {
+        const { travel_route, config } = response;
+        const { regions, themes } = config;
+
+        return { travel_route, regions, themes };
+      },
+    }),
   }),
 });
 
@@ -88,6 +104,7 @@ export const {
   useDeleteReviewMutation,
   useLikeReviewMutation,
   useCancelLikeReviewMutation,
+  useGetTravelRouteInfoQuery,
 } = reviewApi;
 
 export default reviewApi;
