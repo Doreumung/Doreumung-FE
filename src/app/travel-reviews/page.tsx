@@ -28,7 +28,7 @@ const Page = () => {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 place-items-center gap-8 w-full">
             {data.reviews.map((review: SingleReviewType) => (
-              <ReviewCard key={`${review.id}-${review.created_at}`} review={review} />
+              <ReviewCard key={`${review.review_id}-${review.created_at}`} review={review} />
             ))}
           </div>
           <Pagination totalResults={data.total_reviews} currentPage={page} setPage={setPage} />

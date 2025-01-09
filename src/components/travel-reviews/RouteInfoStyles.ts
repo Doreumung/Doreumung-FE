@@ -4,7 +4,7 @@ export const routeInfoContainerStyles = cva('flex flex-col gap-1', {
   variants: {
     variant: {
       reviewCreate: 'items-start text-darkerGray md:flex-row md:items-center md:gap-4',
-      reviewDetail: 'sm:flex-row sm:items-center sm:gap-6',
+      reviewDetail: 'sm:flex-row sm:items-center sm:gap-4',
     },
   },
   defaultVariants: {

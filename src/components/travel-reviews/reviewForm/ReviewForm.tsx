@@ -73,7 +73,7 @@ const ReviewForm = ({ mode = 'create' }: ReviewFormProps) => {
           .unwrap()
           .then(res => {
             toast({ message: '후기가 성공적으로 등록되었습니다!' });
-            router.push(`/travel-reviews/detail/${res.id}`);
+            router.push(`/travel-reviews/detail/${res.review_id}`);
           })
           .catch(() => {
             setIsLoading(false);
@@ -90,7 +90,7 @@ const ReviewForm = ({ mode = 'create' }: ReviewFormProps) => {
           });
       } else {
         const editedReview: EditReviewRequestType = {
-          id: Number(reviewId),
+          review_id: Number(reviewId),
           title,
           content,
           rating,

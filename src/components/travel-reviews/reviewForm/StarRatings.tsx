@@ -1,6 +1,7 @@
 import Rating from '@mui/material/Rating';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { StarRatingProps } from '../types';
+import clsx from 'clsx';
 
 const StarRating = ({ value, onChange }: StarRatingProps) => {
   const getRatingLabel = (rating: number | null): string => {
@@ -8,12 +9,12 @@ const StarRating = ({ value, onChange }: StarRatingProps) => {
   };
 
   return (
-    <div className="h-11 flex items-center gap-3">
+    <div className={clsx('flex items-center gap-3', onChange && 'h-11')}>
       <Rating
         value={value}
         precision={0.5}
         max={5}
-        size="large"
+        size={onChange ? 'large' : 'medium'}
         onChange={(_, newRating) => {
           if (onChange) {
             onChange(newRating || 0);
@@ -23,7 +24,9 @@ const StarRating = ({ value, onChange }: StarRatingProps) => {
         emptyIcon={<StarRoundedIcon className="text-lighterGray" fontSize="inherit" />}
         readOnly={!onChange}
       />
-      <span className="relative top-px text-darkerGray text-sm">{getRatingLabel(value)}</span>
+      {onChange && (
+        <span className="relative top-px text-darkerGray text-sm">{getRatingLabel(value)}</span>
+      )}
     </div>
   );
 };

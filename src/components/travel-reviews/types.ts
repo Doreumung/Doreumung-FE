@@ -3,7 +3,7 @@ import { LucideIcon } from 'lucide-react';
 import { VariantProps } from 'class-variance-authority';
 import { routeInfoContainerStyles } from './RouteInfoStyles';
 import { reviewStatsIconStyles } from './reviewCard/ReviewStatsStyles';
-import { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 export type StarRatingProps = {
   value: number;
@@ -11,8 +11,8 @@ export type StarRatingProps = {
 };
 
 export type RouteInfoProps = VariantProps<typeof routeInfoContainerStyles> & {
-  label: '일정' | '경로' | '여행 지역' | '여행 경로';
-  content: string;
+  label: '일정' | '경로' | '평점' | '테마' | '지역' | '경로';
+  content: React.ReactNode;
 };
 
 export type TiptapProps = { editor: Editor | null };
