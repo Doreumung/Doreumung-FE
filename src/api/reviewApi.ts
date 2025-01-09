@@ -3,6 +3,7 @@ import baseQuery from './baseQuery';
 import {
   EditReviewRequestType,
   EditReviewResponseType,
+  GetReviewListRequestType,
   GetReviewListResponseType,
   GetReviewDetailResponseType,
   PostReviewRequestType,
@@ -35,9 +36,9 @@ const reviewApi = createApi({
       }),
       invalidatesTags: (result, _, { id }) => [{ type: 'Reviews', id }],
     }),
-    getReviewList: build.query<GetReviewListResponseType, void>({
-      query: () => ({
-        url: '/reviews',
+    getReviewList: build.query<GetReviewListResponseType, GetReviewListRequestType>({
+      query: ({ page, size = 9, order_by = 'created_at', order = 'desc' }) => ({
+        url: `/reviews?page=${page}&size=${size}&order_by=${order_by}&order=${order}`,
         method: 'GET',
       }),
       providesTags: result =>
