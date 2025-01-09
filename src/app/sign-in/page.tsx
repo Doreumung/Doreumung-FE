@@ -16,8 +16,6 @@ import { useRouter } from 'next/navigation';
 
 const Page = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false); // 자동 로그인 체크 여부
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [loginUser, { isLoading }] = useLoginMutation(); // isSuccess, isError
   const [getUserInfo] = useGetUserInfoMutation();
@@ -57,7 +55,7 @@ const Page = () => {
       // 액세스 토큰을 쿠키에 저장
       // 쿠키 설정
       setCookie(null, 'access_token', result?.access_token, {
-        maxAge: 30 * 24 * 60 * 60, // 쿠키 유효기간
+        maxAge: 30 * 60, // 쿠키 유효기간
         path: '/', // 쿠키 경로
       });
       setCookie(null, 'refresh_token', result?.refresh_token, {
@@ -93,27 +91,13 @@ const Page = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center justify-center">
         <p className="pb-8 text-3xl text-darkerGray">로그인</p>
         <div className="flex flex-col gap-3 w-96">
-          <Input
-            id="email"
-            label="이메일"
-            type="email"
-            variant="signin"
-            {...register('email')}
-            value={email}
-            onChange={event => {
-              setEmail(event.target.value);
-            }}
-          />
+          <Input id="email" label="이메일" type="email" variant="signin" {...register('email')} />
           <Input
             id="password"
             label="비밀번호"
             type="password"
             variant="signin"
             {...register('password')}
-            value={password}
-            onChange={event => {
-              setPassword(event.target.value);
-            }}
           />
           <div className="flex gap-1.5 pb-10 px-2 text-darkGray">
             <div
@@ -153,7 +137,7 @@ const Page = () => {
           <p className={errorMessageStyle}>{errorMessage}</p>
         ) : null}
         <div className="flex flex-col items-center gap-10">
-          <Button label="로그인" className="w-96" disabled={isLoading} />
+          <Button label="로그인" className="w-96" type="submit" disabled={isLoading} />
           <div className="flex justify-center gap-2 pb-10 text-lightGray">
             <p>아직 회원이 아니신가요?</p>
             <Link href="/sign-up">
