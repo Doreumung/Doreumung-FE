@@ -12,19 +12,28 @@ import CommentForm from '@/components/travel-reviews/comment/CommentForm';
 import { COMMENT_DATA } from '@/components/travel-reviews/mockData';
 import StarRating from '@/components/travel-reviews/reviewForm/StarRatings';
 import EditAndDelete from '@/components/travel-reviews/EditAndDelete';
-import { useGetReviewDetailQuery } from '@/api/reviewApi';
+import { useDeleteReviewMutation, useGetReviewDetailQuery } from '@/api/reviewApi';
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import { useAppSelector } from '@/store/hooks';
 import { RootState } from '@/store/store';
+import Toast, { toast } from '@/components/common/toast/Toast';
 
 const Page = () => {
   const router = useRouter();
-  const { reviewId } = useParams();
-  const { data, isLoading, error } = useGetReviewDetailQuery(Number(reviewId));
+  const { reviewId: review_id } = useParams();
+  const { data, isLoading, error } = useGetReviewDetailQuery(Number(review_id));
+  const [deleteReview] = useDeleteReviewMutation();
   const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
   const user = useAppSelector((state: RootState) => state.user.user);
 
-  if (!data) return <></>;
+  if (!data || error)
+    return (
+      <p className="text-red text-center">
+        오류가 발생하였습니다.
+        <br />
+        잠시 후 다시 시도해 주세요.
+      </p>
+    );
 
   const {
     // user_id,
@@ -41,12 +50,28 @@ const Page = () => {
   } = data;
 
   const handleClickEdit = () => {
-    router.push(`/travel-reviews/edit/${reviewId}`);
+    router.push(`/travel-reviews/edit/${review_id}`);
   };
 
-  // 여행 후기 삭제 요청 구현 필요
   const sendDeleteReviewRequest = () => {
-    console.log('후기 삭제 요청');
+    deleteReview({ review_id: Number(review_id) })
+      .unwrap()
+      .then(() => {
+        toast({ message: '후기가 성공적으로 삭제되었습니다!' });
+        router.push('/travel-reviews');
+      })
+      .catch(() => {
+        toast({
+          message: (
+            <>
+              후기 삭제에 실패하였습니다.
+              <br />
+              잠시 후 다시 시도해 주세요.
+            </>
+          ),
+          type: 'error',
+        });
+      });
   };
 
   const handleClickLike = () => {
@@ -62,13 +87,6 @@ const Page = () => {
 
   return (
     <div className="flex flex-col items-center w-full">
-      {error && (
-        <p>
-          오류가 발생하였습니다.
-          <br />
-          잠시 후 다시 시도해 주세요.
-        </p>
-      )}
       {!error && (
         <>
           <BackNavigation to="reviewList" />
@@ -140,6 +158,7 @@ const Page = () => {
           )}
         </>
       )}
+      <Toast />
     </div>
   );
 };
