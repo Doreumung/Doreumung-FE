@@ -20,7 +20,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { REVIEW_DATA, ROUTE_INFO_DUMMY_DATA } from '@/components/travel-reviews/mockData';
 import ErrorMessage from '@/components/common/errorMessage/ErrorMessage';
-import ImagePreview from './ImagePreview';
+import ThumbnailPicker from './ThumbnailPicker';
 
 const ReviewForm = ({ mode = 'create' }: ReviewFormProps) => {
   const router = useRouter();
@@ -137,7 +137,7 @@ const ReviewForm = ({ mode = 'create' }: ReviewFormProps) => {
           }}
         />
 
-        <ImagePreview
+        <ThumbnailPicker
           thumbnailImageUrl={thumbnailImageUrl}
           setThumbnailImageUrl={setThumbnailImageUrl}
         />

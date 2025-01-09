@@ -2,7 +2,7 @@ import { useAppSelector } from '@/store/hooks';
 import Image from 'next/image';
 import { Dispatch, SetStateAction } from 'react';
 
-const ImagePreview = ({
+const ThumbnailPicker = ({
   thumbnailImageUrl,
   setThumbnailImageUrl,
 }: {
@@ -43,4 +43,4 @@ const ImagePreview = ({
   );
 };
 
-export default ImagePreview;
+export default ThumbnailPicker;
