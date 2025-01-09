@@ -4,7 +4,7 @@ import { VariantProps } from 'class-variance-authority';
 import { routeInfoContainerStyles } from './RouteInfoStyles';
 import { reviewStatsIconStyles } from './reviewCard/ReviewStatsStyles';
 import React, { Dispatch, SetStateAction } from 'react';
-import { CommentType, GetTravelRouteInfoResponseType } from '@/app/travel-reviews/types';
+import { GetTravelRouteInfoResponseType, SingleCommentType } from '@/app/travel-reviews/types';
 
 export type StarRatingProps = {
   value: number;
@@ -59,5 +59,5 @@ export type CommentFormProps = {
 };
 
 export type CommentItemProps = {
-  comment: CommentType;
+  comment: SingleCommentType;
 };

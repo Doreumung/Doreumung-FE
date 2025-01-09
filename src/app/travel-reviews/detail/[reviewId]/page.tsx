@@ -9,7 +9,6 @@ import RouteInfoContainer from '@/components/travel-reviews/RouteInfoContainer';
 import { covertDateTime } from '@/utils/utils';
 import CommentList from '@/components/travel-reviews/comment/CommentList';
 import CommentForm from '@/components/travel-reviews/comment/CommentForm';
-import { COMMENT_DATA } from '@/components/travel-reviews/mockData';
 import StarRating from '@/components/travel-reviews/reviewForm/StarRatings';
 import EditAndDelete from '@/components/travel-reviews/EditAndDelete';
 import { useDeleteReviewMutation, useGetReviewDetailQuery } from '@/api/reviewApi';
@@ -17,11 +16,17 @@ import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import { useAppSelector } from '@/store/hooks';
 import { RootState } from '@/store/store';
 import Toast, { toast } from '@/components/common/toast/Toast';
+import { useGetCommentsQuery } from '@/api/commentApi';
 
 const Page = () => {
   const router = useRouter();
   const { reviewId: review_id } = useParams();
   const { data, isLoading, error } = useGetReviewDetailQuery(Number(review_id));
+  const {
+    data: commentData,
+    isLoading: commentsLoading,
+    error: commentsError,
+  } = useGetCommentsQuery(Number(review_id));
   const [deleteReview] = useDeleteReviewMutation();
   const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
   const user = useAppSelector((state: RootState) => state.user.user);
@@ -143,10 +148,18 @@ const Page = () => {
           <section className="w-full border-b border-lighterGray">
             <div className="flex items-center gap-2 py-4">
               <h3 className="text-xl">댓글</h3>
-              <span className="text-sm">{COMMENT_DATA.length}개</span>
+              <span className="text-sm">{commentData ? commentData.length : 0}개</span>
             </div>
             <CommentForm />
-            <CommentList comments={COMMENT_DATA} />
+            {commentsLoading && <LoadingSpinner />}
+            {commentsError && (
+              <p className="text-red text-center">
+                오류가 발생하였습니다.
+                <br />
+                잠시 후 다시 시도해 주세요.
+              </p>
+            )}
+            {commentData && <CommentList comments={commentData} />}
           </section>
 
           {showLayerPopup && (

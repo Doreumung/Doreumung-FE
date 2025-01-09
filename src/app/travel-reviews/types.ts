@@ -25,6 +25,7 @@ import {
   commentFormSchema,
   deleteCommentRequestSchema,
   travelRouteInfoSchema,
+  singleCommentSchema,
 } from './schemas';
 
 export type GetReviewDetailResponseType = z.infer<typeof getReviewDetailResponseSchema>;
@@ -60,6 +61,8 @@ export type CommentType = z.infer<typeof commentSchema>;
 export type PostCommentRequestType = z.infer<typeof postCommentRequestSchema>;
 
 export type PostCommentResponseType = z.infer<typeof postCommentResponseSchema>;
+
+export type SingleCommentType = z.infer<typeof singleCommentSchema>;
 
 export type GetCommentsResponseType = z.infer<typeof getCommentsResponseSchema>;
 
