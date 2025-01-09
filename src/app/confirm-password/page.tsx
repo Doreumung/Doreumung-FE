@@ -3,12 +3,17 @@
 import { useState } from 'react';
 import Button from '@/components/common/buttons/Button';
 import Input from '@/components/common/inputs/Input';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const userData = useSelector((state: RootState) => state.user.user);
+  const router = useRouter();
 
-  const sessionPassword = 'example123'; // 예시
+  const userPassword = userData?.nickname; // 닉네임 말고 비밀번호로 수정
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,8 +25,9 @@ const Page = () => {
       return;
     }
 
-    if (confirmPassword === sessionPassword) {
+    if (confirmPassword === userPassword) {
       setErrorMessage(''); // 오류 메시지 제거
+      router.push('/edit-profile');
     } else {
       setErrorMessage('비밀번호가 일치하지 않습니다.');
     }
@@ -44,7 +50,7 @@ const Page = () => {
         />
         {/* 오류 메시지 표시 */}
         {errorMessage && (
-          <p className="self-start px-11 md:px-3 pb-3 text-xs text-red-600">{errorMessage}</p>
+          <p className="self-center px-11 md:px-3 pb-3 text-xs text-red">{errorMessage}</p>
         )}
         <Button label="확인" onClick={() => {}} className="w-80 md:w-96 text-sm" />
       </form>
