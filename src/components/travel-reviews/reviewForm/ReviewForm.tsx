@@ -18,23 +18,27 @@ import { reviewFormSchema } from '@/app/travel-reviews/schemas';
 import { ReviewFormProps } from '../types';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { REVIEW_DATA, ROUTE_INFO_DUMMY_DATA } from '@/components/travel-reviews/mockData';
 import ErrorMessage from '@/components/common/errorMessage/ErrorMessage';
 import ThumbnailPicker from './ThumbnailPicker';
 import { useAppSelector } from '@/store/hooks';
 import { RootState } from '@/store/store';
-import { usePostReviewMutation } from '@/api/reviewApi';
+import { useEditReviewMutation, usePostReviewMutation } from '@/api/reviewApi';
 import Toast, { toast } from '@/components/common/toast/Toast';
 
-const ReviewForm = ({ mode = 'create' }: ReviewFormProps) => {
+const ReviewForm = ({
+  mode = 'create',
+  defaultValues = { title: '', rating: 0, content: '', thumbnail: '' },
+  travelRouteInfo,
+}: ReviewFormProps) => {
   const router = useRouter();
   const { routeId, reviewId } = useParams();
   const user = useAppSelector((state: RootState) => state.user.user);
   const [postReview] = usePostReviewMutation();
-  const [title, setTitle] = useState<string>(mode === 'create' ? '' : REVIEW_DATA.title);
-  const [rating, setRating] = useState<number>(mode === 'create' ? 0 : REVIEW_DATA.rating);
-  const [content, setContent] = useState<string>(mode === 'create' ? '' : REVIEW_DATA.content);
-  const [thumbnail, setThumbnail] = useState<string>('');
+  const [editReview] = useEditReviewMutation();
+  const [title, setTitle] = useState<string>(defaultValues.title);
+  const [rating, setRating] = useState<number>(defaultValues.rating);
+  const [content, setContent] = useState<string>(defaultValues.content);
+  const [thumbnail, setThumbnail] = useState<string>(defaultValues.thumbnail);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
   const { editor } = useTiptap(content);
@@ -76,6 +80,34 @@ const ReviewForm = ({ mode = 'create' }: ReviewFormProps) => {
             router.push(`/travel-reviews/detail/${res.review_id}`);
           })
           .catch(() => {
+            toast({
+              message: (
+                <>
+                  후기 등록에 실패하였습니다.
+                  <br />
+                  잠시 후 다시 시도해 주세요.
+                </>
+              ),
+              type: 'error',
+            });
+          })
+          .finally(() => setIsLoading(false));
+      } else {
+        const editedReview: EditReviewRequestType = {
+          review_id: Number(reviewId),
+          title,
+          content,
+          rating,
+          thumbnail,
+        };
+
+        editReview(editedReview)
+          .unwrap()
+          .then(res => {
+            toast({ message: '후기가 성공적으로 수정되었습니다!' });
+            router.push(`/travel-reviews/detail/${res.review_id}`);
+          })
+          .catch(() => {
             setIsLoading(false);
             toast({
               message: (
@@ -87,15 +119,8 @@ const ReviewForm = ({ mode = 'create' }: ReviewFormProps) => {
               ),
               type: 'error',
             });
-          });
-      } else {
-        const editedReview: EditReviewRequestType = {
-          review_id: Number(reviewId),
-          title,
-          content,
-          rating,
-        };
-        console.log('EditReviewRequest', editedReview);
+          })
+          .finally(() => setIsLoading(false));
       }
     }
   };
@@ -133,8 +158,9 @@ const ReviewForm = ({ mode = 'create' }: ReviewFormProps) => {
           )}
         />
 
-        <RouteInfoContainer label="일정" content={ROUTE_INFO_DUMMY_DATA.title} />
-        <RouteInfoContainer label="경로" content={ROUTE_INFO_DUMMY_DATA.route} />
+        <RouteInfoContainer label="테마" content={travelRouteInfo.themes.join(', ')} />
+        <RouteInfoContainer label="지역" content={travelRouteInfo.regions.join(', ')} />
+        <RouteInfoContainer label="경로" content={travelRouteInfo.travel_route.join(' - ')} />
 
         <Controller
           name="content"
