@@ -29,11 +29,11 @@ const reviewApi = createApi({
     }),
     editReview: build.mutation<EditReviewResponseType, EditReviewRequestType>({
       query: review => ({
-        url: `/reviews/${review.review_id}`,
+        url: `/reviews/${review.id}`,
         method: 'PATCH',
         body: review,
       }),
-      invalidatesTags: (result, _, { review_id: id }) => [{ type: 'Reviews', id }],
+      invalidatesTags: (result, _, { id }) => [{ type: 'Reviews', id }],
     }),
     getReviewList: build.query<GetReviewListResponseType, void>({
       query: () => ({
@@ -42,10 +42,7 @@ const reviewApi = createApi({
       }),
       providesTags: result =>
         result
-          ? [
-              ...result.reviews.map(({ review_id: id }) => ({ type: 'Reviews', id } as const)),
-              REVIEW_LIST_TAG,
-            ]
+          ? [...result.reviews.map(({ id }) => ({ type: 'Reviews', id } as const)), REVIEW_LIST_TAG]
           : [REVIEW_LIST_TAG],
     }),
     getReviewDetail: build.query<GetReviewDetailResponseType, number>({

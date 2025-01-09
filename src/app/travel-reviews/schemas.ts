@@ -1,21 +1,25 @@
 import { z } from 'zod';
 
 export const reviewSchemas = z.object({
-  user_id: z.number(),
+  id: z.number(),
+  user_id: z.string(),
   travel_route_id: z.number(),
-  review_id: z.number(),
   title: z
     .string()
     .min(1, { message: '제목을 입력해 주세요.' })
     .max(50, { message: '제목은 50자 이하로 작성해 주세요.' }),
   nickname: z.string(),
-  content: z.string().min(1, { message: '내용을 입력해 주세요.' }),
+  content: z
+    .string()
+    .min(1, { message: '내용을 입력해 주세요.' })
+    .max(3000, { message: '내용은 3000자 이하로 작성해 주세요.' }),
   rating: z.number().min(0).max(5),
   like_count: z.number(),
+  liked_by_user: z.boolean(),
   comment_count: z.number(),
-  photo_urls: z.string().array(),
   regions: z.string().array(),
   travel_route: z.string().array(),
+  thumbnail: z.string(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
   message: z.string(),
@@ -31,19 +35,26 @@ export const postReviewRequestSchema = reviewSchemas.pick({
   title: true,
   rating: true,
   content: true,
-  photo_urls: true,
+  thumbnail: true,
 });
 
-export const postReviewResponseSchema = reviewSchemas.pick({
-  review_id: true,
-  title: true,
-  message: true,
-});
+export const postReviewResponseSchema = reviewSchemas
+  .pick({
+    id: true,
+    user_id: true,
+    nickname: true,
+    like_count: true,
+    liked_by_user: true,
+    created_at: true,
+    updated_at: true,
+    message: true,
+  })
+  .merge(postReviewRequestSchema);
 
 export const singleReviewSchema = reviewSchemas.pick({
   user_id: true,
   nickname: true,
-  review_id: true,
+  id: true,
   title: true,
   rating: true,
   like_count: true,
@@ -56,16 +67,15 @@ export const getReviewListResponseSchema = z.object({
   page: z.number(),
   size: z.number(),
   total_pages: z.number(),
-  total_reviews: z.number(),
+  // total_reviews: z.number(),
   reviews: singleReviewSchema.array(),
 });
 
 export const editReviewRequestSchema = reviewSchemas.pick({
-  review_id: true,
+  id: true,
   title: true,
   content: true,
   rating: true,
-  photo_urls: true,
 });
 
 export const editReviewResponseSchema = editReviewRequestSchema.extend({
@@ -74,7 +84,7 @@ export const editReviewResponseSchema = editReviewRequestSchema.extend({
 
 export const deleteReviewResponseSchema = reviewSchemas.pick({ message: true });
 
-export const likeReviewResponseSchema = reviewSchemas.pick({ review_id: true, message: true });
+export const likeReviewResponseSchema = reviewSchemas.pick({ id: true, message: true });
 
 export const cancelLikeReviewResponseSchema = reviewSchemas.pick({ message: true });
 

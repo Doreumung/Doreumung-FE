@@ -1,9 +1,11 @@
+import { SingleReviewType } from '@/app/travel-reviews/types';
+
 // 리뷰 리스트 UI 테스트를 위한 더미 데이터
-export const REVIEW_LIST = [
+export const REVIEW_LIST: SingleReviewType[] = [
   {
-    user_id: 1,
+    user_id: '1',
     nickname: '정센',
-    review_id: 1,
+    id: 1,
     title: '여행 겁나게 재밌어부러야',
     rating: 5,
     like_count: 3,
@@ -12,9 +14,9 @@ export const REVIEW_LIST = [
     updated_at: '2024-12-23T14:00:00Z',
   },
   {
-    user_id: 2,
+    user_id: '2',
     nickname: '권연',
-    review_id: 2,
+    id: 2,
     title: '절거운 여행',
     rating: 3,
     like_count: 7,
@@ -23,9 +25,9 @@ export const REVIEW_LIST = [
     updated_at: '2024-12-23T14:00:00Z',
   },
   {
-    user_id: 3,
+    user_id: '3',
     nickname: '조유원숭이',
-    review_id: 3,
+    id: 3,
     title: '맛있는 거 많이 먹구 왔어요',
     rating: 5,
     like_count: 3,
@@ -34,9 +36,9 @@ export const REVIEW_LIST = [
     updated_at: '2024-12-23T14:00:00Z',
   },
   {
-    user_id: 4,
+    user_id: '4',
     nickname: '승강',
-    review_id: 4,
+    id: 4,
     title: '멋진 여행',
     rating: 3,
     like_count: 7,
@@ -45,9 +47,9 @@ export const REVIEW_LIST = [
     updated_at: '2024-12-23T14:00:00Z',
   },
   {
-    user_id: 5,
+    user_id: '5',
     nickname: '임돌',
-    review_id: 5,
+    id: 5,
     title: '멋진 여행',
     rating: 5,
     like_count: 3,
@@ -56,9 +58,9 @@ export const REVIEW_LIST = [
     updated_at: '2024-12-23T14:00:00Z',
   },
   {
-    user_id: 6,
+    user_id: '6',
     nickname: '권연',
-    review_id: 6,
+    id: 6,
     title: '멋진 여행',
     rating: 3,
     like_count: 7,
@@ -67,9 +69,9 @@ export const REVIEW_LIST = [
     updated_at: '2024-12-23T14:00:00Z',
   },
   {
-    user_id: 7,
+    user_id: '7',
     nickname: '조유원숭이',
-    review_id: 7,
+    id: 7,
     title: '멋진 여행',
     rating: 5,
     like_count: 3,
@@ -78,9 +80,9 @@ export const REVIEW_LIST = [
     updated_at: '2024-12-23T14:00:00Z',
   },
   {
-    user_id: 8,
+    user_id: '8',
     nickname: '승강',
-    review_id: 8,
+    id: 8,
     title: '멋진 여행',
     rating: 3,
     like_count: 7,
@@ -89,9 +91,9 @@ export const REVIEW_LIST = [
     updated_at: '2024-12-23T14:00:00Z',
   },
   {
-    user_id: 9,
+    user_id: '9',
     nickname: '임돌',
-    review_id: 9,
+    id: 9,
     title: '멋진 여행',
     rating: 5,
     like_count: 3,
