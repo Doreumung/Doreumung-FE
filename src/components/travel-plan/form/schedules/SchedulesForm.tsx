@@ -14,7 +14,7 @@ import {
 
 const SchedulesForm = () => {
   const dispatch = useAppDispatch();
-  const { schedule } = useAppSelector(state => state.travelPlan.config);
+  const { schedule } = useAppSelector(state => state.travelPlan);
   const themeToggles = useAppSelector(state => state.travelPlan.themeToggles);
   const mealToggles = useAppSelector(state => state.travelPlan.mealToggles);
 
