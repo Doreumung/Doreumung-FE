@@ -66,6 +66,12 @@ export const userApi = createApi({
         },
       }),
     }),
+    deleteUserInfo: builder.mutation({
+      query: () => ({
+        url: '/user/me',
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -77,4 +83,5 @@ export const {
   useSendKakaoCodeQuery,
   useSendGoogleCodeQuery,
   useUpdateUserInfoMutation,
+  useDeleteUserInfoMutation,
 } = userApi;

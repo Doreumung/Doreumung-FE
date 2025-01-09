@@ -9,11 +9,15 @@ import clsx from 'clsx';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import Toast, { toast } from '@/components/common/toast/Toast';
+import { useDeleteUserInfoMutation } from '@/api/userApi';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
   const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
   const { user, loginType } = useSelector((state: RootState) => state.user);
   const [isUserUpdate, setIsUserUpdate] = useState<'success' | 'error' | null>(null);
+  const [deleteUser] = useDeleteUserInfoMutation();
+  const router = useRouter();
 
   useEffect(() => {
     if (isUserUpdate === 'success') {
@@ -37,6 +41,39 @@ const Page = () => {
       setIsUserUpdate(null);
     }
   }, [isUserUpdate]);
+
+  const deleteHandeler = async () => {
+    try {
+      await deleteUser({}).unwrap();
+      console.log('회원 탈퇴 성공');
+
+      toast({
+        message: (
+          <>
+            성공적으로 탈퇴되었습니다. <br />
+            메인 화면으로 이동합니다.
+          </>
+        ),
+        type: 'success',
+      });
+
+      setTimeout(() => {
+        router.push('/');
+      }, 2000); // 메인 이동
+    } catch (err) {
+      console.log('회원 탈퇴 실패', err);
+
+      toast({
+        message: (
+          <>
+            탈퇴에 실패하였습니다. <br />
+            잠시 후 다시 시도해 주세요!
+          </>
+        ),
+        type: 'error',
+      });
+    }
+  };
 
   if (!user) {
     return null;
@@ -71,7 +108,7 @@ const Page = () => {
               </>
             }
             setShowLayerPopup={setShowLayerPopup}
-            onConfirm={() => {}}
+            onConfirm={deleteHandeler}
           />
         )}
       </div>
