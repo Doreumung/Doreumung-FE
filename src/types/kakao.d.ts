@@ -56,6 +56,45 @@ declare namespace kakao.maps {
     position?: LatLng;
   }
 
+  class Marker {
+    constructor(options: MarkerOptions);
+    setMap(map: Map | null): void;
+    setPosition(position: LatLng): void;
+    getPosition(): LatLng;
+    setImage(image: MarkerImage): void;
+    getTitle(): string;
+    setTitle(title: string): void;
+    setClickable(clickable: boolean): void;
+  }
+
+  interface MarkerOptions {
+    position: LatLng;
+    map?: Map;
+    title?: string;
+    image?: MarkerImage;
+    clickable?: boolean;
+    draggable?: boolean;
+    zIndex?: number;
+  }
+
+  class MarkerImage {
+    constructor(src: string, size: Size, options?: MarkerImageOptions);
+  }
+
+  interface MarkerImageOptions {
+    offset?: Point;
+    shape?: string;
+    coords?: string;
+  }
+
+  class Size {
+    constructor(width: number, height: number);
+  }
+
+  class Point {
+    constructor(x: number, y: number);
+  }
+
   function load(callback: () => void): void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function event(target: object, type: string, callback: (...args: any[]) => void): void;
