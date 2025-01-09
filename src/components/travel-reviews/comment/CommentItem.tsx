@@ -1,17 +1,15 @@
 import { useState } from 'react';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import { covertDateTime } from '@/utils/utils';
-import { CommentType } from '@/app/travel-reviews/types';
 import CommentForm from './CommentForm';
 import EditAndDelete from '../EditAndDelete';
+import { CommentItemProps } from '../types';
 
 const USER_ID = 102;
 
 const CommentItem = ({
-  comment: { user_id, nickname, content, created_at },
-}: {
-  comment: CommentType;
-}) => {
+  comment: { comment_id, user_id, nickname, content, created_at },
+}: CommentItemProps) => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
 
@@ -35,7 +33,9 @@ const CommentItem = ({
         <span className="text-darkGray text-xs">{covertDateTime(created_at)}</span>
       </div>
 
-      {isEditMode && <CommentForm content={content} setShowForm={setIsEditMode} />}
+      {isEditMode && (
+        <CommentForm content={content} setShowForm={setIsEditMode} comment_id={comment_id} />
+      )}
       {!isEditMode && <p>{content}</p>}
 
       {showLayerPopup && (

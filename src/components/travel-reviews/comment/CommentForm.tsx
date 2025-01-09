@@ -3,17 +3,17 @@ import { commentFormSchema } from '@/app/travel-reviews/schemas';
 import { CommentFormType } from '@/app/travel-reviews/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Dispatch, SetStateAction } from 'react';
 import ErrorMessage from '@/components/common/errorMessage/ErrorMessage';
+import { useEditCommentMutation, usePostCommentMutation } from '@/api/commentApi';
+import { toast } from '@/components/common/toast/Toast';
+import { useParams } from 'next/navigation';
+import { CommentFormProps } from '../types';
 
-const CommentForm = ({
-  content = '',
-  setShowForm,
-}: {
-  content?: string;
-  setShowForm?: Dispatch<SetStateAction<boolean>>;
-}) => {
-  const isNew = !!setShowForm;
+const CommentForm = ({ content = '', setShowForm, comment_id }: CommentFormProps) => {
+  const isNew = !comment_id;
+  const { reviewId: review_id } = useParams();
+  const [postComment] = usePostCommentMutation();
+  const [editComment] = useEditCommentMutation();
 
   const {
     register,
@@ -27,15 +27,45 @@ const CommentForm = ({
 
   const onSubmit: SubmitHandler<CommentFormType> = data => {
     const comment = data.content;
-    if (!setShowForm) {
-      console.log('새 댓글: ', comment);
-      reset({ content: '' });
-      // 새 댓글 작성 요청
-    } else if (setShowForm) {
-      console.log('수정된 댓글: ', comment);
-      setShowForm(false);
-      reset({ content: comment });
-      // 댓글 수정 요청
+    if (isNew) {
+      postComment({ review_id: Number(review_id), content: comment })
+        .unwrap()
+        .then(() => {
+          reset({ content: '' });
+          toast({ message: '댓글이 성공적으로 등록되었습니다!' });
+        })
+        .catch(() =>
+          toast({
+            message: (
+              <>
+                댓글 등록에 실패하였습니다.
+                <br />
+                잠시 후 다시 시도해 주세요.
+              </>
+            ),
+            type: 'error',
+          }),
+        );
+    } else if (setShowForm && comment_id) {
+      editComment({ comment_id, content: comment })
+        .unwrap()
+        .then(res => {
+          setShowForm(false);
+          reset({ content: res.content });
+          toast({ message: '댓글이 성공적으로 수정되었습니다!' });
+        })
+        .catch(() =>
+          toast({
+            message: (
+              <>
+                댓글 수정에 실패하였습니다.
+                <br />
+                잠시 후 다시 시도해 주세요.
+              </>
+            ),
+            type: 'error',
+          }),
+        );
     }
   };
 
