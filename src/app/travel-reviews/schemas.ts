@@ -121,7 +121,7 @@ export const getTravelRouteInfoResponseSchema = reviewSchemas.pick({
 export const commentSchema = z.object({
   comment_id: z.number(),
   review_id: z.number(),
-  user_id: z.number(),
+  user_id: z.string(),
   nickname: z.string(),
   content: z
     .string()

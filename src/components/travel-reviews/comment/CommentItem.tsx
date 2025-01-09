@@ -4,17 +4,37 @@ import { covertDateTime } from '@/utils/utils';
 import CommentForm from './CommentForm';
 import EditAndDelete from '../EditAndDelete';
 import { CommentItemProps } from '../types';
-
-const USER_ID = 102;
+import { useAppSelector } from '@/store/hooks';
+import { RootState } from '@/store/store';
+import { useDeleteCommentMutation } from '@/api/commentApi';
+import { toast } from '@/components/common/toast/Toast';
 
 const CommentItem = ({
   comment: { comment_id, user_id, nickname, content, created_at },
 }: CommentItemProps) => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
+  const user = useAppSelector((state: RootState) => state.user.user);
+  const [deleteComment] = useDeleteCommentMutation();
 
   const sendDeleteCommentRequest = () => {
-    console.log('댓글 삭제 요청하기');
+    deleteComment({ comment_id })
+      .unwrap()
+      .then(() => {
+        toast({ message: '댓글이 성공적으로 삭제되었습니다!' });
+      })
+      .catch(() => {
+        toast({
+          message: (
+            <>
+              댓글 삭제에 실패하였습니다.
+              <br />
+              잠시 후 다시 시도해 주세요.
+            </>
+          ),
+          type: 'error',
+        });
+      });
   };
 
   return (
@@ -22,7 +42,7 @@ const CommentItem = ({
       <div className="flex flex-col gap-1">
         <div className="flex justify-between items-center gap-2">
           <span className="text-darkerGray text-sm">{nickname}</span>
-          {USER_ID === user_id && (
+          {user && user.id === user_id && (
             <EditAndDelete
               onClickEdit={() => setIsEditMode(true)}
               onClickDelete={() => setShowLayerPopup(true)}
