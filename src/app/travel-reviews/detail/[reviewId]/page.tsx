@@ -24,7 +24,6 @@ const Page = () => {
   const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
   const user = useAppSelector((state: RootState) => state.user.user);
 
-  console.log(data);
   if (!data) return <></>;
 
   const {
@@ -96,7 +95,7 @@ const Page = () => {
               <RouteInfoContainer
                 variant="reviewDetail"
                 label="경로"
-                content={travel_route.toString()}
+                content={travel_route.join(' - ')}
               />
             </div>
 
