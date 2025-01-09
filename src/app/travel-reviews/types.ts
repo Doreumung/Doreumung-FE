@@ -2,6 +2,7 @@ import { z } from 'zod';
 import {
   cancelLikeReviewResponseSchema,
   deleteCommentResponseSchema,
+  deleteReviewRequestSchema,
   deleteReviewResponseSchema,
   editCommentRequestSchema,
   editCommentResponseSchema,
@@ -38,6 +39,8 @@ export type GetReviewListResponseType = z.infer<typeof getReviewListResponseSche
 export type EditReviewRequestType = z.infer<typeof editReviewRequestSchema>;
 
 export type EditReviewResponseType = z.infer<typeof editReviewResponseSchema>;
+
+export type DeleteReviewRequestType = z.infer<typeof deleteReviewRequestSchema>;
 
 export type DeleteReviewResponseType = z.infer<typeof deleteReviewResponseSchema>;
 

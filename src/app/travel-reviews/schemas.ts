@@ -29,7 +29,6 @@ export const reviewSchemas = z.object({
 export const getReviewDetailResponseSchema = reviewSchemas.omit({
   travel_route_id: true,
   comment_count: true,
-  message: true,
 });
 
 export const postReviewRequestSchema = reviewSchemas.pick({
@@ -49,7 +48,6 @@ export const postReviewResponseSchema = reviewSchemas
     liked_by_user: true,
     created_at: true,
     updated_at: true,
-    message: true,
   })
   .merge(postReviewRequestSchema);
 
@@ -97,17 +95,21 @@ export const editReviewRequestSchema = reviewSchemas.pick({
   title: true,
   content: true,
   rating: true,
+  thumbnail: true,
 });
 
-export const editReviewResponseSchema = editReviewRequestSchema.extend({
-  message: z.string(),
+export const editReviewResponseSchema = reviewSchemas.omit({
+  comment_count: true,
+  user_id: true,
 });
+
+export const deleteReviewRequestSchema = reviewSchemas.pick({ review_id: true });
 
 export const deleteReviewResponseSchema = reviewSchemas.pick({ message: true });
 
-export const likeReviewResponseSchema = reviewSchemas.pick({ review_id: true, message: true });
+export const likeReviewResponseSchema = reviewSchemas.pick({ review_id: true });
 
-export const cancelLikeReviewResponseSchema = reviewSchemas.pick({ message: true });
+export const cancelLikeReviewResponseSchema = reviewSchemas.pick({ review_id: true });
 
 export const commentSchema = z.object({
   comment_id: z.number(),
