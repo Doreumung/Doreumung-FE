@@ -4,6 +4,7 @@ import { VariantProps } from 'class-variance-authority';
 import { routeInfoContainerStyles } from './RouteInfoStyles';
 import { reviewStatsIconStyles } from './reviewCard/ReviewStatsStyles';
 import React, { Dispatch, SetStateAction } from 'react';
+import { GetTravelRouteInfoResponseType } from '@/app/travel-reviews/types';
 
 export type StarRatingProps = {
   value: number;
@@ -36,6 +37,8 @@ export type ReviewStatsProps = VariantProps<typeof reviewStatsIconStyles> & {
 
 export type ReviewFormProps = {
   mode: 'create' | 'edit';
+  defaultValues?: { title: string; rating: number; content: string; thumbnail: string };
+  travelRouteInfo: GetTravelRouteInfoResponseType;
 };
 
 export type EditAndDeleteProps = {
