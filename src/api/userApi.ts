@@ -56,6 +56,16 @@ export const userApi = createApi({
         method: 'GET',
       }),
     }),
+    updateUserInfo: builder.mutation({
+      query: newPassword => ({
+        url: '/user/me',
+        method: 'PATCH',
+        body: newPassword,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
   }),
 });
 
@@ -66,4 +76,5 @@ export const {
   useGetUserInfoMutation,
   useSendKakaoCodeQuery,
   useSendGoogleCodeQuery,
+  useUpdateUserInfoMutation,
 } = userApi;
