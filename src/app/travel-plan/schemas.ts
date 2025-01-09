@@ -5,7 +5,7 @@ export const scheduleItemSchema = z.object({
   place_id: z.number(),
   name: z.string(),
   latitude: z.number(),
-  logitude: z.number(),
+  longitude: z.number(),
 });
 
 // 시간대별 장소 정보 포함
@@ -42,7 +42,7 @@ export const travelRouteBaseSchema = z.object({
 
 // 여행 경로 데이터 스키마 (확장 스키마)
 export const travelRouteSchema = travelRouteBaseSchema.extend({
-  travelroute_id: z.number(),
+  travel_route_id: z.number(),
   user_id: z.number(),
 });
 
