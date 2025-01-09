@@ -8,7 +8,7 @@ import { setRegions } from '@/store/travelPlanSlice';
 
 const RegionMap = () => {
   const dispatch = useAppDispatch();
-  const { regions } = useAppSelector(state => state.travelPlan.config);
+  const { regions } = useAppSelector(state => state.travelPlan);
 
   useEffect(() => {
     const script = document.createElement('script');

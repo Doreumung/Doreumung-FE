@@ -61,7 +61,7 @@ const ResizeablePanel = ({
       >
         <div className="w-16 h-1.5 bg-[#A4D6EB] rounded-full" />
       </div>
-      <div className="overflow-auto h-[calc(100%-28px)] p-6">{children}</div>
+      <div className="overflow-auto h-[calc(100%-28px)] px-6 pt-6">{children}</div>
     </div>
   );
 };

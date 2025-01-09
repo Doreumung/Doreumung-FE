@@ -8,14 +8,19 @@ import BackNavigation from '@/components/common/backNavigation/BackNavigation';
 import ProgressIndicator from './ProgressIndicator';
 import TravelPlan from '../plan/TravelPlan';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { resetTravelPlan } from '@/store/travelPlanSlice';
+import { resetTravelPlan, setScheduleResponse } from '@/store/travelPlanSlice';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import useBeforeUnload from '@/hooks/useBeforeUnload';
 import useNavigationPopup from '@/hooks/useNavigationPopup';
+import { usePostTravelRouteMutation } from '@/api/travelRouteApi';
+import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
+import { jejuArea } from './region/jejumap';
+import { THEMES } from '@/components/common/toggle/constants';
 
 const MultiStepForm = () => {
   const dispatch = useAppDispatch();
-  const travelPlanConfig = useAppSelector(state => state.travelPlan.config);
+  const travelPlanConfig = useAppSelector(state => state.travelPlan);
+  const [postTravelRoute, { isLoading }] = usePostTravelRouteMutation();
 
   const [step, setStep] = useState(1);
   const [showLayerPopup, setShowLayerPopup] = useState(false);
@@ -40,14 +45,37 @@ const MultiStepForm = () => {
     setStep(step - 1);
   };
 
-  const handleSubmit = () => {
-    if (travelPlanConfig.schedule.morning === 0 && travelPlanConfig.schedule.afternoon === 0) {
+  const handleSubmit = async () => {
+    const { regions: initialRegions, themes: initialThemes, schedule } = travelPlanConfig;
+    let regions = initialRegions;
+    let themes = initialThemes;
+
+    if (!regions.length) {
+      const allRegions = jejuArea.map(area => area.name);
+      regions = allRegions;
+    }
+    if (!themes.length) {
+      themes = THEMES;
+    }
+
+    if (!regions.length || (!schedule.morning && !schedule.afternoon)) {
       setShowLayerPopup(true);
-    } else {
-      console.log('여행 일정 폼: ', travelPlanConfig);
+      return;
+    }
+
+    try {
+      const response = await postTravelRoute({ config: { regions, themes, schedule } }).unwrap();
+      console.log('여행 경로 생성 성공:', response);
+      dispatch(setScheduleResponse(response));
       setStep(step + 1);
+    } catch (err) {
+      console.error('여행 경로 생성 실패:', err);
     }
   };
+
+  if (isLoading) {
+    return <LoadingSpinner className="mt-20" />;
+  }
 
   return (
     <div className="flex flex-col h-screen">

@@ -6,13 +6,15 @@ import { userApi } from '@/api/userApi';
 import { persistedUserReducer } from './persistConfig';
 import persistStore from 'redux-persist/es/persistStore';
 import reviewImages from './reviewImagesSlice';
+import travelRouteApi from '@/api/travelRouteApi';
 
 export const store = configureStore({
   reducer: {
-    travelPlan: travelPlanReducer,
     [reviewApi.reducerPath]: reviewApi.reducer,
     [commentApi.reducerPath]: commentApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
+    [travelRouteApi.reducerPath]: travelRouteApi.reducer,
+    travelPlan: travelPlanReducer,
     user: persistedUserReducer,
     reviewImages,
   },
@@ -22,7 +24,12 @@ export const store = configureStore({
         ignoredActions: ['persist/PERSIST'],
       },
     }) //
-      .concat(reviewApi.middleware, commentApi.middleware, userApi.middleware),
+      .concat(
+        reviewApi.middleware,
+        commentApi.middleware,
+        userApi.middleware,
+        travelRouteApi.middleware,
+      ),
 });
 
 // Redux Persistor 생성
