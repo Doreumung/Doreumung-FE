@@ -146,18 +146,14 @@ export const postCommentResponseSchema = commentSchema.pick({
 
 export const getCommentsResponseSchema = commentSchema.array();
 
-export const editCommentRequestSchema = z.object({
-  comment: commentSchema.pick({
-    comment_id: true,
-    content: true,
-  }),
-  review_id: commentSchema.pick({ review_id: true }),
+export const editCommentRequestSchema = commentSchema.pick({
+  comment_id: true,
+  content: true,
 });
 
 export const editCommentResponseSchema = commentSchema;
 
 export const deleteCommentRequestSchema = commentSchema.pick({
-  review_id: true,
   comment_id: true,
 });
 
