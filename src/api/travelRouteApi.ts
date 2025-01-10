@@ -73,7 +73,7 @@ export const travelRouteApi = createApi({
     // 사용자 저장된 여행 경로 삭제 DELETE
     deleteTravelRoute: builder.mutation<DeleteTravelRouteResponse, number>({
       query: id => ({
-        url: `/travel-routes/${id}`,
+        url: `/travelroute/${id}`,
         method: 'DELETE',
       }),
       invalidatesTags: (result, _, id) => [{ type: 'TravelRoutes', id }, TRAVEL_ROUTE_LIST_TAG],
