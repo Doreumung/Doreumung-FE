@@ -72,6 +72,16 @@ export const userApi = createApi({
         method: 'DELETE',
       }),
     }),
+    checkPassword: builder.mutation({
+      query: pw => ({
+        url: '/user/pwcheck',
+        method: 'POST',
+        body: pw,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
   }),
 });
 
@@ -84,4 +94,5 @@ export const {
   useSendGoogleCodeQuery,
   useUpdateUserInfoMutation,
   useDeleteUserInfoMutation,
+  useCheckPasswordMutation,
 } = userApi;
