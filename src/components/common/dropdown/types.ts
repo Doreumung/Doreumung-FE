@@ -4,6 +4,7 @@ export type DropdownOption = {
   label: string;
   path?: string;
   action?: string;
+  id?: number;
   separator?: boolean;
 };
 
