@@ -40,6 +40,7 @@ const Page = () => {
               title={route.title}
               region={route.config.regions}
               placeArray={route.travel_route}
+              travel_route_id={route.travel_route_id}
             />
           </div>
         ))}

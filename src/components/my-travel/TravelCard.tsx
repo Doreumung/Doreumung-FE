@@ -6,12 +6,13 @@ import clsx from 'clsx';
 import Dropdown from '../common/dropdown/Dropdown';
 
 type TravelCardProps = {
-  title: string; // 제목
+  title: string;
   region: string[];
   placeArray: string[];
+  travel_route_id: number;
 };
 
-const TravelCard = ({ title, region, placeArray }: TravelCardProps) => {
+const TravelCard = ({ title, region, placeArray, travel_route_id }: TravelCardProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
@@ -50,7 +51,11 @@ const TravelCard = ({ title, region, placeArray }: TravelCardProps) => {
             {/* 점 3개 이미지 */}
             {isOpen && (
               <div className={clsx('absolute pt-2', 'scale-90 md:scale-100', 'left-7 md:-left-10')}>
-                <Dropdown variant="travelMenu" setIsOpen={setIsOpen} />
+                <Dropdown
+                  variant="travelMenu"
+                  setIsOpen={setIsOpen}
+                  travel_route_id={travel_route_id}
+                />
               </div>
             )}
           </div>
