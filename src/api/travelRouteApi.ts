@@ -26,7 +26,9 @@ export const travelRouteApi = createApi({
       providesTags: result =>
         result
           ? [
-              ...result.map(({ travel_route_id: id }) => ({ type: 'TravelRoutes', id } as const)),
+              ...result.travel_list.map(
+                ({ travel_route_id: id }) => ({ type: 'TravelRoutes', id } as const),
+              ),
               TRAVEL_ROUTE_LIST_TAG,
             ]
           : [TRAVEL_ROUTE_LIST_TAG],
