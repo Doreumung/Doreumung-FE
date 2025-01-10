@@ -6,11 +6,13 @@ import UserDataForm from '@/components/edit-profile/form/UserDataForm';
 import Button from '@/components/common/buttons/Button';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import clsx from 'clsx';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { toast } from '@/components/common/toast/Toast';
 import { useDeleteUserInfoMutation } from '@/api/userApi';
 import { useRouter } from 'next/navigation';
+import { clearUser } from '@/store/userSlice';
+import { destroyCookie } from 'nookies';
 
 const Page = () => {
   const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
@@ -18,6 +20,7 @@ const Page = () => {
   const [isUserUpdate, setIsUserUpdate] = useState<'success' | 'error' | null>(null);
   const [deleteUser] = useDeleteUserInfoMutation();
   const router = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isUserUpdate === 'success') {
@@ -44,6 +47,14 @@ const Page = () => {
       setTimeout(() => {
         router.push('/');
       }, 2000); // 메인 이동
+
+      // 탈퇴 처리
+      localStorage.removeItem('persist:user');
+      localStorage.removeItem('auto_signin');
+      dispatch(clearUser());
+
+      destroyCookie(null, 'access_token', { path: '/' });
+      destroyCookie(null, 'refresh_token', { path: '/' });
     } catch (err) {
       console.log('회원 탈퇴 실패', err);
 
