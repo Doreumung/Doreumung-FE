@@ -4,11 +4,11 @@ export type DropdownOption = {
   label: string;
   path?: string;
   action?: string;
-  id?: number;
   separator?: boolean;
 };
 
 export type DropdownProps = {
   variant: 'userMenu' | 'travelMenu' | 'mobileMenu' | 'mobileUserMenu';
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  travel_route_id?: number;
 };

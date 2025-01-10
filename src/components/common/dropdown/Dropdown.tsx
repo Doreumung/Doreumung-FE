@@ -9,8 +9,9 @@ import { clearUser } from '@/store/userSlice';
 import { destroyCookie, parseCookies } from 'nookies';
 import { useLogoutMutation } from '@/api/userApi';
 import { useDeleteTravelRouteMutation } from '@/api/travelRouteApi';
+import { toast } from '../toast/Toast';
 
-const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen }) => {
+const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen, travel_route_id }) => {
   const isMobile = useIsMobile();
   const router = useRouter();
   const options: DropdownOption[] = DROPDOWN_MENU[variant];
@@ -44,15 +45,16 @@ const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen }) => {
           break;
         case 'deleteTravel':
           // 저장 경로 삭제 로직 구현
-          if (option.id) {
-            deleteTravelRoute(option.id)
+          if (travel_route_id) {
+            deleteTravelRoute(travel_route_id)
               .unwrap()
               .then(() => {
-                console.log(`여행 경로 삭제 성공: ID ${option.id}`);
+                console.log(`여행 경로 삭제 성공: ID ${travel_route_id}`);
+                toast({ message: ['일정이 성공적으로 삭제되었습니다.'] });
               })
-              .catch(err => console.error('여행 경로 삭제 실패:', err));
-          } else {
-            console.error('리뷰가 작성 되어있는 일정은 삭제할 수 없습니다');
+              .catch(() => {
+                toast({ message: ['리뷰가 작성된 일정은 삭제할 수 없습니다.'], type: 'error' });
+              });
           }
           break;
         default:
