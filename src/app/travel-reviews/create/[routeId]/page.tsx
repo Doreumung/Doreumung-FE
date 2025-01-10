@@ -14,17 +14,16 @@ const Page = () => {
     isLoading,
     error,
   } = useGetTravelRouteInfoQuery({ travel_route_id: Number(routeId) }, { skip: !routeId });
-  if (isLoading) <LoadingSpinner />;
+
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <div className="flex flex-col items-center w-full">
       <BackNavigation to="reviewList" />
-
       {error && <ApiErrorMessage />}
-
       {!error && (
         <>
-          <h3 className="block py-12 text-darkerGray text-3xl">후기 작성</h3>
+          <h3 className="block py-12 text-3xl">후기 작성</h3>
           {travelRouteInfo && <ReviewForm mode="create" travelRouteInfo={travelRouteInfo} />}
         </>
       )}
