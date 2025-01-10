@@ -21,17 +21,11 @@ const CommentItem = ({
     deleteComment({ comment_id })
       .unwrap()
       .then(() => {
-        toast({ message: '댓글이 성공적으로 삭제되었습니다!' });
+        toast({ message: ['댓글이 성공적으로 삭제되었습니다!'] });
       })
       .catch(() => {
         toast({
-          message: (
-            <>
-              댓글 삭제에 실패하였습니다.
-              <br />
-              잠시 후 다시 시도해 주세요.
-            </>
-          ),
+          message: ['댓글 삭제에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
           type: 'error',
         });
       });

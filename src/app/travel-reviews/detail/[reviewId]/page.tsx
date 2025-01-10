@@ -15,7 +15,7 @@ import { useDeleteReviewMutation, useGetReviewDetailQuery } from '@/api/reviewAp
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import { useAppSelector } from '@/store/hooks';
 import { RootState } from '@/store/store';
-import Toast, { toast } from '@/components/common/toast/Toast';
+import { toast } from '@/components/common/toast/Toast';
 import { useGetCommentsQuery } from '@/api/commentApi';
 
 const Page = () => {
@@ -62,18 +62,12 @@ const Page = () => {
     deleteReview({ review_id: Number(review_id) })
       .unwrap()
       .then(() => {
-        toast({ message: '후기가 성공적으로 삭제되었습니다!' });
+        toast({ message: ['후기가 성공적으로 삭제되었습니다!'] });
         router.push('/travel-reviews');
       })
       .catch(() => {
         toast({
-          message: (
-            <>
-              후기 삭제에 실패하였습니다.
-              <br />
-              잠시 후 다시 시도해 주세요.
-            </>
-          ),
+          message: ['후기 삭제에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
           type: 'error',
         });
       });
@@ -171,7 +165,6 @@ const Page = () => {
           )}
         </>
       )}
-      <Toast />
     </div>
   );
 };

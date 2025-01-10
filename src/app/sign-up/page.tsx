@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useSignUpMutation } from '@/api/userApi';
 import { omit } from 'lodash';
-import Toast, { toast } from '@/components/common/toast/Toast';
+import { toast } from '@/components/common/toast/Toast';
 import { useRouter } from 'next/navigation';
 
 const Page = () => {
@@ -47,12 +47,7 @@ const Page = () => {
       const result = await signUpUser(JSON.stringify(userData)).unwrap();
       console.log('회원가입 성공:', result);
       toast({
-        message: (
-          <>
-            회원가입이 완료되었습니다. <br />
-            로그인 페이지로 이동합니다.
-          </>
-        ),
+        message: ['회원가입이 완료되었습니다.', '로그인 페이지로 이동합니다.'],
       });
 
       setTimeout(() => {
@@ -61,12 +56,7 @@ const Page = () => {
     } catch (err) {
       console.error('회원가입 실패:', err);
       toast({
-        message: (
-          <>
-            회원가입에 실패하였습니다. <br />
-            잠시 후 다시 시도해 주세요.
-          </>
-        ),
+        message: ['회원가입에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
         type: 'error',
       });
     }
@@ -154,12 +144,10 @@ const Page = () => {
                 })}
               </div>
             </div>
-
             <Button label="가입하기" onClick={() => {}} className="w-96" disabled={isLoading} />
           </div>
         </div>
       </form>
-      <Toast />
     </div>
   );
 };
