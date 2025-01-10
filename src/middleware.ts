@@ -1,7 +1,13 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const membersOnlyRoutes = ['/my-travel'];
+const membersOnlyRoutes = [
+  '/my-travel',
+  'confirm-password',
+  'edit-profile',
+  'travel-reviews/create/:path*',
+  'travel-reviews/edit/:path*',
+];
 const guestsOnlyRoutes = ['/sign-up', '/sign-in'];
 
 export const middleware = (request: NextRequest) => {
@@ -24,5 +30,13 @@ export const middleware = (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: ['/my-travel', '/sign-up', '/sign-in'],
+  matcher: [
+    '/my-travel',
+    'confirm-password',
+    'edit-profile',
+    'travel-reviews/create/:path*',
+    'travel-reviews/edit/:path*',
+    '/sign-up',
+    '/sign-in',
+  ],
 };
