@@ -23,7 +23,6 @@ export const reviewSchemas = z.object({
   thumbnail: z.string(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
-  message: z.string(),
 });
 
 export const getReviewDetailResponseSchema = reviewSchemas.omit({
@@ -103,8 +102,6 @@ export const editReviewResponseSchema = reviewSchemas.omit({
 });
 
 export const deleteReviewRequestSchema = reviewSchemas.pick({ review_id: true });
-
-export const deleteReviewResponseSchema = reviewSchemas.pick({ message: true });
 
 export const likeReviewResponseSchema = reviewSchemas.pick({ review_id: true });
 
