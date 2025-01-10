@@ -8,6 +8,7 @@ import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import { SingleReviewType } from './types';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/common/buttons/Button';
+import ApiErrorMessage from '@/components/common/errorMessage/ApiErrorMessage';
 
 const Page = () => {
   const router = useRouter();
@@ -18,14 +19,7 @@ const Page = () => {
 
   return (
     <div className="flex flex-col items-center gap-12 w-full">
-      {error && (
-        <p className="text-red text-center">
-          오류가 발생하였습니다.
-          <br />
-          잠시 후 다시 시도해 주세요.
-        </p>
-      )}
-
+      {error && <ApiErrorMessage />}
       {!error && (
         <>
           <h3 className="text-3xl">도르멍 후기</h3>

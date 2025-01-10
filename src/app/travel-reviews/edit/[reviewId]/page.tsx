@@ -2,6 +2,7 @@
 
 import { useGetReviewDetailQuery, useGetTravelRouteInfoQuery } from '@/api/reviewApi';
 import BackNavigation from '@/components/common/backNavigation/BackNavigation';
+import ApiErrorMessage from '@/components/common/errorMessage/ApiErrorMessage';
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import ReviewForm from '@/components/travel-reviews/reviewForm/ReviewForm';
 import { useParams } from 'next/navigation';
@@ -13,24 +14,13 @@ const Page = () => {
     { travel_route_id: data!.travel_route_id },
     { skip: !data },
   );
-  const { title, rating, content, thumbnail } = data || {
-    title: '',
-    rating: 0,
-    content: '',
-    thumbnail: '',
-  };
+  const { title = '', rating = 0, content = '', thumbnail = '' } = data || {};
 
   if (isLoading) return <LoadingSpinner />;
 
   return (
     <div className="flex flex-col items-center w-full">
-      {error && (
-        <p className="text-red text-center">
-          오류가 발생하였습니다.
-          <br />
-          잠시 후 다시 시도해 주세요.
-        </p>
-      )}
+      {error && <ApiErrorMessage />}
       {!error && travelRouteInfo && (
         <>
           <BackNavigation to="review" reviewId={reviewId as string} />
