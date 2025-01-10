@@ -17,6 +17,7 @@ import { useAppSelector } from '@/store/hooks';
 import { RootState } from '@/store/store';
 import { toast } from '@/components/common/toast/Toast';
 import { useGetCommentsQuery } from '@/api/commentApi';
+import ApiErrorMessage from '@/components/common/errorMessage/ApiErrorMessage';
 
 const Page = () => {
   const router = useRouter();
@@ -31,28 +32,19 @@ const Page = () => {
   const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
   const user = useAppSelector((state: RootState) => state.user.user);
 
-  if (!data || error)
-    return (
-      <p className="text-red text-center">
-        오류가 발생하였습니다.
-        <br />
-        잠시 후 다시 시도해 주세요.
-      </p>
-    );
-
   const {
-    user_id,
-    title,
-    nickname,
-    content,
-    rating,
-    like_count,
-    liked_by_user,
-    regions,
-    travel_route,
-    themes,
-    created_at,
-  } = data;
+    user_id = '',
+    title = '',
+    nickname = '',
+    content = '',
+    rating = 0,
+    like_count = 0,
+    liked_by_user = false,
+    regions = [],
+    travel_route = [],
+    themes = [],
+    created_at = '',
+  } = data || {};
 
   const handleClickEdit = () => {
     router.push(`/travel-reviews/edit/${review_id}`);
@@ -86,11 +78,12 @@ const Page = () => {
 
   return (
     <div className="flex flex-col items-center w-full">
-      {!error && (
+      {error && <ApiErrorMessage />}
+      {!error && data && (
         <>
           <BackNavigation to="reviewList" />
 
-          <h3 className="block pt-12 pb-1 text-darkerGray text-3xl text-center">{title}</h3>
+          <h3 className="block pt-12 pb-1 text-3xl text-center">{title}</h3>
           <p className="flex items-center gap-3 pb-12 text-sm text-darkerGray">
             <span>{nickname}</span>
             <span>{covertDateTime(created_at)}</span>
@@ -120,7 +113,7 @@ const Page = () => {
               {/* 지도 또는 후기 대표 사진 */}
             </div>
 
-            <div className="flex flex-col gap-8 w-full pt-8 pb-4 border-b border-lighterGray">
+            <div className="flex flex-col gap-8 w-full pb-4 border-b border-lighterGray">
               <div className="leading-10" dangerouslySetInnerHTML={{ __html: content }} />
               <div className="flex justify-between items-center">
                 <div
@@ -147,13 +140,7 @@ const Page = () => {
             </div>
             <CommentForm />
             {commentsLoading && <LoadingSpinner />}
-            {commentsError && (
-              <p className="text-red text-center">
-                오류가 발생하였습니다.
-                <br />
-                잠시 후 다시 시도해 주세요.
-              </p>
-            )}
+            {commentsError && <ApiErrorMessage />}
             {commentData && <CommentList comments={commentData} />}
           </section>
 
