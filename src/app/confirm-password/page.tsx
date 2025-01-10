@@ -1,16 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '@/components/common/buttons/Button';
 import Input from '@/components/common/inputs/Input';
 import { useRouter } from 'next/navigation';
 import { useCheckPasswordMutation } from '@/api/userApi';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 
 const Page = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [checkPw, { isLoading }] = useCheckPasswordMutation();
   const router = useRouter();
+  const { loginType } = useSelector((state: RootState) => state.user);
+
+  useEffect(() => {
+    if (loginType !== 'email') {
+      router.push('/edit-profile'); // 렌더링 이후 상태 변경
+    }
+  }, [loginType, router]);
+
+  if (loginType !== 'email') {
+    return <LoadingSpinner />;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
