@@ -24,6 +24,7 @@ const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen }) => {
         case 'signOut':
           // 로그아웃 로직 구현
           localStorage.removeItem('persist:user');
+          localStorage.removeItem('auto_signin');
           dispatch(clearUser());
 
           logoutUser(
