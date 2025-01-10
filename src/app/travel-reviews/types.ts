@@ -3,7 +3,6 @@ import {
   cancelLikeReviewResponseSchema,
   deleteCommentResponseSchema,
   deleteReviewRequestSchema,
-  deleteReviewResponseSchema,
   editCommentRequestSchema,
   editCommentResponseSchema,
   editReviewRequestSchema,
@@ -45,8 +44,6 @@ export type EditReviewRequestType = z.infer<typeof editReviewRequestSchema>;
 export type EditReviewResponseType = z.infer<typeof editReviewResponseSchema>;
 
 export type DeleteReviewRequestType = z.infer<typeof deleteReviewRequestSchema>;
-
-export type DeleteReviewResponseType = z.infer<typeof deleteReviewResponseSchema>;
 
 export type LikeReviewResponseType = z.infer<typeof likeReviewResponseSchema>;
 

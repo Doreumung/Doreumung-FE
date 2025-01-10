@@ -41,7 +41,7 @@ const Page = () => {
     );
 
   const {
-    // user_id,
+    user_id,
     title,
     nickname,
     content,
@@ -130,11 +130,12 @@ const Page = () => {
                   <Heart className="fill-fadedOrange hover:fill-logo hover:scale-110 transition duration-75 ease-in" />
                   <span>{`좋아요 ${like_count}`}</span>
                 </div>
-
-                <EditAndDelete
-                  onClickEdit={handleClickEdit}
-                  onClickDelete={() => setShowLayerPopup(true)}
-                />
+                {user && user.id === user_id && (
+                  <EditAndDelete
+                    onClickEdit={handleClickEdit}
+                    onClickDelete={() => setShowLayerPopup(true)}
+                  />
+                )}
               </div>
             </div>
           </div>
