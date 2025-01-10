@@ -44,12 +44,19 @@ export const travelRouteBaseSchema = z.object({
 export const travelRouteSchema = travelRouteBaseSchema.extend({
   travel_route_id: z.number(),
   user_id: z.number(),
+  travel_route: z.string().array(),
 });
 
 //// API 스키마
 
 // 사용자 여행 목록 조회 GET
-export const getTravelRouteListResponseSchema = travelRouteSchema.array();
+export const getTravelRouteListResponseSchema = z.object({
+  page: z.number(),
+  size: z.number(),
+  total_pages: z.number(),
+  total_travel_routes: z.number(),
+  travel_list: travelRouteSchema.array(),
+});
 
 // 여행 경로 생성 POST (요청)
 export const postTravelRouteRequestSchema = z.object({

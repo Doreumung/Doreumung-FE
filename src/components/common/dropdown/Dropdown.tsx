@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { clearUser } from '@/store/userSlice';
 import { destroyCookie, parseCookies } from 'nookies';
 import { useLogoutMutation } from '@/api/userApi';
+import { useDeleteTravelRouteMutation } from '@/api/travelRouteApi';
 
 const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen }) => {
   const isMobile = useIsMobile();
@@ -15,6 +16,7 @@ const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen }) => {
   const options: DropdownOption[] = DROPDOWN_MENU[variant];
   const dispatch = useDispatch();
   const [logoutUser] = useLogoutMutation();
+  const [deleteTravelRoute] = useDeleteTravelRouteMutation();
 
   const handleSelect = (option: DropdownOption) => {
     if (option.action) {
@@ -41,6 +43,16 @@ const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen }) => {
           break;
         case 'deleteTravel':
           // 저장 경로 삭제 로직 구현
+          if (option.id) {
+            deleteTravelRoute(option.id)
+              .unwrap()
+              .then(() => {
+                console.log(`여행 경로 삭제 성공: ID ${option.id}`);
+              })
+              .catch(err => console.error('여행 경로 삭제 실패:', err));
+          } else {
+            console.error('리뷰가 작성 되어있는 일정은 삭제할 수 없습니다');
+          }
           break;
         default:
           throw new Error(`Unknown action type: ${option.action}`);
