@@ -78,10 +78,10 @@ const UserDataForm = ({
     try {
       // PATCH 요청
       const result = await updateUserInfo(JSON.stringify(updatedData)).unwrap();
-      console.log('회원정보 변경 성공: ', result.data);
+      console.log('회원정보 변경 성공: ', result);
 
       // 비밀번호 필드를 제외한 새로운 객체 생성
-      const filteredData = { ...result.data }; // 원본 객체 복사
+      const filteredData = { ...result }; // 원본 객체 복사
       delete filteredData.password; // password 필드 제거
 
       // 상태 업데이트
