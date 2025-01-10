@@ -55,13 +55,16 @@ const Page = () => {
       // 액세스 토큰을 쿠키에 저장
       // 쿠키 설정
       setCookie(null, 'access_token', result?.access_token, {
-        maxAge: 30 * 60, // 쿠키 유효기간
+        maxAge: 60, // 쿠키 유효기간
         path: '/', // 쿠키 경로
       });
       setCookie(null, 'refresh_token', result?.refresh_token, {
         maxAge: 30 * 24 * 60 * 60,
         path: '/',
       });
+
+      // 로컬 스토리지에 자동 로그인 유무 저장
+      localStorage.setItem('auto_signin', JSON.stringify(isChecked));
 
       const userData = await getUserInfo({});
       dispatch(setUser({ user: userData.data, loginType: 'email' }));
@@ -77,8 +80,12 @@ const Page = () => {
         case 401:
           setErrorMessage('이메일 혹은 비밀번호를 확인해주세요.');
           break;
+        case 404:
+          setErrorMessage('가입되지 않은 이메일입니다.');
+          break;
         case 500:
           setErrorMessage('알 수 없는 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.');
+          break;
       }
     }
   };
