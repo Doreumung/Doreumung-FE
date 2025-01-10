@@ -3,19 +3,16 @@
 import { useState } from 'react';
 import Button from '@/components/common/buttons/Button';
 import Input from '@/components/common/inputs/Input';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
 import { useRouter } from 'next/navigation';
+import { useCheckPasswordMutation } from '@/api/userApi';
 
 const Page = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const userData = useSelector((state: RootState) => state.user.user);
+  const [checkPw, { isLoading }] = useCheckPasswordMutation();
   const router = useRouter();
 
-  const userPassword = userData?.nickname; // 닉네임 말고 비밀번호로 수정
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(confirmPassword);
 
@@ -25,11 +22,18 @@ const Page = () => {
       return;
     }
 
-    if (confirmPassword === userPassword) {
-      setErrorMessage(''); // 오류 메시지 제거
-      router.push('/edit-profile');
-    } else {
-      setErrorMessage('비밀번호가 일치하지 않습니다.');
+    try {
+      const result = await checkPw(JSON.stringify(confirmPassword)).unwrap();
+
+      if (result.authentication == true) {
+        setErrorMessage(''); // 오류 메시지 제거
+        router.push('/edit-profile');
+      } else {
+        setErrorMessage('비밀번호가 일치하지 않습니다.');
+      }
+    } catch (err) {
+      console.log('확인 실패', err);
+      setErrorMessage('에러가 발생했습니다. 잠시 후 다시 시도해 주세요.');
     }
   };
 
@@ -52,7 +56,12 @@ const Page = () => {
         {errorMessage && (
           <p className="self-center px-11 md:px-3 pb-3 text-xs text-red">{errorMessage}</p>
         )}
-        <Button label="확인" onClick={() => {}} className="w-80 md:w-96 text-sm" />
+        <Button
+          label="확인"
+          onClick={() => {}}
+          className="w-80 md:w-96 text-sm"
+          disabled={isLoading}
+        />
       </form>
     </div>
   );
