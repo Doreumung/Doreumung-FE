@@ -74,7 +74,7 @@ const MultiStepForm = () => {
   };
 
   if (isLoading) {
-    return <LoadingSpinner className="mt-20" />;
+    return <LoadingSpinner />;
   }
 
   return (
