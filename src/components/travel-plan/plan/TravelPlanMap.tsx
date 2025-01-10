@@ -1,7 +1,18 @@
+import { Schedule, ScheduleItem } from '@/app/travel-plan/types';
+import { useAppSelector } from '@/store/hooks';
 import { useEffect } from 'react';
 
 const TravelPlanMap = () => {
+  const schedules = useAppSelector(state => state.travelPlan.scheduleResponse) as Schedule;
+
   useEffect(() => {
+    if (!schedules || !('schedule' in schedules) || !schedules.schedule) {
+      console.error('스케줄 데이터가 없습니다.');
+      return;
+    }
+
+    const schedule = schedules.schedule as Schedule;
+
     const script = document.createElement('script');
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_KEY}&libraries=services&autoload=false`;
     script.async = true;
@@ -19,14 +30,52 @@ const TravelPlanMap = () => {
           level: level,
         };
 
-        new window.kakao.maps.Map(container, options);
+        const map = new window.kakao.maps.Map(container, options);
+
+        //장소 - 위도 경도 마커
+        if (schedule) {
+          const customOverlay = new window.kakao.maps.CustomOverlay({
+            map: null,
+            content: '',
+            position: undefined,
+          });
+
+          Object.keys(schedule).forEach(key => {
+            const items = Array.isArray(schedule[key as keyof Schedule])
+              ? (schedule[key as keyof Schedule] as ScheduleItem[])
+              : [schedule[key as keyof Schedule]];
+
+            items.forEach(place => {
+              if (place && !Array.isArray(place)) {
+                const marker = new window.kakao.maps.Marker({
+                  map: map,
+                  position: new window.kakao.maps.LatLng(place.latitude, place.longitude),
+                });
+
+                // 마커 클릭 이벤트 추가
+                window.kakao.maps.event.addListener(marker, 'click', () => {
+                  const overlayContent = document.createElement('div');
+                  overlayContent.className =
+                    'p-1 bg-white border border-gray-400 rounded-md shadow-md text-sm';
+                  overlayContent.innerText = place.name;
+
+                  customOverlay.setContent(overlayContent);
+                  customOverlay.setPosition(
+                    new window.kakao.maps.LatLng(place.latitude, place.longitude),
+                  );
+                  customOverlay.setMap(map);
+                });
+              }
+            });
+          });
+        }
       });
     };
 
     return () => {
       document.head.removeChild(script);
     };
-  }, []);
+  }, [schedules]);
 
   return (
     <div className="relative w-full h-full">
