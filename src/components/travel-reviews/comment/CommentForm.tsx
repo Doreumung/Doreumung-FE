@@ -32,17 +32,11 @@ const CommentForm = ({ content = '', setShowForm, comment_id }: CommentFormProps
         .unwrap()
         .then(() => {
           reset({ content: '' });
-          toast({ message: '댓글이 성공적으로 등록되었습니다!' });
+          toast({ message: ['댓글이 성공적으로 등록되었습니다!'] });
         })
         .catch(() =>
           toast({
-            message: (
-              <>
-                댓글 등록에 실패하였습니다.
-                <br />
-                잠시 후 다시 시도해 주세요.
-              </>
-            ),
+            message: ['댓글 등록에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
             type: 'error',
           }),
         );
@@ -52,17 +46,11 @@ const CommentForm = ({ content = '', setShowForm, comment_id }: CommentFormProps
         .then(res => {
           setShowForm(false);
           reset({ content: res.content });
-          toast({ message: '댓글이 성공적으로 수정되었습니다!' });
+          toast({ message: ['댓글이 성공적으로 수정되었습니다!'] });
         })
         .catch(() =>
           toast({
-            message: (
-              <>
-                댓글 수정에 실패하였습니다.
-                <br />
-                잠시 후 다시 시도해 주세요.
-              </>
-            ),
+            message: ['댓글 수정에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
             type: 'error',
           }),
         );

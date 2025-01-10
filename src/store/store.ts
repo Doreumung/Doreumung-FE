@@ -6,6 +6,7 @@ import { userApi } from '@/api/userApi';
 import { persistedUserReducer } from './persistConfig';
 import persistStore from 'redux-persist/es/persistStore';
 import reviewImages from './reviewImagesSlice';
+import toast from './toastSlice';
 import travelRouteApi from '@/api/travelRouteApi';
 
 export const store = configureStore({
@@ -17,6 +18,7 @@ export const store = configureStore({
     travelPlan: travelPlanReducer,
     user: persistedUserReducer,
     reviewImages,
+    toast,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

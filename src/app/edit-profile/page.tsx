@@ -8,7 +8,7 @@ import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
-import Toast, { toast } from '@/components/common/toast/Toast';
+import { toast } from '@/components/common/toast/Toast';
 import { useDeleteUserInfoMutation } from '@/api/userApi';
 import { useRouter } from 'next/navigation';
 
@@ -21,20 +21,12 @@ const Page = () => {
 
   useEffect(() => {
     if (isUserUpdate === 'success') {
-      toast({
-        message: '성공적으로 변경되었습니다!',
-        type: 'success',
-      });
+      toast({ message: ['성공적으로 변경되었습니다!'] });
 
       setIsUserUpdate(null);
     } else if (isUserUpdate === 'error') {
       toast({
-        message: (
-          <>
-            변경에 실패하였습니다. <br />
-            잠시 후 다시 시도해 주세요!
-          </>
-        ),
+        message: ['변경에 실패하였습니다.', '잠시 후 다시 시도해 주세요!'],
         type: 'error',
       });
 
@@ -47,15 +39,7 @@ const Page = () => {
       await deleteUser({}).unwrap();
       console.log('회원 탈퇴 성공');
 
-      toast({
-        message: (
-          <>
-            성공적으로 탈퇴되었습니다. <br />
-            메인 화면으로 이동합니다.
-          </>
-        ),
-        type: 'success',
-      });
+      toast({ message: ['성공적으로 탈퇴되었습니다.', '메인 화면으로 이동합니다.'] });
 
       setTimeout(() => {
         router.push('/');
@@ -64,12 +48,7 @@ const Page = () => {
       console.log('회원 탈퇴 실패', err);
 
       toast({
-        message: (
-          <>
-            탈퇴에 실패하였습니다. <br />
-            잠시 후 다시 시도해 주세요!
-          </>
-        ),
+        message: ['탈퇴에 실패하였습니다.', '잠시 후 다시 시도해 주세요!'],
         type: 'error',
       });
     }
@@ -112,7 +91,6 @@ const Page = () => {
           />
         )}
       </div>
-      <Toast />
     </div>
   );
 };

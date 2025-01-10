@@ -23,7 +23,7 @@ import ThumbnailPicker from './ThumbnailPicker';
 import { useAppSelector } from '@/store/hooks';
 import { RootState } from '@/store/store';
 import { useEditReviewMutation, usePostReviewMutation } from '@/api/reviewApi';
-import Toast, { toast } from '@/components/common/toast/Toast';
+import { toast } from '@/components/common/toast/Toast';
 
 const ReviewForm = ({
   mode = 'create',
@@ -76,18 +76,12 @@ const ReviewForm = ({
         postReview(newReview)
           .unwrap()
           .then(res => {
-            toast({ message: '후기가 성공적으로 등록되었습니다!' });
+            toast({ message: ['후기가 성공적으로 등록되었습니다!'] });
             router.push(`/travel-reviews/detail/${res.review_id}`);
           })
           .catch(() => {
             toast({
-              message: (
-                <>
-                  후기 등록에 실패하였습니다.
-                  <br />
-                  잠시 후 다시 시도해 주세요.
-                </>
-              ),
+              message: ['후기 등록에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
               type: 'error',
             });
           })
@@ -104,19 +98,13 @@ const ReviewForm = ({
         editReview(editedReview)
           .unwrap()
           .then(res => {
-            toast({ message: '후기가 성공적으로 수정되었습니다!' });
+            toast({ message: ['후기가 성공적으로 수정되었습니다!'] });
             router.push(`/travel-reviews/detail/${res.review_id}`);
           })
           .catch(() => {
             setIsLoading(false);
             toast({
-              message: (
-                <>
-                  후기 등록에 실패하였습니다.
-                  <br />
-                  잠시 후 다시 시도해 주세요.
-                </>
-              ),
+              message: ['후기 등록에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
               type: 'error',
             });
           })
@@ -192,7 +180,7 @@ const ReviewForm = ({
           disabled={isLoading}
         />
       </form>
-      <Toast />
+
       {showLayerPopup && (
         <LayerPopup
           label="후기를 등록하시겠습니까?"
