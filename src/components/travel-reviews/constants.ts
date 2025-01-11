@@ -1,3 +1,5 @@
+import { ToastArgs } from '@/components/common/toast/types';
+
 export const COLOR_SWATCHES = [
   '#FBD6B0',
   '#F8EAC1',
@@ -32,3 +34,67 @@ export const INFO_CONTAINER_STYLES =
   'flex flex-col items-start gap-1 text-darkerGray md:flex-row md:items-center md:gap-4' as const;
 
 export const LABEL_STYLES = 'shrink-0 pl-2 md:pl-0';
+
+export const POST_REVIEW_SUCCESS_MESSAGE: ToastArgs = {
+  message: ['후기가 성공적으로 등록되었습니다!'],
+};
+
+export const POST_REVIEW_ERROR_MESSAGE: ToastArgs = {
+  message: ['후기 등록에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
+  type: 'error',
+};
+
+export const EDIT_REVIEW_SUCCESS_MESSAGE: ToastArgs = {
+  message: ['후기가 성공적으로 수정되었습니다!'],
+};
+
+export const EDIT_REVIEW_ERROR_MESSAGE: ToastArgs = {
+  message: ['후기 수정에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
+  type: 'error',
+};
+
+export const DELETE_REVIEW_SUCCESS_MESSAGE: ToastArgs = {
+  message: ['후기가 성공적으로 삭제되었습니다!'],
+};
+
+export const DELETE_REVIEW_ERROR_MESSAGE: ToastArgs = {
+  message: ['후기 삭제에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
+  type: 'error',
+};
+
+export const SOCKET_ERROR_MESSAGE: ToastArgs = {
+  message: ['오류가 발생하였습니다.', '잠시 후 다시 시도해 주세요.'],
+  type: 'error',
+};
+
+export const LIKE_MY_OWN_REVIEW_ERROR_MESSAGE: ToastArgs = {
+  message: ['자신의 후기에 좋아요를 누를 수 없습니다.'],
+  type: 'error',
+};
+
+export const POST_COMMENT_SUCCESS_MESSAGE: ToastArgs = {
+  message: ['댓글이 성공적으로 등록되었습니다!'],
+};
+
+export const POST_COMMENT_ERROR_MESSAGE: ToastArgs = {
+  message: ['댓글 등록에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
+  type: 'error',
+};
+
+export const EDIT_COMMENT_SUCCESS_MESSAGE: ToastArgs = {
+  message: ['댓글이 성공적으로 수정되었습니다!'],
+};
+
+export const EDIT_COMMENT_ERROR_MESSAGE: ToastArgs = {
+  message: ['댓글 수정에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
+  type: 'error',
+};
+
+export const DELETE_COMMENT_SUCCESS_MESSAGE: ToastArgs = {
+  message: ['댓글이 성공적으로 삭제되었습니다!'],
+};
+
+export const DELETE_COMMENT_ERROR_MESSAGE: ToastArgs = {
+  message: ['댓글 삭제에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
+  type: 'error',
+};

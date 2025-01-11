@@ -8,9 +8,14 @@ import { useEditCommentMutation, usePostCommentMutation } from '@/api/commentApi
 import { toast } from '@/components/common/toast/Toast';
 import { useParams } from 'next/navigation';
 import { CommentFormProps } from '../types';
+import {
+  EDIT_COMMENT_ERROR_MESSAGE,
+  EDIT_COMMENT_SUCCESS_MESSAGE,
+  POST_COMMENT_ERROR_MESSAGE,
+  POST_COMMENT_SUCCESS_MESSAGE,
+} from '../constants';
 
 const CommentForm = ({ content = '', setShowForm, comment_id }: CommentFormProps) => {
-  const isNew = !comment_id;
   const { reviewId: review_id } = useParams();
   const [postComment] = usePostCommentMutation();
   const [editComment] = useEditCommentMutation();
@@ -27,33 +32,23 @@ const CommentForm = ({ content = '', setShowForm, comment_id }: CommentFormProps
 
   const onSubmit: SubmitHandler<CommentFormType> = data => {
     const comment = data.content;
-    if (isNew) {
+    if (!comment_id) {
       postComment({ review_id: Number(review_id), content: comment })
         .unwrap()
         .then(() => {
           reset({ content: '' });
-          toast({ message: ['댓글이 성공적으로 등록되었습니다!'] });
+          toast(POST_COMMENT_SUCCESS_MESSAGE);
         })
-        .catch(() =>
-          toast({
-            message: ['댓글 등록에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
-            type: 'error',
-          }),
-        );
+        .catch(() => toast(POST_COMMENT_ERROR_MESSAGE));
     } else if (setShowForm && comment_id) {
       editComment({ comment_id, content: comment })
         .unwrap()
         .then(res => {
           setShowForm(false);
           reset({ content: res.content });
-          toast({ message: ['댓글이 성공적으로 수정되었습니다!'] });
+          toast(EDIT_COMMENT_SUCCESS_MESSAGE);
         })
-        .catch(() =>
-          toast({
-            message: ['댓글 수정에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
-            type: 'error',
-          }),
-        );
+        .catch(() => toast(EDIT_COMMENT_ERROR_MESSAGE));
     }
   };
 
@@ -63,7 +58,7 @@ const CommentForm = ({ content = '', setShowForm, comment_id }: CommentFormProps
         <textarea
           {...register('content')}
           maxLength={255}
-          className="h-28 p-2 border border-darkGray rounded-2xl outline-none resize-none"
+          className="h-28 px-3 py-2 border border-darkGray rounded-2xl outline-none resize-none"
         />
         <div className="flex justify-between">
           <div>{errors.content?.message && <ErrorMessage message={errors.content.message} />}</div>
@@ -82,7 +77,7 @@ const CommentForm = ({ content = '', setShowForm, comment_id }: CommentFormProps
               type="submit"
               color="blue"
               size="xs"
-              label={isNew ? '등록' : '저장'}
+              label={!comment_id ? '등록' : '저장'}
               className="w-16 text-sm"
             />
           </div>

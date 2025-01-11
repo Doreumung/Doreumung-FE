@@ -8,6 +8,7 @@ import { useAppSelector } from '@/store/hooks';
 import { RootState } from '@/store/store';
 import { useDeleteCommentMutation } from '@/api/commentApi';
 import { toast } from '@/components/common/toast/Toast';
+import { DELETE_COMMENT_ERROR_MESSAGE, DELETE_COMMENT_SUCCESS_MESSAGE } from '../constants';
 
 const CommentItem = ({
   comment: { comment_id, user_id, nickname, content, created_at },
@@ -21,13 +22,10 @@ const CommentItem = ({
     deleteComment({ comment_id })
       .unwrap()
       .then(() => {
-        toast({ message: ['댓글이 성공적으로 삭제되었습니다!'] });
+        toast(DELETE_COMMENT_SUCCESS_MESSAGE);
       })
       .catch(() => {
-        toast({
-          message: ['댓글 삭제에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
-          type: 'error',
-        });
+        toast(DELETE_COMMENT_ERROR_MESSAGE);
       });
   };
 

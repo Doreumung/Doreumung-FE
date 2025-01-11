@@ -1,5 +1,12 @@
 import Input from '@/components/common/inputs/Input';
-import { INFO_CONTAINER_STYLES, LABEL_STYLES } from '../constants';
+import {
+  EDIT_REVIEW_ERROR_MESSAGE,
+  EDIT_REVIEW_SUCCESS_MESSAGE,
+  INFO_CONTAINER_STYLES,
+  LABEL_STYLES,
+  POST_REVIEW_ERROR_MESSAGE,
+  POST_REVIEW_SUCCESS_MESSAGE,
+} from '../constants';
 import { useState } from 'react';
 import StarRating from '@/components/travel-reviews/reviewForm/StarRatings';
 import RouteInfoContainer from '@/components/travel-reviews/RouteInfoContainer';
@@ -76,16 +83,13 @@ const ReviewForm = ({
         postReview(newReview)
           .unwrap()
           .then(res => {
-            toast({ message: ['후기가 성공적으로 등록되었습니다!'] });
+            toast(POST_REVIEW_SUCCESS_MESSAGE);
             router.push(`/travel-reviews/detail/${res.review_id}`);
           })
           .catch(() => {
-            toast({
-              message: ['후기 등록에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
-              type: 'error',
-            });
-          })
-          .finally(() => setIsLoading(false));
+            setIsLoading(false);
+            toast(POST_REVIEW_ERROR_MESSAGE);
+          });
       } else {
         const editedReview: EditReviewRequestType = {
           review_id: Number(reviewId),
@@ -98,17 +102,13 @@ const ReviewForm = ({
         editReview(editedReview)
           .unwrap()
           .then(res => {
-            toast({ message: ['후기가 성공적으로 수정되었습니다!'] });
+            toast(EDIT_REVIEW_SUCCESS_MESSAGE);
             router.push(`/travel-reviews/detail/${res.review_id}`);
           })
           .catch(() => {
             setIsLoading(false);
-            toast({
-              message: ['후기 등록에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
-              type: 'error',
-            });
-          })
-          .finally(() => setIsLoading(false));
+            toast(EDIT_REVIEW_ERROR_MESSAGE);
+          });
       }
     }
   };
