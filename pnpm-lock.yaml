@@ -92,6 +92,9 @@ importers:
       react-redux:
         specifier: ^9.2.0
         version: 9.2.0(@types/react@19.0.1)(react@19.0.0)(redux@5.0.1)
+      react-use-websocket:
+        specifier: ^4.11.1
+        version: 4.11.1
       redux-persist:
         specifier: ^6.0.0
         version: 6.0.0(react@19.0.0)(redux@5.0.1)
@@ -2051,6 +2054,9 @@ packages:
     peerDependencies:
       react: '>=16.6.0'
       react-dom: '>=16.6.0'
+
+  react-use-websocket@4.11.1:
+    resolution: {integrity: sha512-39e8mK2a2A1h8uY3ePF45b2q0vwMOmaEy7J5qEhQg4n7vYa5oDLmqutG36kZQgAQ/3KCZS0brlGRbbZJ0+zfKQ==}
 
   react@19.0.0:
     resolution: {integrity: sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ==}
@@ -4543,6 +4549,8 @@ snapshots:
       prop-types: 15.8.1
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
+
+  react-use-websocket@4.11.1: {}
 
   react@19.0.0: {}
 
