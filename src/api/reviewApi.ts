@@ -86,10 +86,10 @@ const reviewApi = createApi({
         method: 'GET',
       }),
       transformResponse: (response: TravelRouteInfoType) => {
-        const { travel_route, config } = response;
+        const { user_id, travel_route, config } = response;
         const { regions, themes } = config;
 
-        return { travel_route, regions, themes };
+        return { user_id, travel_route, regions, themes };
       },
     }),
   }),
