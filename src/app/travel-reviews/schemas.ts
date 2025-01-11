@@ -204,3 +204,10 @@ export const travelRouteInfoSchema = z.object({
   }),
   travel_route: z.string().array(),
 });
+
+export const likeSocketResponseSchema = reviewSchemas
+  .pick({
+    user_id: true,
+    like_count: true,
+  })
+  .extend({ review_id: z.string(), is_liked: z.boolean() });
