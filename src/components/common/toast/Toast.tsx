@@ -28,7 +28,7 @@ const Toast = () => {
   if (toasts.length === 0) return null;
 
   return (
-    <div className="flex flex-col-reverse gap-4 fixed right-0 sm:right-4 bottom-4 w-full max-w-md px-4">
+    <div className="flex flex-col-reverse gap-4 fixed right-0 bottom-4 w-full max-w-md px-4 sm:right-4 sm:px-0">
       {toasts.map(({ id, type, message, visible }) => (
         <div
           key={id}
@@ -39,10 +39,10 @@ const Toast = () => {
               : 'opacity-0 translate-x-96 translate-y-4',
           )}
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <div
               className={clsx(
-                'size-12 sm:size-14 bg-cover',
+                'shrink-0 size-10 sm:size-12 bg-cover bg-center',
                 type === 'success' && 'bg-[url(/images/dolmung.svg)]',
                 type === 'error' && 'bg-[url(/images/sadDolmung.svg)]',
               )}
