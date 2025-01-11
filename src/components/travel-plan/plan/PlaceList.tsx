@@ -1,9 +1,11 @@
-import { usePatchTravelRouteMutation } from '@/api/travelRouteApi';
+import { usePatchTravelRouteMutation, usePostSavedTravelRouteMutation } from '@/api/travelRouteApi';
 import { TravelRouteResponse } from '@/app/travel-plan/types';
 import Button from '@/components/common/buttons/Button';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
+import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import Toggle from '@/components/common/toggle/Toggle';
 import { useAppSelector } from '@/store/hooks';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const PlaceList = () => {
@@ -11,11 +13,14 @@ const PlaceList = () => {
   const [showSaveLayerPopup, setShowSaveLayerPopup] = useState<boolean>(false);
   const [showSigninLayerPopup, setShowSigninLayerPopup] = useState<boolean>(false);
 
+  const router = useRouter();
+
   const isLoggedIn = useAppSelector(state => !!state.user.user);
   const travelRoute = useAppSelector(
     state => state.travelPlan.scheduleResponse,
   ) as TravelRouteResponse;
 
+  const [postSavedTravelRoute, { isLoading }] = usePostSavedTravelRouteMutation();
   const [] = usePatchTravelRouteMutation();
 
   const travelPlaces = [
@@ -71,10 +76,24 @@ const PlaceList = () => {
     // 라우터 통해 로그인 페이지 이동
   };
 
-  const handleSaveTravelRoute = (title: string = '') => {
-    console.log(`저장된 제목: ${title}`);
-    setShowSaveLayerPopup(false);
+  const handleSaveTravelRoute = async (title: string = '') => {
+    const saveTravelRoute = {
+      title,
+      schedule: travelRoute.schedule,
+      config: travelRoute.config,
+    };
+    try {
+      await postSavedTravelRoute(saveTravelRoute).unwrap();
+
+      setShowSaveLayerPopup(false);
+      // 추후 저장 경로 상세페이지로 이동시키기
+      router.push('/');
+    } catch (error) {
+      console.log('저장실패: ', error);
+    }
   };
+
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <div className="flex flex-col justify-between h-full">
