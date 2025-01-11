@@ -49,8 +49,10 @@ const Page = () => {
     shouldReconnect: () => true,
   });
 
+  const isSocketOpen = readyState === 1;
+
   const { data, isLoading, error } = useGetReviewDetailQuery(Number(review_id), {
-    skip: readyState === 1,
+    skip: isSocketOpen,
   });
 
   const {
@@ -99,8 +101,20 @@ const Page = () => {
       setShowLoginPopup(true);
     } else if (user && user.id === user_id) {
       toast({ message: ['자신의 후기에 좋아요를 누를 수 없습니다.'], type: 'error' });
+    } else if (!isSocketOpen) {
+      toast({
+        message: ['오류가 발생하였습니다.', '잠시 후 다시 시도해 주세요.'],
+        type: 'error',
+      });
     } else if (isLiked) {
-      sendJsonMessage(JSON.stringify({ user_id: user.id, review_id, is_liked: false }));
+      if (likes > 0) {
+        sendJsonMessage(JSON.stringify({ user_id: user.id, review_id, is_liked: false }));
+      } else {
+        toast({
+          message: ['오류가 발생하였습니다.', '잠시 후 다시 시도해 주세요.'],
+          type: 'error',
+        });
+      }
     } else {
       sendJsonMessage(JSON.stringify({ user_id: user.id, review_id, is_liked: true }));
     }
@@ -110,11 +124,19 @@ const Page = () => {
     if (lastMessage) {
       const receivedData: {
         review_id: string;
-        user_id?: string;
+        user_id: string;
         like_count: number;
-        is_liked?: boolean;
+        is_liked: boolean;
       } = JSON.parse(lastMessage.data);
-      if (typeof receivedData.like_count === 'number') setLikes(receivedData.like_count);
+      if (typeof receivedData.like_count === 'number') {
+        if (receivedData.like_count >= 0) setLikes(receivedData.like_count);
+        else {
+          toast({
+            message: ['오류가 발생하였습니다.', '잠시 후 다시 시도해 주세요.'],
+            type: 'error',
+          });
+        }
+      }
       if (typeof receivedData.is_liked === 'boolean') setIsLiked(receivedData.is_liked);
       console.log('received: ', receivedData);
     }
