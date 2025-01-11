@@ -103,10 +103,6 @@ export const editReviewResponseSchema = reviewSchemas.omit({
 
 export const deleteReviewRequestSchema = reviewSchemas.pick({ review_id: true });
 
-export const likeReviewResponseSchema = reviewSchemas.pick({ review_id: true });
-
-export const cancelLikeReviewResponseSchema = reviewSchemas.pick({ review_id: true });
-
 export const getTravelRouteInfoRequestSchema = reviewSchemas.pick({ travel_route_id: true });
 
 export const getTravelRouteInfoResponseSchema = reviewSchemas.pick({
