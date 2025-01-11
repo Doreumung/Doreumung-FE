@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import {
-  cancelLikeReviewResponseSchema,
   deleteCommentResponseSchema,
   deleteReviewRequestSchema,
   editCommentRequestSchema,
@@ -13,7 +12,6 @@ import {
   getReviewListResponseSchema,
   getTravelRouteInfoResponseSchema,
   getTravelRouteInfoRequestSchema,
-  likeReviewResponseSchema,
   postCommentRequestSchema,
   postCommentResponseSchema,
   postReviewRequestSchema,
@@ -44,10 +42,6 @@ export type EditReviewRequestType = z.infer<typeof editReviewRequestSchema>;
 export type EditReviewResponseType = z.infer<typeof editReviewResponseSchema>;
 
 export type DeleteReviewRequestType = z.infer<typeof deleteReviewRequestSchema>;
-
-export type LikeReviewResponseType = z.infer<typeof likeReviewResponseSchema>;
-
-export type CancelLikeReviewResponseType = z.infer<typeof cancelLikeReviewResponseSchema>;
 
 export type GetTravelRouteInfoRequestType = z.infer<typeof getTravelRouteInfoRequestSchema>;
 

@@ -1,5 +1,5 @@
 export type BackNavigationProps = {
   to: 'home' | 'reviewList' | 'review';
-  reviewId?: string;
+  reviewId?: number;
   onNavigate?: (path: string) => void;
 };

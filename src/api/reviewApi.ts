@@ -8,8 +8,6 @@ import {
   GetReviewDetailResponseType,
   PostReviewRequestType,
   PostReviewResponseType,
-  LikeReviewResponseType,
-  CancelLikeReviewResponseType,
   DeleteReviewRequestType,
   GetTravelRouteInfoResponseType,
   GetTravelRouteInfoRequestType,
@@ -66,30 +64,16 @@ const reviewApi = createApi({
       }),
       invalidatesTags: (result, _, { review_id: id }) => [{ type: 'Reviews', id }],
     }),
-    likeReview: build.mutation<LikeReviewResponseType, number>({
-      query: review_id => ({
-        url: `/reviews/${review_id}/likes`,
-        method: 'POST',
-      }),
-      invalidatesTags: (result, _, id) => [{ type: 'Reviews', id }, REVIEW_LIST_TAG],
-    }),
-    cancelLikeReview: build.mutation<CancelLikeReviewResponseType, number>({
-      query: review_id => ({
-        url: `/reviews/${review_id}/likes`,
-        method: 'DELETE',
-      }),
-      invalidatesTags: (result, _, id) => [{ type: 'Reviews', id }, REVIEW_LIST_TAG],
-    }),
     getTravelRouteInfo: build.query<GetTravelRouteInfoResponseType, GetTravelRouteInfoRequestType>({
       query: ({ travel_route_id }) => ({
         url: `/travelroute/${travel_route_id}`,
         method: 'GET',
       }),
       transformResponse: (response: TravelRouteInfoType) => {
-        const { travel_route, config } = response;
+        const { user_id, travel_route, config } = response;
         const { regions, themes } = config;
 
-        return { travel_route, regions, themes };
+        return { user_id, travel_route, regions, themes };
       },
     }),
   }),
@@ -101,8 +85,6 @@ export const {
   useGetReviewListQuery,
   useGetReviewDetailQuery,
   useDeleteReviewMutation,
-  useLikeReviewMutation,
-  useCancelLikeReviewMutation,
   useGetTravelRouteInfoQuery,
 } = reviewApi;
 
