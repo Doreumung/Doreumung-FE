@@ -1,4 +1,5 @@
 import { ToastArgs } from '@/components/common/toast/types';
+import { SortCriteria } from './types';
 
 export const COLOR_SWATCHES = [
   '#FBD6B0',
@@ -97,4 +98,11 @@ export const DELETE_COMMENT_SUCCESS_MESSAGE: ToastArgs = {
 export const DELETE_COMMENT_ERROR_MESSAGE: ToastArgs = {
   message: ['댓글 삭제에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
   type: 'error',
+};
+
+export const SORTING_OPTIONS: SortCriteria[] = ['created_at', 'like_count'];
+
+export const LABELS_BY_SORTING_OPTIONS = {
+  created_at: '날짜',
+  like_count: '좋아요',
 };

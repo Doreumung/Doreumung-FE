@@ -9,20 +9,39 @@ import { SingleReviewType } from './types';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/common/buttons/Button';
 import ApiErrorMessage from '@/components/common/errorMessage/ApiErrorMessage';
+import SpeechBubble from '@/components/common/speechBubble/SpeechBubble';
+import SortingOption from '@/components/travel-reviews/SortingOption';
+import { SortCriteria, SortState } from '@/components/travel-reviews/types';
+import { SORTING_OPTIONS } from '@/components/travel-reviews/constants';
 
 const Page = () => {
   const router = useRouter();
   const [page, setPage] = useState<number>(1);
-  const { data, isLoading, error } = useGetReviewListQuery({ page });
+  const [sortingOptions, setSortingOptions] = useState<SortState>({
+    created_at: 'desc',
+    like_count: 'desc',
+  });
+  const [orderBy, setOrderBy] = useState<SortCriteria>('created_at');
+  const { data, isLoading, error } = useGetReviewListQuery({
+    page,
+    order_by: orderBy,
+    order: sortingOptions[orderBy],
+  });
 
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="flex flex-col items-center gap-12 w-full">
+    <div className="flex flex-col items-center gap-6 w-full pt-10">
       {error && <ApiErrorMessage />}
       {!error && (
         <>
-          <h3 className="text-3xl">도르멍 후기</h3>
+          <section className="flex flex-col gap-3 self-start relative w-full">
+            <div className="size-24 bg-[url(/images/dolmung.svg)] bg-cover bg-center shrink-0" />
+            <SpeechBubble
+              text="도르멍과 함께한 후기를 들려주세요!"
+              className="absolute -top-10 -right-12"
+            />
+          </section>
 
           {!data && (
             <>
@@ -44,12 +63,31 @@ const Page = () => {
 
           {data && (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 place-items-center gap-8 w-full">
-                {data.reviews.map((review: SingleReviewType) => (
-                  <ReviewCard key={`${review.review_id}-${review.created_at}`} review={review} />
+              <div className="flex gap-2 self-end">
+                {SORTING_OPTIONS.map((option: SortCriteria) => (
+                  <SortingOption
+                    key={option}
+                    orderBy={orderBy}
+                    setOrderBy={setOrderBy}
+                    sortingOptions={sortingOptions}
+                    setSortingOptions={setSortingOptions}
+                    option={option}
+                  />
                 ))}
               </div>
-              <Pagination totalResults={data.total_reviews} currentPage={page} setPage={setPage} />
+
+              <div className="flex flex-col items-center gap-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 place-items-center gap-8 w-full">
+                  {data.reviews.map((review: SingleReviewType) => (
+                    <ReviewCard key={`${review.review_id}-${review.created_at}`} review={review} />
+                  ))}
+                </div>
+                <Pagination
+                  totalResults={data.total_reviews}
+                  currentPage={page}
+                  setPage={setPage}
+                />
+              </div>
             </>
           )}
         </>

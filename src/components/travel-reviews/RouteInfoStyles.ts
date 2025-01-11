@@ -24,12 +24,12 @@ export const routeInfoLabelStyles = cva('shrink-0', {
   },
 });
 
-export const routeInfoContentStyles = cva('text-darkerGray', {
+export const routeInfoContentStyles = cva('text-darkerGray leading-7', {
   variants: {
     variant: {
       reviewCreate:
         'flex justify-center items-center min-h-11 px-4 py-2 border border-green rounded-2xl bg-fadedGreen text-center',
-      reviewDetail: 'text-lg',
+      reviewDetail: 'text-base',
     },
   },
   defaultVariants: {

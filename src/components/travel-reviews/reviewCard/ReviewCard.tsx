@@ -5,7 +5,7 @@ import ReviewStats from './ReviewStats';
 
 const ReviewCard = ({ review }: { review: SingleReviewType }) => {
   return (
-    <div className="w-full max-w-80 h-[400px] border border-darkerGray rounded-2xl bg-white text-darkerGray overflow-hidden ">
+    <div className="w-full max-w-80 h-[400px] border border-darkerGray rounded-2xl bg-white text-darkerGray overflow-hidden transition duration-300 ease-in-out hover:rotate-1 active:rotate-2">
       <Link href={`travel-reviews/detail/${review.review_id}`}>
         <section className="h-3/5 border-b border-darkerGray bg-fadedSkyblue">
           {/* 후기 대표 사진 삽입 필요*/}
