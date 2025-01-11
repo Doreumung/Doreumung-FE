@@ -16,7 +16,7 @@ export const useCheckLoginStatus = () => {
       ).unwrap();
 
       setCookie(null, 'access_token', result?.access_token, {
-        maxAge: 60, // 쿠키 유효기간
+        maxAge: 60 * 60, // 쿠키 유효기간
         path: '/',
       });
     } catch (err) {
