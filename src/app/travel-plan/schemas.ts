@@ -10,11 +10,11 @@ export const scheduleItemSchema = z.object({
 
 // 시간대별 장소 정보 포함
 export const scheduleSchema = z.object({
-  breakfast: z.union([z.null(), scheduleItemSchema, scheduleItemSchema.array()]),
+  breakfast: z.union([z.null(), scheduleItemSchema]),
   morning: z.union([z.null(), scheduleItemSchema, scheduleItemSchema.array()]),
-  lunch: z.union([z.null(), scheduleItemSchema, scheduleItemSchema.array()]),
+  lunch: z.union([z.null(), scheduleItemSchema]),
   afternoon: z.union([z.null(), scheduleItemSchema, scheduleItemSchema.array()]),
-  dinner: z.union([z.null(), scheduleItemSchema, scheduleItemSchema.array()]),
+  dinner: z.union([z.null(), scheduleItemSchema]),
 });
 
 // Config 스키마

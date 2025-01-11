@@ -1,84 +1,94 @@
+import { usePatchTravelRouteMutation } from '@/api/travelRouteApi';
+import { TravelRouteResponse } from '@/app/travel-plan/types';
 import Button from '@/components/common/buttons/Button';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import Toggle from '@/components/common/toggle/Toggle';
+import { useAppSelector } from '@/store/hooks';
 import { useState } from 'react';
-
-const data = {
-  schedule: {
-    breakfast: {
-      id: 1,
-      name: '제주 전복죽',
-    },
-    morning: [
-      { id: 2, name: '한라산 등반' },
-      { id: 3, name: '성산 일출봉' },
-      { id: 4, name: '협재 해수욕장' },
-    ],
-    lunch: {
-      id: 5,
-      name: '흑돼지 불고기',
-    },
-    afternoon: [
-      { id: 6, name: '카페 아메리카노' },
-      { id: 7, name: '용두암' },
-      { id: 8, name: '천지연 폭포' },
-    ],
-    dinner: {
-      id: 9,
-      name: '갈치조림',
-    },
-  },
-  config: {
-    regions: ['제주시', '서귀포시'],
-    themes: ['자연', '카페'],
-  },
-};
 
 const PlaceList = () => {
   const [showRandomLayerPopup, setShowRandomLayerPopup] = useState<boolean>(false);
   const [showSaveLayerPopup, setShowSaveLayerPopup] = useState<boolean>(false);
-  // 로그인 여부 확인하고 저장하기 눌렀을 때 사용할 state
-  // const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
+  const [showSigninLayerPopup, setShowSigninLayerPopup] = useState<boolean>(false);
 
-  const places = [
-    data.schedule.breakfast
-      ? { id: data.schedule.breakfast.id, name: `🍚 ${data.schedule.breakfast.name}`, isMeal: true }
+  const isLoggedIn = useAppSelector(state => !!state.user.user);
+  const travelRoute = useAppSelector(
+    state => state.travelPlan.scheduleResponse,
+  ) as TravelRouteResponse;
+
+  const [] = usePatchTravelRouteMutation();
+
+  const travelPlaces = [
+    travelRoute.schedule.breakfast
+      ? {
+          id: travelRoute.schedule.breakfast.place_id,
+          name: `🍚 ${travelRoute.schedule.breakfast.name}`,
+          isMeal: true,
+        }
       : null,
-    ...(data.schedule.morning
-      ? data.schedule.morning.map(item => ({
-          id: item.id,
-          name: `📍 ${item.name}`,
+    ...(Array.isArray(travelRoute.schedule.morning)
+      ? travelRoute.schedule.morning.map(item => ({
+          id: item.place_id,
+          name: `☀️ ${item.name}`,
           isMeal: false,
         }))
       : []),
-    data.schedule.lunch
-      ? { id: data.schedule.lunch.id, name: `🍚 ${data.schedule.lunch.name}`, isMeal: true }
+    travelRoute.schedule.lunch
+      ? {
+          id: travelRoute.schedule.lunch.place_id,
+          name: `🍚 ${travelRoute.schedule.lunch.name}`,
+          isMeal: true,
+        }
       : null,
-    ...(data.schedule.afternoon
-      ? data.schedule.afternoon.map(item => ({
-          id: item.id,
-          name: `📍 ${item.name}`,
+    ...(Array.isArray(travelRoute.schedule.afternoon)
+      ? travelRoute.schedule.afternoon.map(item => ({
+          id: item.place_id,
+          name: `🌕 ${item.name}`,
           isMeal: false,
         }))
       : []),
-    data.schedule.dinner
-      ? { id: data.schedule.dinner.id, name: `🍚 ${data.schedule.dinner.name}`, isMeal: true }
+    travelRoute.schedule.dinner
+      ? {
+          id: travelRoute.schedule.dinner.place_id,
+          name: `🍚 ${travelRoute.schedule.dinner.name}`,
+          isMeal: true,
+        }
       : null,
   ].filter(Boolean);
 
   const handleToggleChange = () => {};
 
+  const handleSaveClick = () => {
+    if (isLoggedIn) {
+      setShowSaveLayerPopup(true);
+    } else {
+      setShowSigninLayerPopup(true);
+    }
+  };
+
+  const handleRedirectToSignin = () => {
+    setShowSigninLayerPopup(false);
+    // 라우터 통해 로그인 페이지 이동
+  };
+
+  const handleSaveTravelRoute = (title: string = '') => {
+    console.log(`저장된 제목: ${title}`);
+    setShowSaveLayerPopup(false);
+  };
+
   return (
     <div className="flex flex-col justify-between h-full">
       <div className="flex flex-col gap-8 pb-8 md:flex-grow md:px-8 md:py-4 md:overflow-auto">
-        {places.map(place => (
+        {travelPlaces.map(travelPlace => (
           <div
-            key={place?.id}
+            key={travelPlace?.id}
             className="flex flex-row justify-around items-center gap-4 min-w-full"
           >
             <div className="w-14 h-14 border border-darkerGray rounded-2xl bg-lighterGray md:w-16 md:h-16"></div>
-            <div className="flex-grow text-base text-darkerGray md:text-lg">{place?.name}</div>
-            {place?.isMeal ? (
+            <div className="flex-grow text-base text-darkerGray md:text-lg">
+              {travelPlace?.name}
+            </div>
+            {travelPlace?.isMeal ? (
               <Toggle label="고정불가" disabled />
             ) : (
               <Toggle label="고정" color="yellow" onChange={handleToggleChange} />
@@ -99,7 +109,7 @@ const PlaceList = () => {
           color="blue"
           shadow="dropShadow"
           label="저장하기"
-          onClick={() => setShowSaveLayerPopup(true)}
+          onClick={handleSaveClick}
         />
       </div>
 
@@ -115,6 +125,19 @@ const PlaceList = () => {
           setShowLayerPopup={setShowRandomLayerPopup}
         />
       )}
+      {showSigninLayerPopup && (
+        <LayerPopup
+          label={
+            <>
+              회원만 이용이 가능한 서비스 입니다.
+              <br />
+              확인을 누르시면 로그인 페이지로 이동합니다.
+            </>
+          }
+          onConfirm={handleRedirectToSignin}
+          setShowLayerPopup={setShowSigninLayerPopup}
+        />
+      )}
 
       {showSaveLayerPopup && (
         <LayerPopup
@@ -125,21 +148,10 @@ const PlaceList = () => {
             </>
           }
           type="input"
-          onConfirm={title => console.log(`일정 저장하기: ${title || '오늘 날짜'}`)}
+          onConfirm={title => handleSaveTravelRoute(title)}
           setShowLayerPopup={setShowSaveLayerPopup}
         />
       )}
-
-      {/* <LayerPopup
-        label={
-          <>
-            회원만 이용이 가능한 서비스 입니다.<br />
-            로그인 페이지로 이동하시겠습니까?
-          </>
-        }
-        onConfirm={ => }
-        setShowLayerPopup={}
-      /> */}
     </div>
   );
 };

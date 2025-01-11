@@ -8,7 +8,6 @@ import {
   GetReviewDetailResponseType,
   PostReviewRequestType,
   PostReviewResponseType,
-  DeleteReviewResponseType,
   LikeReviewResponseType,
   CancelLikeReviewResponseType,
   DeleteReviewRequestType,
@@ -60,7 +59,7 @@ const reviewApi = createApi({
       }),
       providesTags: (result, _, id) => [{ type: 'Reviews', id }],
     }),
-    deleteReview: build.mutation<DeleteReviewResponseType, DeleteReviewRequestType>({
+    deleteReview: build.mutation<void, DeleteReviewRequestType>({
       query: ({ review_id }) => ({
         url: `/reviews/${review_id}`,
         method: 'DELETE',
