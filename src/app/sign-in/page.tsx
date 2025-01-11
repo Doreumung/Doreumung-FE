@@ -55,11 +55,11 @@ const Page = () => {
       // 액세스 토큰을 쿠키에 저장
       // 쿠키 설정
       setCookie(null, 'access_token', result?.access_token, {
-        maxAge: 60, // 쿠키 유효기간
+        maxAge: 60 * 60, // 쿠키 유효기간
         path: '/', // 쿠키 경로
       });
       setCookie(null, 'refresh_token', result?.refresh_token, {
-        maxAge: 30 * 24 * 60 * 60,
+        maxAge: 7 * 24 * 60 * 60,
         path: '/',
       });
 

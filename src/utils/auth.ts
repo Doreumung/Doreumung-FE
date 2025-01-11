@@ -17,7 +17,7 @@ export const useCheckLoginStatus = () => {
 
       // 액세스 토큰 다시 쿠키에 저장
       setCookie(null, 'access_token', result?.access_token, {
-        maxAge: 60, // 쿠키 유효기간
+        maxAge: 60 * 60, // 쿠키 유효기간
         path: '/',
       });
 
