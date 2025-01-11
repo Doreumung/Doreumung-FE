@@ -20,15 +20,22 @@ import { useGetCommentsQuery } from '@/api/commentApi';
 import ApiErrorMessage from '@/components/common/errorMessage/ApiErrorMessage';
 import useWebSocket from 'react-use-websocket';
 import clsx from 'clsx';
+import { LikeSocketResponseType } from '@/app/travel-reviews/types';
+import {
+  DELETE_REVIEW_ERROR_MESSAGE,
+  DELETE_REVIEW_SUCCESS_MESSAGE,
+  LIKE_MY_OWN_REVIEW_ERROR_MESSAGE,
+  SOCKET_ERROR_MESSAGE,
+} from '@/components/travel-reviews/constants';
 
 const Page = () => {
   const router = useRouter();
   const user = useAppSelector((state: RootState) => state.user.user);
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [likes, setLikes] = useState<number>(0);
+  const [likeCount, setLikeCount] = useState<number>(0);
   const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
   const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false);
-  const { reviewId: review_id } = useParams();
+  const { reviewId: review_id }: { reviewId: string } = useParams();
 
   const [deleteReview] = useDeleteReviewMutation();
 
@@ -38,9 +45,7 @@ const Page = () => {
     error: commentsError,
   } = useGetCommentsQuery(Number(review_id));
 
-  const socketUrl = review_id
-    ? `wss://aaa0-121-143-108-42.ngrok-free.app/ws/likes?review_id=${review_id}`
-    : '';
+  const socketUrl = review_id ? `wss://api.doreumung.site/ws/likes?review_id=${review_id}` : '';
 
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
     onOpen: () => console.log('✨ WebSocket 연결 열림'),
@@ -51,9 +56,7 @@ const Page = () => {
 
   const isSocketOpen = readyState === 1;
 
-  const { data, isLoading, error } = useGetReviewDetailQuery(Number(review_id), {
-    skip: isSocketOpen,
-  });
+  const { data, isLoading, error } = useGetReviewDetailQuery(Number(review_id));
 
   const {
     user_id = '',
@@ -77,69 +80,46 @@ const Page = () => {
     deleteReview({ review_id: Number(review_id) })
       .unwrap()
       .then(() => {
-        toast({ message: ['후기가 성공적으로 삭제되었습니다!'] });
+        toast(DELETE_REVIEW_SUCCESS_MESSAGE);
         router.push('/travel-reviews');
       })
       .catch(() => {
-        toast({
-          message: ['후기 삭제에 실패하였습니다.', '잠시 후 다시 시도해 주세요.'],
-          type: 'error',
-        });
+        toast(DELETE_REVIEW_ERROR_MESSAGE);
       });
   };
 
   useEffect(() => {
     if (data) {
       setIsLiked(liked_by_user);
-      setLikes(like_count);
+      setLikeCount(like_count);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const handleClickLike = () => {
-    if (!user) {
-      setShowLoginPopup(true);
-    } else if (user && user.id === user_id) {
-      toast({ message: ['자신의 후기에 좋아요를 누를 수 없습니다.'], type: 'error' });
-    } else if (!isSocketOpen) {
-      toast({
-        message: ['오류가 발생하였습니다.', '잠시 후 다시 시도해 주세요.'],
-        type: 'error',
-      });
-    } else if (isLiked) {
-      if (likes > 0) {
-        sendJsonMessage(JSON.stringify({ user_id: user.id, review_id, is_liked: false }));
-      } else {
-        toast({
-          message: ['오류가 발생하였습니다.', '잠시 후 다시 시도해 주세요.'],
-          type: 'error',
-        });
-      }
-    } else {
+    if (!user) return setShowLoginPopup(true);
+    if (user.id === user_id) return toast(LIKE_MY_OWN_REVIEW_ERROR_MESSAGE);
+    if (!isSocketOpen) return toast(SOCKET_ERROR_MESSAGE);
+
+    if (isLiked) sendJsonMessage(JSON.stringify({ user_id: user.id, review_id, is_liked: false }));
+    else if (!isLiked)
       sendJsonMessage(JSON.stringify({ user_id: user.id, review_id, is_liked: true }));
-    }
   };
 
   useEffect(() => {
     if (lastMessage) {
-      const receivedData: {
-        review_id: string;
-        user_id: string;
-        like_count: number;
-        is_liked: boolean;
-      } = JSON.parse(lastMessage.data);
-      if (typeof receivedData.like_count === 'number') {
-        if (receivedData.like_count >= 0) setLikes(receivedData.like_count);
-        else {
-          toast({
-            message: ['오류가 발생하였습니다.', '잠시 후 다시 시도해 주세요.'],
-            type: 'error',
-          });
-        }
-      }
-      if (typeof receivedData.is_liked === 'boolean') setIsLiked(receivedData.is_liked);
-      console.log('received: ', receivedData);
+      const receivedData: LikeSocketResponseType = JSON.parse(lastMessage.data);
+
+      if (typeof receivedData.like_count === 'number' && receivedData.review_id === review_id)
+        setLikeCount(receivedData.like_count);
+
+      if (typeof receivedData.is_liked === 'boolean' && user && receivedData.user_id === user.id)
+        setIsLiked(receivedData.is_liked);
+
+      console.log('♥️ like_count:', receivedData.like_count);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastMessage]);
 
   if (isLoading) return <LoadingSpinner />;
@@ -194,7 +174,7 @@ const Page = () => {
                       'hover:fill-logo hover:scale-110 transition duration-75 ease-in',
                     )}
                   />
-                  <span>{`좋아요 ${likes}`}</span>
+                  <span>{`좋아요 ${likeCount}`}</span>
                 </div>
                 {user && user.id === user_id && (
                   <EditAndDelete
