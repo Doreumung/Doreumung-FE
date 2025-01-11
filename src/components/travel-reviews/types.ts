@@ -73,3 +73,20 @@ export type ProtectedRouteProps = {
     reviewDetail?: GetReviewDetailResponseType,
   ) => React.ReactNode;
 };
+
+type SortOrder = 'asc' | 'desc';
+
+export type SortState = {
+  created_at: SortOrder;
+  like_count: SortOrder;
+};
+
+export type SortCriteria = 'created_at' | 'like_count';
+
+export type SortingOptionProps = {
+  orderBy: SortCriteria;
+  setOrderBy: Dispatch<SetStateAction<SortCriteria>>;
+  sortingOptions: SortState;
+  setSortingOptions: Dispatch<SetStateAction<SortState>>;
+  option: SortCriteria;
+};
