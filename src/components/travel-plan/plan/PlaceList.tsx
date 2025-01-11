@@ -9,15 +9,14 @@ import { useState } from 'react';
 const PlaceList = () => {
   const [showRandomLayerPopup, setShowRandomLayerPopup] = useState<boolean>(false);
   const [showSaveLayerPopup, setShowSaveLayerPopup] = useState<boolean>(false);
+  const [showSigninLayerPopup, setShowSigninLayerPopup] = useState<boolean>(false);
 
+  const isLoggedIn = useAppSelector(state => !!state.user.user);
   const travelRoute = useAppSelector(
     state => state.travelPlan.scheduleResponse,
   ) as TravelRouteResponse;
 
   const [] = usePatchTravelRouteMutation();
-
-  // 로그인 여부 확인하고 저장하기 눌렀을 때 사용할 state
-  // const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
 
   const travelPlaces = [
     travelRoute.schedule.breakfast
@@ -59,6 +58,24 @@ const PlaceList = () => {
 
   const handleToggleChange = () => {};
 
+  const handleSaveClick = () => {
+    if (isLoggedIn) {
+      setShowSaveLayerPopup(true);
+    } else {
+      setShowSigninLayerPopup(true);
+    }
+  };
+
+  const handleRedirectToSignin = () => {
+    setShowSigninLayerPopup(false);
+    // 라우터 통해 로그인 페이지 이동
+  };
+
+  const handleSaveTravelRoute = (title: string = '') => {
+    console.log(`저장된 제목: ${title}`);
+    setShowSaveLayerPopup(false);
+  };
+
   return (
     <div className="flex flex-col justify-between h-full">
       <div className="flex flex-col gap-8 pb-8 md:flex-grow md:px-8 md:py-4 md:overflow-auto">
@@ -92,7 +109,7 @@ const PlaceList = () => {
           color="blue"
           shadow="dropShadow"
           label="저장하기"
-          onClick={() => setShowSaveLayerPopup(true)}
+          onClick={handleSaveClick}
         />
       </div>
 
@@ -108,6 +125,19 @@ const PlaceList = () => {
           setShowLayerPopup={setShowRandomLayerPopup}
         />
       )}
+      {showSigninLayerPopup && (
+        <LayerPopup
+          label={
+            <>
+              회원만 이용이 가능한 서비스 입니다.
+              <br />
+              확인을 누르시면 로그인 페이지로 이동합니다.
+            </>
+          }
+          onConfirm={handleRedirectToSignin}
+          setShowLayerPopup={setShowSigninLayerPopup}
+        />
+      )}
 
       {showSaveLayerPopup && (
         <LayerPopup
@@ -118,21 +148,10 @@ const PlaceList = () => {
             </>
           }
           type="input"
-          onConfirm={title => console.log(`일정 저장하기: ${title || '오늘 날짜'}`)}
+          onConfirm={title => handleSaveTravelRoute(title)}
           setShowLayerPopup={setShowSaveLayerPopup}
         />
       )}
-
-      {/* <LayerPopup
-        label={
-          <>
-            회원만 이용이 가능한 서비스 입니다.<br />
-            로그인 페이지로 이동하시겠습니까?
-          </>
-        }
-        onConfirm={ => }
-        setShowLayerPopup={}
-      /> */}
     </div>
   );
 };
