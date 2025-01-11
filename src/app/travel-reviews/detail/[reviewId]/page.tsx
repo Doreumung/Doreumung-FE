@@ -2,7 +2,7 @@
 
 import BackNavigation from '@/components/common/backNavigation/BackNavigation';
 import { Heart } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import { useParams, useRouter } from 'next/navigation';
 import RouteInfoContainer from '@/components/travel-reviews/RouteInfoContainer';
@@ -18,19 +18,40 @@ import { RootState } from '@/store/store';
 import { toast } from '@/components/common/toast/Toast';
 import { useGetCommentsQuery } from '@/api/commentApi';
 import ApiErrorMessage from '@/components/common/errorMessage/ApiErrorMessage';
+import useWebSocket from 'react-use-websocket';
+import clsx from 'clsx';
 
 const Page = () => {
   const router = useRouter();
+  const user = useAppSelector((state: RootState) => state.user.user);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [likes, setLikes] = useState<number>(0);
+  const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
+  const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false);
   const { reviewId: review_id } = useParams();
-  const { data, isLoading, error } = useGetReviewDetailQuery(Number(review_id));
+
+  const [deleteReview] = useDeleteReviewMutation();
+
   const {
     data: commentData,
     isLoading: commentsLoading,
     error: commentsError,
   } = useGetCommentsQuery(Number(review_id));
-  const [deleteReview] = useDeleteReviewMutation();
-  const [showLayerPopup, setShowLayerPopup] = useState<boolean>(false);
-  const user = useAppSelector((state: RootState) => state.user.user);
+
+  const socketUrl = review_id
+    ? `wss://aaa0-121-143-108-42.ngrok-free.app/ws/likes?review_id=${review_id}`
+    : '';
+
+  const { sendJsonMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
+    onOpen: () => console.log('✨ WebSocket 연결 열림'),
+    onError: error => console.log('🚨 WebSocket 에러', error),
+    onClose: () => console.log('💀 WebSocket 연결 닫힘'),
+    shouldReconnect: () => true,
+  });
+
+  const { data, isLoading, error } = useGetReviewDetailQuery(Number(review_id), {
+    skip: readyState === 1,
+  });
 
   const {
     user_id = '',
@@ -65,14 +86,39 @@ const Page = () => {
       });
   };
 
+  useEffect(() => {
+    if (data) {
+      setIsLiked(liked_by_user);
+      setLikes(like_count);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
   const handleClickLike = () => {
-    if (!user) return;
-    if (liked_by_user) {
-      // 좋아요 취소 요청
+    if (!user) {
+      setShowLoginPopup(true);
+    } else if (user && user.id === user_id) {
+      toast({ message: ['자신의 후기에 좋아요를 누를 수 없습니다.'], type: 'error' });
+    } else if (isLiked) {
+      sendJsonMessage(JSON.stringify({ user_id: user.id, review_id, is_liked: false }));
     } else {
-      // 좋아요 요청
+      sendJsonMessage(JSON.stringify({ user_id: user.id, review_id, is_liked: true }));
     }
   };
+
+  useEffect(() => {
+    if (lastMessage) {
+      const receivedData: {
+        review_id: string;
+        user_id?: string;
+        like_count: number;
+        is_liked?: boolean;
+      } = JSON.parse(lastMessage.data);
+      if (typeof receivedData.like_count === 'number') setLikes(receivedData.like_count);
+      if (typeof receivedData.is_liked === 'boolean') setIsLiked(receivedData.is_liked);
+      console.log('received: ', receivedData);
+    }
+  }, [lastMessage]);
 
   if (isLoading) return <LoadingSpinner />;
 
@@ -120,13 +166,18 @@ const Page = () => {
                   className="flex items-center gap-2 text-darkerGray cursor-pointer"
                   onClick={handleClickLike}
                 >
-                  <Heart className="fill-fadedOrange hover:fill-logo hover:scale-110 transition duration-75 ease-in" />
-                  <span>{`좋아요 ${like_count}`}</span>
+                  <Heart
+                    className={clsx(
+                      isLiked ? 'fill-logo' : 'fill-fadedOrange',
+                      'hover:fill-logo hover:scale-110 transition duration-75 ease-in',
+                    )}
+                  />
+                  <span>{`좋아요 ${likes}`}</span>
                 </div>
                 {user && user.id === user_id && (
                   <EditAndDelete
                     onClickEdit={handleClickEdit}
-                    onClickDelete={() => setShowLayerPopup(true)}
+                    onClickDelete={() => setShowDeletePopup(true)}
                   />
                 )}
               </div>
@@ -144,11 +195,25 @@ const Page = () => {
             {commentData && <CommentList comments={commentData} />}
           </section>
 
-          {showLayerPopup && (
+          {showDeletePopup && (
             <LayerPopup
               label="후기를 삭제하시겠습니까?"
-              setShowLayerPopup={setShowLayerPopup}
+              setShowLayerPopup={setShowDeletePopup}
               onConfirm={sendDeleteReviewRequest}
+            />
+          )}
+
+          {showLoginPopup && (
+            <LayerPopup
+              label={
+                <>
+                  로그인이 필요한 서비스입니다.
+                  <br />
+                  로그인하시겠습니까?
+                </>
+              }
+              setShowLayerPopup={setShowLoginPopup}
+              onConfirm={() => router.push('/sign-in')}
             />
           )}
         </>
