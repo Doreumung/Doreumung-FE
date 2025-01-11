@@ -110,6 +110,7 @@ export const cancelLikeReviewResponseSchema = reviewSchemas.pick({ review_id: tr
 export const getTravelRouteInfoRequestSchema = reviewSchemas.pick({ travel_route_id: true });
 
 export const getTravelRouteInfoResponseSchema = reviewSchemas.pick({
+  user_id: true,
   travel_route: true,
   themes: true,
   regions: true,

@@ -4,7 +4,11 @@ import { VariantProps } from 'class-variance-authority';
 import { routeInfoContainerStyles } from './RouteInfoStyles';
 import { reviewStatsIconStyles } from './reviewCard/ReviewStatsStyles';
 import React, { Dispatch, SetStateAction } from 'react';
-import { GetTravelRouteInfoResponseType, SingleCommentType } from '@/app/travel-reviews/types';
+import {
+  GetReviewDetailResponseType,
+  GetTravelRouteInfoResponseType,
+  SingleCommentType,
+} from '@/app/travel-reviews/types';
 
 export type StarRatingProps = {
   value: number;
@@ -60,4 +64,12 @@ export type CommentFormProps = {
 
 export type CommentItemProps = {
   comment: SingleCommentType;
+};
+
+export type ProtectedRouteProps = {
+  route: 'create' | 'edit';
+  children: (
+    travelRouteInfo: GetTravelRouteInfoResponseType,
+    reviewDetail?: GetReviewDetailResponseType,
+  ) => React.ReactNode;
 };
