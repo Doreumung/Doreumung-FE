@@ -21,6 +21,7 @@ const RedirectNotice = ({ mode = 'NOT_FOUND' }: RedirectNoticeProps) => {
   const redirect = useCallback(() => {
     if (mode === 'SIGNED_IN') router.back();
     else if (mode === 'NOT_SIGNED_IN') router.push('/sign-in');
+    else if (mode === 'UNAUTHORIZED') router.push('/travel-reviews');
     else router.push('/');
   }, [mode, router]);
 
