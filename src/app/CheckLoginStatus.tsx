@@ -12,10 +12,10 @@ export const CheckLoginStatus = () => {
     // 초기 렌더링 시 실행
     checkLoginStatus();
 
-    // 10분 간격으로 확인
+    // 5분 간격으로 확인
     const interval = setInterval(() => {
       checkLoginStatus();
-    }, 60); // 10분
+    }, 5 * 60);
 
     return () => clearInterval(interval); // 컴포넌트 언마운트 시 타이머 정리
   }, [checkLoginStatus]);
