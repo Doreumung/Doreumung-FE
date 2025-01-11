@@ -1,4 +1,4 @@
-import { destroyCookie, setCookie } from 'nookies';
+import { destroyCookie, parseCookies, setCookie } from 'nookies';
 import { clearUser } from '@/store/userSlice';
 import { useDispatch } from 'react-redux';
 import { useAccessTokenRefreshMutation } from '@/api/userApi';
@@ -20,8 +20,6 @@ export const useCheckLoginStatus = () => {
         maxAge: 60 * 60, // 쿠키 유효기간
         path: '/',
       });
-
-      console.log('토큰 재발급 성공, 새로고침 1초 후 실행');
     } catch (err) {
       console.error('액세스 토큰 재발급 실패:', err);
       handleLogout('로그인이 만료되었습니다.');
@@ -46,19 +44,21 @@ export const useCheckLoginStatus = () => {
 
   // 로그인 상태 확인 함수
   const checkLoginStatus = () => {
-    const cookies = document.cookie.split('; ');
-    const accessTokenCookie = cookies.find(row => row.startsWith('access_token'));
-    const refreshTokenCookie = cookies.find(row => row.startsWith('refresh_token'));
-    const refreshToken = refreshTokenCookie?.split('=')[1];
+    const cookies = parseCookies();
+    const accessToken = cookies['access_token']; // 'access_token' 쿠키 값
+    const refreshToken = cookies['refresh_token']; // 'refresh_token' 쿠키 값
     const autoSignin = localStorage.getItem('auto_signin');
 
-    if (autoSignin === 'true' && !accessTokenCookie && refreshTokenCookie) {
+    if (autoSignin === 'true' && !accessToken && refreshToken) {
       // 자동 로그인 O
       // 리프레시 토큰으로 액세스 토큰 재발급
       refreshAccessToken(refreshToken as string);
-    } else if (!accessTokenCookie && refreshTokenCookie) {
+    } else if (!accessToken && refreshToken) {
       // 자동 로그인 X
       // 리프레시 토큰은 있지만 액세스 토큰이 없을 때 로그아웃 처리
+      handleLogout('로그인이 만료되었습니다.');
+    } else if (!refreshToken) {
+      // 리프레시 토큰도 만료
       handleLogout('로그인이 만료되었습니다.');
     }
   };
