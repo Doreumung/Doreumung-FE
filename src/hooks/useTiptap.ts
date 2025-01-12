@@ -142,15 +142,9 @@ const useTiptap = (content?: string) => {
     }
   };
 
-  const addImage = (tiptap: Editor) => {
-    // S3에 이미지 업로드 로직 구현 필요
-
-    const url = 'https://doreumung-06.s3.ap-northeast-2.amazonaws.com/doreumung.png';
-
-    if (url) {
-      tiptap.chain().focus().setImage({ src: url }).run();
-      dispatch(setAddedImages(url));
-    }
+  const addImage = (tiptap: Editor, src: string) => {
+    tiptap.chain().focus().setImage({ src }).run();
+    dispatch(setAddedImages(src));
   };
 
   return { editor, getToolbarOptions, addImage };
