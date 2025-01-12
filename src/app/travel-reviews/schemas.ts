@@ -126,18 +126,6 @@ export const commentSchema = z.object({
   message: z.string(),
 });
 
-export const postCommentRequestSchema = commentSchema.pick({
-  review_id: true,
-  content: true,
-});
-
-export const postCommentResponseSchema = commentSchema.pick({
-  comment_id: true,
-  content: true,
-  created_at: true,
-  message: true,
-});
-
 export const singleCommentSchema = commentSchema.pick({
   user_id: true,
   comment_id: true,
@@ -147,21 +135,6 @@ export const singleCommentSchema = commentSchema.pick({
 });
 
 export const getCommentsResponseSchema = singleCommentSchema.array();
-
-export const editCommentRequestSchema = commentSchema.pick({
-  comment_id: true,
-  content: true,
-});
-
-export const editCommentResponseSchema = commentSchema;
-
-export const deleteCommentRequestSchema = commentSchema.pick({
-  comment_id: true,
-});
-
-export const deleteCommentResponseSchema = commentSchema.pick({
-  message: true,
-});
 
 export const reviewFormSchema = reviewSchemas.pick({
   title: true,
@@ -205,9 +178,15 @@ export const travelRouteInfoSchema = z.object({
   travel_route: z.string().array(),
 });
 
-export const likeSocketResponseSchema = reviewSchemas
+export const socketResponseSchema = reviewSchemas
   .pick({
     user_id: true,
     like_count: true,
+    content: true,
   })
-  .extend({ review_id: z.string(), is_liked: z.boolean() });
+  .extend({
+    review_id: z.string(),
+    is_liked: z.boolean(),
+    type: z.union([z.literal('like'), z.literal('comment')]),
+    method: z.union([z.literal('POST'), z.literal('PATCH'), z.literal('DELETE')]),
+  });
