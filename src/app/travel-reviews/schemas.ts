@@ -21,6 +21,8 @@ export const reviewSchemas = z.object({
   travel_route: z.string().array(),
   themes: z.string().array(),
   thumbnail: z.string(),
+  uploaded_urls: z.string().array(),
+  deleted_urls: z.string().array(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
 });
@@ -29,13 +31,20 @@ export const getReviewDetailResponseSchema = reviewSchemas.omit({
   comment_count: true,
 });
 
-export const postReviewRequestSchema = reviewSchemas.pick({
-  travel_route_id: true,
-  title: true,
-  rating: true,
-  content: true,
-  thumbnail: true,
-});
+export const postReviewRequestSchema = reviewSchemas
+  .pick({
+    uploaded_urls: true,
+    deleted_urls: true,
+  })
+  .extend({
+    body: reviewSchemas.pick({
+      travel_route_id: true,
+      title: true,
+      rating: true,
+      content: true,
+      thumbnail: true,
+    }),
+  });
 
 export const postReviewResponseSchema = reviewSchemas
   .pick({
@@ -90,11 +99,16 @@ export const getReviewListResponseSchema = pagingSchema
 
 export const editReviewRequestSchema = reviewSchemas.pick({
   review_id: true,
-  title: true,
-  content: true,
-  rating: true,
-  thumbnail: true,
-});
+  deleted_urls: true,
+
+}).extend({
+  body: reviewSchemas.pick({
+    title: true,
+    content: true,
+    rating: true,
+    thumbnail: true,
+  })
+})
 
 export const editReviewResponseSchema = reviewSchemas.omit({
   comment_count: true,
@@ -190,3 +204,28 @@ export const socketResponseSchema = reviewSchemas
     type: z.union([z.literal('like'), z.literal('comment')]),
     method: z.union([z.literal('POST'), z.literal('PATCH'), z.literal('DELETE')]),
   });
+
+const imageInfoSchema = z.object({
+  id: z.number(),
+  review_id: z.number(),
+  filepath: z.string(),
+  source_type: z.string(),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime(),
+});
+
+export const uploadImageResponseSchema = z.object({
+  uploaded_image: imageInfoSchema,
+  all_images: imageInfoSchema.array(),
+  uploaded_url: z.string(),
+});
+
+export const imageUrlSchema = uploadImageResponseSchema.pick({ uploaded_url: true });
+
+export const deleteImageRequestSchema = z.string().array();
+
+export const deleteImageResponseSchema = z.object({
+  message: z.string(),
+  deleted_files: z.string().array(),
+  not_found_files: z.string().array(),
+});
