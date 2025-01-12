@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         hostname: 'doreumung-06.s3.ap-northeast-2.amazonaws.com',
         pathname: '*/*',
       },
+      {
+        protocol: 'https',
+        hostname: 'doreumung-06.s3.amazonaws.com',
+        pathname: '*/*',
+      },
     ],
   },
 };
