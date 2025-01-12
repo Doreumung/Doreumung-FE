@@ -1,27 +1,32 @@
 import { usePatchTravelRouteMutation, usePostSavedTravelRouteMutation } from '@/api/travelRouteApi';
-import { TravelRouteResponse } from '@/app/travel-plan/types';
+import { PatchTravelRouteRequest, TravelRouteResponse } from '@/app/travel-plan/types';
 import Button from '@/components/common/buttons/Button';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import Toggle from '@/components/common/toggle/Toggle';
 import { useAppSelector } from '@/store/hooks';
+import { setScheduleResponse } from '@/store/travelPlanSlice';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 const PlaceList = () => {
   const [showRandomLayerPopup, setShowRandomLayerPopup] = useState<boolean>(false);
+  const [showAllFixedLayerPopup, setShowAllFixedLayerPopup] = useState<boolean>(false);
   const [showSaveLayerPopup, setShowSaveLayerPopup] = useState<boolean>(false);
   const [showSigninLayerPopup, setShowSigninLayerPopup] = useState<boolean>(false);
+  const [toggledStates, setToggledState] = useState<Record<number, boolean>>({});
 
   const router = useRouter();
 
+  const dispatch = useDispatch();
   const isLoggedIn = useAppSelector(state => !!state.user.user);
   const travelRoute = useAppSelector(
     state => state.travelPlan.scheduleResponse,
   ) as TravelRouteResponse;
 
   const [postSavedTravelRoute, { isLoading }] = usePostSavedTravelRouteMutation();
-  const [] = usePatchTravelRouteMutation();
+  const [patchTravelRoute] = usePatchTravelRouteMutation();
 
   const travelPlaces = [
     travelRoute.schedule.breakfast
@@ -61,7 +66,59 @@ const PlaceList = () => {
       : null,
   ].filter(Boolean);
 
-  const handleToggleChange = () => {};
+  const handleToggleChange = (place_id: number, isToggled: boolean) => {
+    setToggledState(prev => ({ ...prev, [place_id]: isToggled }));
+    console.log('장소 id: ', place_id, '토글 여부: ', isToggled);
+  };
+
+  const handleReramdomTravelRoute = async () => {
+    const allFixed = Object.entries(travelRoute.schedule).every(([, value]) => {
+      if (Array.isArray(value)) {
+        return value.every(item => toggledStates[item.place_id] === false);
+      } else if (value) {
+        return toggledStates[value.place_id] === false;
+      }
+      return true;
+    });
+
+    if (allFixed) {
+      setShowRandomLayerPopup(false);
+      setShowAllFixedLayerPopup(true);
+      return;
+    }
+
+    const filteredSchedule = Object.entries(travelRoute.schedule).reduce((acc, [key, value]) => {
+      if (Array.isArray(value)) {
+        acc[key] = value.filter(item => toggledStates[item.place_id] === false);
+      } else if (value && toggledStates[value.place_id] === false) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {} as Record<string, unknown>);
+
+    console.log('필터 장소: ', filteredSchedule);
+
+    const payload: PatchTravelRouteRequest = {
+      schedule: {
+        breakfast: null,
+        morning: [],
+        lunch: null,
+        afternoon: [],
+        dinner: null,
+        ...filteredSchedule,
+      },
+      config: travelRoute.config,
+    };
+    console.log('보내는 데이터: ', payload);
+    try {
+      const response = await patchTravelRoute(payload).unwrap();
+      console.log('patch 결과: ', response);
+      dispatch(setScheduleResponse(response));
+      setShowRandomLayerPopup(false);
+    } catch (error) {
+      console.error('패치 요청 실패: ', error);
+    }
+  };
 
   const handleSaveClick = () => {
     if (isLoggedIn) {
@@ -110,7 +167,13 @@ const PlaceList = () => {
             {travelPlace?.isMeal ? (
               <Toggle label="고정불가" disabled />
             ) : (
-              <Toggle label="고정" color="yellow" onChange={handleToggleChange} />
+              <Toggle
+                label="고정"
+                color="yellow"
+                onChange={(isToggled: boolean) =>
+                  travelPlace && handleToggleChange(travelPlace.id, isToggled)
+                }
+              />
             )}
           </div>
         ))}
@@ -140,10 +203,20 @@ const PlaceList = () => {
               계속하시겠습니까?
             </>
           }
-          onConfirm={() => console.log('랜덤으로 다시 뽑기')}
+          onConfirm={handleReramdomTravelRoute}
           setShowLayerPopup={setShowRandomLayerPopup}
         />
       )}
+
+      {showAllFixedLayerPopup && (
+        <LayerPopup
+          label={<>모든 일정이 고정되어 있습니다.</>}
+          type="confirm-only"
+          onConfirm={() => setShowAllFixedLayerPopup(false)}
+          setShowLayerPopup={setShowAllFixedLayerPopup}
+        />
+      )}
+
       {showSigninLayerPopup && (
         <LayerPopup
           label={
