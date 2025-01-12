@@ -14,6 +14,7 @@ const PlaceList = () => {
   const [showRandomLayerPopup, setShowRandomLayerPopup] = useState<boolean>(false);
   const [showSaveLayerPopup, setShowSaveLayerPopup] = useState<boolean>(false);
   const [showSigninLayerPopup, setShowSigninLayerPopup] = useState<boolean>(false);
+  const [toggledStates, setToggledState] = useState<Record<number, boolean>>({});
 
   const router = useRouter();
 
@@ -64,17 +65,23 @@ const PlaceList = () => {
       : null,
   ].filter(Boolean);
 
-  const handleToggleChange = () => {};
+  const handleToggleChange = (place_id: number, isToggled: boolean) => {
+    setToggledState(prev => ({ ...prev, [place_id]: isToggled }));
+    console.log('장소 id: ', place_id, '토글 여부: ', isToggled);
+  };
 
   const handleReramdomTravelRoute = async () => {
-    // const filteredSchedule = Object.entries(travelRoute.schedule).reduce((acc, [key, value]) => {
-    //   if (Array.isArray(value)) {
-    //     acc[key] = value.filter(item => toggledStates[item.place_id] === false);
-    //   } else if (value && toggledStates[value.place_id] === false) {
-    //     acc[key] = value;
-    //   }
-    //   return acc;
-    // }, {} as Record<string, unknown>);
+    // 필터 코드 수정해야함
+    const filteredSchedule = Object.entries(travelRoute.schedule).reduce((acc, [key, value]) => {
+      if (Array.isArray(value)) {
+        acc[key] = value.filter(item => toggledStates[item.place_id] === false);
+      } else if (value && toggledStates[value.place_id] === false) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {} as Record<string, unknown>);
+
+    console.log('필터 장소: ', filteredSchedule);
 
     const payload: PatchTravelRouteRequest = {
       schedule: {
@@ -83,13 +90,14 @@ const PlaceList = () => {
         lunch: null,
         afternoon: [],
         dinner: null,
+        ...filteredSchedule,
       },
       config: travelRoute.config,
     };
-
+    console.log('보내는 데이터: ', payload);
     try {
       const response = await patchTravelRoute(payload).unwrap();
-      console.log(response);
+      console.log('patch 결과: ', response);
       dispatch(setScheduleResponse(response));
       setShowRandomLayerPopup(false);
     } catch (error) {
@@ -144,7 +152,13 @@ const PlaceList = () => {
             {travelPlace?.isMeal ? (
               <Toggle label="고정불가" disabled />
             ) : (
-              <Toggle label="고정" color="yellow" onChange={handleToggleChange} />
+              <Toggle
+                label="고정"
+                color="yellow"
+                onChange={(isToggled: boolean) =>
+                  travelPlace && handleToggleChange(travelPlace.id, isToggled)
+                }
+              />
             )}
           </div>
         ))}
