@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 
 const PlaceList = () => {
   const [showRandomLayerPopup, setShowRandomLayerPopup] = useState<boolean>(false);
+  const [showAllFixedLayerPopup, setShowAllFixedLayerPopup] = useState<boolean>(false);
   const [showSaveLayerPopup, setShowSaveLayerPopup] = useState<boolean>(false);
   const [showSigninLayerPopup, setShowSigninLayerPopup] = useState<boolean>(false);
   const [toggledStates, setToggledState] = useState<Record<number, boolean>>({});
@@ -71,7 +72,21 @@ const PlaceList = () => {
   };
 
   const handleReramdomTravelRoute = async () => {
-    // 필터 코드 수정해야함
+    const allFixed = Object.entries(travelRoute.schedule).every(([, value]) => {
+      if (Array.isArray(value)) {
+        return value.every(item => toggledStates[item.place_id] === false);
+      } else if (value) {
+        return toggledStates[value.place_id] === false;
+      }
+      return true;
+    });
+
+    if (allFixed) {
+      setShowRandomLayerPopup(false);
+      setShowAllFixedLayerPopup(true);
+      return;
+    }
+
     const filteredSchedule = Object.entries(travelRoute.schedule).reduce((acc, [key, value]) => {
       if (Array.isArray(value)) {
         acc[key] = value.filter(item => toggledStates[item.place_id] === false);
@@ -192,6 +207,16 @@ const PlaceList = () => {
           setShowLayerPopup={setShowRandomLayerPopup}
         />
       )}
+
+      {showAllFixedLayerPopup && (
+        <LayerPopup
+          label={<>모든 일정이 고정되어 있습니다.</>}
+          type="confirm-only"
+          onConfirm={() => setShowAllFixedLayerPopup(false)}
+          setShowLayerPopup={setShowAllFixedLayerPopup}
+        />
+      )}
+
       {showSigninLayerPopup && (
         <LayerPopup
           label={
