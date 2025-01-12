@@ -40,6 +40,8 @@ const ReviewForm = ({
   const router = useRouter();
   const { routeId, reviewId } = useParams();
   const user = useAppSelector((state: RootState) => state.user.user);
+  const uploaded_urls = useAppSelector((state: RootState) => state.reviewImages.currentImages);
+  const deleted_urls = useAppSelector((state: RootState) => state.reviewImages.deletedImages);
   const [postReview] = usePostReviewMutation();
   const [editReview] = useEditReviewMutation();
   const [title, setTitle] = useState<string>(defaultValues.title);
@@ -73,11 +75,9 @@ const ReviewForm = ({
       setIsLoading(true);
       if (mode === 'create') {
         const newReview: PostReviewRequestType = {
-          travel_route_id: Number(routeId),
-          title,
-          content,
-          rating,
-          thumbnail,
+          body: { travel_route_id: Number(routeId), title, content, rating, thumbnail },
+          uploaded_urls,
+          deleted_urls,
         };
 
         postReview(newReview)
@@ -93,10 +93,13 @@ const ReviewForm = ({
       } else {
         const editedReview: EditReviewRequestType = {
           review_id: Number(reviewId),
-          title,
-          content,
-          rating,
-          thumbnail,
+          body: {
+            title,
+            content,
+            rating,
+            thumbnail,
+          },
+          deleted_urls,
         };
 
         editReview(editedReview)

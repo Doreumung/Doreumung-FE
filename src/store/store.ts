@@ -8,11 +8,13 @@ import persistStore from 'redux-persist/es/persistStore';
 import reviewImages from './reviewImagesSlice';
 import toast from './toastSlice';
 import travelRouteApi from '@/api/travelRouteApi';
+import imageApi from '@/api/imageApi';
 
 export const store = configureStore({
   reducer: {
     [reviewApi.reducerPath]: reviewApi.reducer,
     [commentApi.reducerPath]: commentApi.reducer,
+    [imageApi.reducerPath]: imageApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [travelRouteApi.reducerPath]: travelRouteApi.reducer,
     travelPlan: travelPlanReducer,
@@ -29,6 +31,7 @@ export const store = configureStore({
       .concat(
         reviewApi.middleware,
         commentApi.middleware,
+        imageApi.middleware,
         userApi.middleware,
         travelRouteApi.middleware,
       ),

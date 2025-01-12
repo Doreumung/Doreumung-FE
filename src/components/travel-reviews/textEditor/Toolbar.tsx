@@ -1,7 +1,7 @@
 import ToolbarIcon from './ToolbarIcon';
 import { Heading, Image, Redo, Undo } from 'lucide-react';
 import ColorSwatches from './ColorSwatches';
-import { useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import useOutsideClick from '@/hooks/useOutsideClick';
 import useTiptap from '@/hooks/useTiptap';
 import useIsMobile from '@/hooks/useIsMobile';
@@ -9,29 +9,45 @@ import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { ToolbarProps } from '../types';
 import {
+  IMAGE_UPLOAD_ERROR_MESSAGE,
   TOOLBAR_GROUP_STYLES,
   TOOLBAR_INNER_CONTAINER_STYLES,
   TOOLBAR_OUTER_CONTAINER_STYLES,
 } from '../constants';
 import { headingToolStyles } from './headingToolStyles';
+import { useUploadImageMutation } from '@/api/imageApi';
+import { toast } from '@/components/common/toast/Toast';
 
 const Toolbar = ({ editor }: ToolbarProps) => {
   const isMobile = useIsMobile();
   const { getToolbarOptions, addImage } = useTiptap();
-  const colorRef = useRef<HTMLDivElement | null>(null);
-  const headingRef = useRef<HTMLDivElement | null>(null);
+
   const [colorSwatchMode, setColorSwatchMode] = useState<string | null>(null);
   const [showHeadingOptions, setShowHeadingOptions] = useState<boolean>(false);
 
-  useOutsideClick({ ref: colorRef, callback: () => setColorSwatchMode(null) });
+  const colorRef = useRef<HTMLDivElement | null>(null);
+  const headingRef = useRef<HTMLDivElement | null>(null);
 
+  useOutsideClick({ ref: colorRef, callback: () => setColorSwatchMode(null) });
   useOutsideClick({ ref: headingRef, callback: () => setShowHeadingOptions(false) });
 
-  // const handleUploadImage = (e: ChangeEvent<HTMLInputElement>) => {
-  //   if(e.target.files){
-  //     const image = e.target.files[0]
-  //   }
-  // };
+  const [uploadImage] = useUploadImageMutation();
+
+  const handleUploadImage = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const image = e.target.files[0];
+      const formData = new FormData();
+      formData.delete('file');
+      formData.append('file', image);
+
+      uploadImage(formData)
+        .unwrap()
+        .then(res => {
+          if (res && editor) addImage(editor, res.uploaded_url);
+        })
+        .catch(() => toast(IMAGE_UPLOAD_ERROR_MESSAGE));
+    }
+  };
 
   if (!editor) {
     return (
@@ -109,15 +125,14 @@ const Toolbar = ({ editor }: ToolbarProps) => {
             ))}
           </div>
 
-          {/* 이미지 추가 시 S3에 업로드 로직 구현 필요 */}
           <div className="relative flex items-center">
-            {/* <input
+            <input
               type="file"
               accept="image/*"
               className="absolute top-0 left-0 size-5 opacity-0 file:cursor-pointer md:size-6"
               onChange={handleUploadImage}
-            /> */}
-            <ToolbarIcon icon={Image} onClick={() => addImage(editor)} />
+            />
+            <ToolbarIcon icon={Image} />
           </div>
         </div>
 

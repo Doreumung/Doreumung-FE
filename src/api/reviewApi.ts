@@ -30,10 +30,10 @@ const reviewApi = createApi({
       invalidatesTags: [REVIEW_LIST_TAG],
     }),
     editReview: build.mutation<EditReviewResponseType, EditReviewRequestType>({
-      query: ({ review_id, title, rating, content, thumbnail }) => ({
+      query: ({ review_id, body, deleted_urls }) => ({
         url: `/reviews/${review_id}`,
         method: 'PATCH',
-        body: { title, rating, content, thumbnail },
+        body: { body, deleted_urls },
       }),
       invalidatesTags: (result, _, { review_id: id }) => [{ type: 'Reviews', id }],
     }),

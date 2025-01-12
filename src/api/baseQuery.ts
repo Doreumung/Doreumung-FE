@@ -12,13 +12,20 @@ const getAccessToken = () => {
   return null;
 };
 
+const prepareHeaders = (headers: Headers) => {
+  const token = getAccessToken();
+  if (token && token !== 'undefined') headers.set('Authorization', `Bearer ${token}`);
+  return headers;
+};
+
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://api.doreumung.site/api/v1',
-  prepareHeaders: headers => {
-    const token = getAccessToken();
-    if (token && token !== 'undefined') headers.set('Authorization', `Bearer ${token}`);
-    return headers;
-  },
+  prepareHeaders,
+});
+
+export const imageBaseQuery = fetchBaseQuery({
+  baseUrl: 'https://api.doreumung.site/',
+  prepareHeaders,
 });
 
 export default baseQuery;

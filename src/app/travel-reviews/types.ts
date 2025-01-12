@@ -18,6 +18,10 @@ import {
   travelRouteInfoSchema,
   singleCommentSchema,
   socketResponseSchema,
+  uploadImageResponseSchema,
+  imageUrlSchema,
+  deleteImageRequestSchema,
+  deleteImageResponseSchema,
 } from './schemas';
 
 export type GetReviewDetailResponseType = z.infer<typeof getReviewDetailResponseSchema>;
@@ -55,3 +59,11 @@ export type CommentFormType = z.infer<typeof commentFormSchema>;
 export type TravelRouteInfoType = z.infer<typeof travelRouteInfoSchema>;
 
 export type SocketResponseType = z.infer<typeof socketResponseSchema>;
+
+export type UploadImageResponseType = z.infer<typeof uploadImageResponseSchema>;
+
+export type ImageUrlType = z.infer<typeof imageUrlSchema>;
+
+export type DeleteImageRequestType = z.infer<typeof deleteImageRequestSchema>;
+
+export type DeleteImageResponseType = z.infer<typeof deleteImageResponseSchema>;
