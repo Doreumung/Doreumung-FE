@@ -16,7 +16,7 @@ const WebSocketContext = createContext<
 
 const WebSocketContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [reviewId, setReviewId] = useState<string>('');
-  const socketUrl = reviewId ? `${SOCKET_URL}?review_id=${reviewId}` : '';
+  const socketUrl = reviewId ? `${SOCKET_URL}?review_id=${reviewId}` : null;
 
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
     onOpen: () => console.log('✨ WebSocket 연결 열림'),
