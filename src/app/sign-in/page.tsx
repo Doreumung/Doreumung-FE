@@ -11,8 +11,8 @@ import Link from 'next/link';
 import { useGetUserInfoMutation, useLoginMutation } from '@/api/userApi';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/userSlice';
-import { setCookie } from 'nookies';
 import { useRouter } from 'next/navigation';
+import { setCookieWithExpiry } from './setCookieWithExpiry';
 
 const Page = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false); // 자동 로그인 체크 여부
@@ -53,23 +53,20 @@ const Page = () => {
       setErrorMessage(''); // 에러 초기화
 
       // 액세스 토큰을 쿠키에 저장
-      // 쿠키 설정
-      setCookie(null, 'access_token', result?.access_token, {
-        maxAge: 60 * 60, // 쿠키 유효기간
-        path: '/', // 쿠키 경로
-      });
-      setCookie(null, 'refresh_token', result?.refresh_token, {
-        maxAge: 7 * 24 * 60 * 60,
-        path: '/',
-      });
+      // 쿠키 설정 및 토큰 유효기간 로컬 스토리지에 저장장
+      setCookieWithExpiry('access_token', result?.access_token, 60 * 60);
+      setCookieWithExpiry('refresh_token', result?.refresh_token, 7 * 24 * 60 * 60);
 
-      // 로컬 스토리지에 자동 로그인 유무 저장
+      // 로컬 스토리지에 자동 로그인 유무, 로그인 만료 토스트 팝업 노출 여부 저장
       localStorage.setItem('auto_signin', JSON.stringify(isChecked));
+      localStorage.setItem('toast_shown', 'false');
 
       const userData = await getUserInfo({});
       dispatch(setUser({ user: userData.data, loginType: 'email' }));
 
+      // 홈으로 이동 후 새로고침
       router.push('/'); // 홈으로 이동
+      window.location.href = '/'; // 새로고침
     } catch (err) {
       console.error('로그인 실패:', err);
 
