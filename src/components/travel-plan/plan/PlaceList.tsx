@@ -1,12 +1,14 @@
 import { usePatchTravelRouteMutation, usePostSavedTravelRouteMutation } from '@/api/travelRouteApi';
-import { TravelRouteResponse } from '@/app/travel-plan/types';
+import { PatchTravelRouteRequest, TravelRouteResponse } from '@/app/travel-plan/types';
 import Button from '@/components/common/buttons/Button';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import Toggle from '@/components/common/toggle/Toggle';
 import { useAppSelector } from '@/store/hooks';
+import { setScheduleResponse } from '@/store/travelPlanSlice';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 const PlaceList = () => {
   const [showRandomLayerPopup, setShowRandomLayerPopup] = useState<boolean>(false);
@@ -15,13 +17,14 @@ const PlaceList = () => {
 
   const router = useRouter();
 
+  const dispatch = useDispatch();
   const isLoggedIn = useAppSelector(state => !!state.user.user);
   const travelRoute = useAppSelector(
     state => state.travelPlan.scheduleResponse,
   ) as TravelRouteResponse;
 
   const [postSavedTravelRoute, { isLoading }] = usePostSavedTravelRouteMutation();
-  const [] = usePatchTravelRouteMutation();
+  const [patchTravelRoute] = usePatchTravelRouteMutation();
 
   const travelPlaces = [
     travelRoute.schedule.breakfast
@@ -62,6 +65,37 @@ const PlaceList = () => {
   ].filter(Boolean);
 
   const handleToggleChange = () => {};
+
+  const handleReramdomTravelRoute = async () => {
+    // const filteredSchedule = Object.entries(travelRoute.schedule).reduce((acc, [key, value]) => {
+    //   if (Array.isArray(value)) {
+    //     acc[key] = value.filter(item => toggledStates[item.place_id] === false);
+    //   } else if (value && toggledStates[value.place_id] === false) {
+    //     acc[key] = value;
+    //   }
+    //   return acc;
+    // }, {} as Record<string, unknown>);
+
+    const payload: PatchTravelRouteRequest = {
+      schedule: {
+        breakfast: null,
+        morning: [],
+        lunch: null,
+        afternoon: [],
+        dinner: null,
+      },
+      config: travelRoute.config,
+    };
+
+    try {
+      const response = await patchTravelRoute(payload).unwrap();
+      console.log(response);
+      dispatch(setScheduleResponse(response));
+      setShowRandomLayerPopup(false);
+    } catch (error) {
+      console.error('패치 요청 실패: ', error);
+    }
+  };
 
   const handleSaveClick = () => {
     if (isLoggedIn) {
@@ -140,7 +174,7 @@ const PlaceList = () => {
               계속하시겠습니까?
             </>
           }
-          onConfirm={() => console.log('랜덤으로 다시 뽑기')}
+          onConfirm={handleReramdomTravelRoute}
           setShowLayerPopup={setShowRandomLayerPopup}
         />
       )}
