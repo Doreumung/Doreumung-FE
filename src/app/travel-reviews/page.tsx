@@ -16,12 +16,15 @@ import { SORTING_OPTIONS } from '@/components/travel-reviews/constants';
 
 const Page = () => {
   const router = useRouter();
+
   const [page, setPage] = useState<number>(1);
-  const [sortingOptions, setSortingOptions] = useState<SortState>({
-    created_at: 'desc',
-    like_count: 'desc',
-  });
   const [orderBy, setOrderBy] = useState<SortCriteria>('created_at');
+  const [sortingOptions, setSortingOptions] = useState<SortState>({
+    like_count: 'desc',
+    comment_count: 'desc',
+    created_at: 'desc',
+  });
+
   const { data, isLoading, error } = useGetReviewListQuery({
     page,
     order_by: orderBy,
@@ -36,7 +39,7 @@ const Page = () => {
       {!error && (
         <>
           <section className="flex flex-col gap-3 self-start relative w-full">
-            <div className="size-24 bg-[url(/images/dolmung.svg)] bg-cover bg-center shrink-0" />
+            <div className="size-24 bg-dolmung bg-cover bg-center shrink-0" />
             <SpeechBubble
               text="도르멍과 함께한 후기를 들려주세요!"
               className="absolute -top-10 -right-12"

@@ -9,6 +9,12 @@ export default {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        dolmung: 'url(/images/dolmung.svg)',
+      },
+      backgroundSize: {
+        thumbnail: '15%',
+      },
       fontFamily: {
         logo: ['GumiRomanceTTF'],
         default: ['GmarketSansMedium'],
