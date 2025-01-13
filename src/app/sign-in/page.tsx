@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/userSlice';
 import { useRouter } from 'next/navigation';
 import { setCookieWithExpiry } from './setCookieWithExpiry';
+import clsx from 'clsx';
 
 const Page = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false); // 자동 로그인 체크 여부
@@ -91,7 +92,12 @@ const Page = () => {
   const errorMessageStyle = 'px-3 pb-4 text-xs text-red';
 
   return (
-    <div className="flex flex-col justify-center items-center h-[calc(100vh-80px)] scale-90 md:scale-100 pb-[80px]">
+    <div
+      className={clsx(
+        'flex flex-col justify-center items-center h-[calc(100vh-80px)] scale-90 md:scale-100',
+        errorMessage || errors.email?.message || errors.password?.message ? 'pb-12' : 'pb-[80px]',
+      )}
+    >
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center justify-center">
         <p className="pb-8 text-3xl text-darkerGray">로그인</p>
         <div className="flex flex-col gap-3 w-96">

@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { destroyCookie } from 'nookies';
+import { destroyCookie, setCookie } from 'nookies';
 import { clearUser } from '@/store/userSlice';
 import { useDispatch } from 'react-redux';
 import { useAccessTokenRefreshMutation } from '@/api/userApi';
 import { setCookieWithExpiry } from '@/app/sign-in/setCookieWithExpiry';
+import { useRouter } from 'next/navigation';
 
 export const useCheckLoginStatus = () => {
   const [accessTokenRefresh] = useAccessTokenRefreshMutation();
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null); // 로그인 상태 관리
+  const router = useRouter();
 
   const refreshAccessToken = async (refreshToken: string) => {
     try {
@@ -39,6 +41,9 @@ export const useCheckLoginStatus = () => {
     destroyCookie(null, 'refresh_token', { path: '/' });
 
     setIsLoggedIn(false); // 로그아웃 상태로 변경
+
+    setCookie(null, 'redirectMode', 'NOT_SIGNED_IN');
+    router.push('/redirect');
   };
 
   return { isLoggedIn, setIsLoggedIn, refreshAccessToken, handleLogout };
