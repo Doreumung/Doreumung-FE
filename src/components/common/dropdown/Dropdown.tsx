@@ -57,6 +57,9 @@ const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen, travel_route_id
               });
           }
           break;
+        case 'createReview':
+          router.push(`${option.path}/${travel_route_id}`);
+          break;
         default:
           throw new Error(`Unknown action type: ${option.action}`);
       }
