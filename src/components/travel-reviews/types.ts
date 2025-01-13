@@ -17,7 +17,7 @@ export type StarRatingProps = {
 };
 
 export type RouteInfoProps = VariantProps<typeof routeInfoContainerStyles> & {
-  label: '일정' | '경로' | '평점' | '테마' | '지역' | '경로';
+  label: '일정' | '경로' | '평점' | '테마' | '지역';
   content: React.ReactNode;
 };
 
@@ -82,9 +82,10 @@ type SortOrder = 'asc' | 'desc';
 export type SortState = {
   created_at: SortOrder;
   like_count: SortOrder;
+  comment_count: SortOrder;
 };
 
-export type SortCriteria = 'created_at' | 'like_count';
+export type SortCriteria = 'created_at' | 'like_count' | 'comment_count';
 
 export type SortingOptionProps = {
   orderBy: SortCriteria;

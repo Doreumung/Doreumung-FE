@@ -105,9 +105,10 @@ export const IMAGE_UPLOAD_ERROR_MESSAGE: ToastArgs = {
   type: 'error',
 };
 
-export const SORTING_OPTIONS: SortCriteria[] = ['created_at', 'like_count'];
+export const SORTING_OPTIONS: SortCriteria[] = ['like_count', 'comment_count', 'created_at'];
 
 export const LABELS_BY_SORTING_OPTIONS = {
-  created_at: '날짜',
   like_count: '좋아요',
+  comment_count: '댓글',
+  created_at: '날짜',
 };
