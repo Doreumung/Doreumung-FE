@@ -52,10 +52,10 @@ const Page = () => {
   };
 
   return (
-    <div className="flex justify-center w-screen h-[calc(100vh-80px)] px-4 md:px-0 pb-60">
+    <div className="flex justify-center w-screen h-[calc(100vh-80px)] pb-60">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col justify-center items-center gap-5 w-96"
+        className="flex flex-col justify-center items-center gap-5 w-96 px-4 md:px-0"
       >
         <p className="text-xl text-darkerGray">비밀번호 확인</p>
         <Input
@@ -70,12 +70,7 @@ const Page = () => {
         {errorMessage && (
           <p className="self-center px-11 md:px-3 pb-3 text-xs text-red">{errorMessage}</p>
         )}
-        <Button
-          label="확인"
-          onClick={() => {}}
-          className="w-80 md:w-96 text-sm"
-          disabled={isLoading}
-        />
+        <Button label="확인" onClick={() => {}} className="w-full text-base" disabled={isLoading} />
       </form>
     </div>
   );
