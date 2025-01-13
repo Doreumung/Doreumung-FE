@@ -8,16 +8,18 @@ import { useDispatch } from 'react-redux';
 import { clearUser } from '@/store/userSlice';
 import { destroyCookie, parseCookies } from 'nookies';
 import { useLogoutMutation } from '@/api/userApi';
-import { useDeleteTravelRouteMutation } from '@/api/travelRouteApi';
-import { toast } from '../toast/Toast';
 
-const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen, travel_route_id }) => {
+const Dropdown: React.FC<DropdownProps> = ({
+  variant,
+  setIsOpen,
+  travel_route_id,
+  onDeleteConfirm,
+}) => {
   const isMobile = useIsMobile();
   const router = useRouter();
   const options: DropdownOption[] = DROPDOWN_MENU[variant];
   const dispatch = useDispatch();
   const [logoutUser] = useLogoutMutation();
-  const [deleteTravelRoute] = useDeleteTravelRouteMutation();
 
   const handleSelect = (option: DropdownOption) => {
     if (option.action) {
@@ -45,16 +47,8 @@ const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen, travel_route_id
           break;
         case 'deleteTravel':
           // 저장 경로 삭제 로직 구현
-          if (travel_route_id) {
-            deleteTravelRoute(travel_route_id)
-              .unwrap()
-              .then(() => {
-                console.log(`여행 경로 삭제 성공: ID ${travel_route_id}`);
-                toast({ message: ['일정이 성공적으로 삭제되었습니다.'] });
-              })
-              .catch(() => {
-                toast({ message: ['후기가 작성된 일정은 삭제할 수 없습니다.'], type: 'error' });
-              });
+          if (onDeleteConfirm) {
+            onDeleteConfirm();
           }
           break;
         case 'createReview':
