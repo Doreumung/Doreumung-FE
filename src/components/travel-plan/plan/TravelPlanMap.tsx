@@ -1,4 +1,4 @@
-import { Schedule, ScheduleItem } from '@/app/travel-plan/types';
+import { Schedule } from '@/app/travel-plan/types';
 import { useAppSelector } from '@/store/hooks';
 import { useEffect } from 'react';
 
@@ -34,47 +34,50 @@ const TravelPlanMap = () => {
 
         const map = new window.kakao.maps.Map(container, options);
 
+        const sortedPlaces: { name: string; latitude: number; longitude: number }[] = [
+          schedule.breakfast,
+          ...(Array.isArray(schedule.morning) ? schedule.morning : []),
+          schedule.lunch,
+          ...(Array.isArray(schedule.afternoon) ? schedule.afternoon : []),
+          schedule.dinner,
+        ].filter(Boolean) as { name: string; latitude: number; longitude: number }[];
+
         //장소 - 위도 경도 마커
-        if (schedule) {
-          const customOverlay = new window.kakao.maps.CustomOverlay({
-            map: null,
-            content: '',
-            position: undefined,
-          });
-
-          Object.keys(schedule).forEach(key => {
-            const items = Array.isArray(schedule[key as keyof Schedule])
-              ? (schedule[key as keyof Schedule] as ScheduleItem[])
-              : [schedule[key as keyof Schedule]];
-
-            items.forEach(place => {
-              if (place && !Array.isArray(place)) {
-                const marker = new window.kakao.maps.Marker({
-                  map: map,
-                  position: new window.kakao.maps.LatLng(place.latitude, place.longitude),
-                });
-
-                // 마커 클릭 이벤트 추가
-                window.kakao.maps.event.addListener(marker, 'mouseover', () => {
-                  const overlayContent = document.createElement('div');
-                  overlayContent.className =
-                    'absolute bottom-2 left-4 p-1 bg-white border border-lightGray rounded-md text-sm';
-                  overlayContent.innerText = place.name;
-
-                  customOverlay.setContent(overlayContent);
-                  customOverlay.setPosition(
-                    new window.kakao.maps.LatLng(place.latitude, place.longitude),
-                  );
-                  customOverlay.setMap(map);
-                });
-
-                window.kakao.maps.event.addListener(marker, 'mouseout', () => {
-                  customOverlay.setMap(null);
-                });
-              }
+        sortedPlaces.forEach((place, index) => {
+          if (place && !Array.isArray(place)) {
+            const marker = new window.kakao.maps.Marker({
+              map: map,
+              position: new window.kakao.maps.LatLng(place.latitude, place.longitude),
             });
-          });
-        }
+
+            // 커스텀 오버레이 생성 (번호와 장소 이름 표시)
+            const overlayContent = document.createElement('div');
+            overlayContent.style.position = 'absolute';
+            overlayContent.style.background = '#fff';
+            overlayContent.style.border = '1px solid #ccc';
+            overlayContent.style.borderRadius = '4px';
+            overlayContent.style.padding = '5px';
+            overlayContent.style.fontSize = '12px';
+            overlayContent.style.fontWeight = 'bold';
+            overlayContent.style.color = '#333';
+            overlayContent.innerText = `${index + 1}. ${place.name}`;
+
+            const customOverlay = new window.kakao.maps.CustomOverlay({
+              content: overlayContent,
+              position: new window.kakao.maps.LatLng(place.latitude, place.longitude),
+              map: map,
+            });
+
+            // 마우스 이벤트로 툴팁 표시
+            window.kakao.maps.event.addListener(marker, 'mouseover', () => {
+              customOverlay.setMap(map);
+            });
+
+            window.kakao.maps.event.addListener(marker, 'mouseout', () => {
+              customOverlay.setMap(null);
+            });
+          }
+        });
       });
     };
 
