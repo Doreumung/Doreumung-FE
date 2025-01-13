@@ -3,10 +3,13 @@
 import { useCheckLoginStatus } from '@/utils/auth';
 import { useEffect } from 'react';
 import Toast, { toast } from '@/components/common/toast/Toast';
-import { parseCookies } from 'nookies';
+import { destroyCookie, parseCookies } from 'nookies';
+import { useDispatch } from 'react-redux';
+import { clearUser } from '@/store/userSlice';
 
 export const CheckLoginStatus = () => {
-  const { isLoggedIn, refreshAccessToken, handleLogout } = useCheckLoginStatus();
+  const { isLoggedIn, setIsLoggedIn, refreshAccessToken, handleLogout } = useCheckLoginStatus();
+  const dispatch = useDispatch();
 
   const autoSignin = localStorage.getItem('auto_signin');
   const cookies = parseCookies();
@@ -22,7 +25,19 @@ export const CheckLoginStatus = () => {
   useEffect(() => {
     if (!accessTokenExpireDate || !refreshTokenExpireDate) {
       console.log('이미 로그아웃 됨');
-      handleLogout('로그인이 만료되었습니다.');
+
+      localStorage.removeItem('persist:user');
+      localStorage.removeItem('auto_signin');
+      localStorage.removeItem('access_token_expiry');
+      localStorage.removeItem('refresh_token_expiry');
+
+      dispatch(clearUser());
+
+      destroyCookie(null, 'access_token', { path: '/' });
+      destroyCookie(null, 'refresh_token', { path: '/' });
+
+      setIsLoggedIn(false); // 로그아웃 상태로 변경
+
       return;
     }
 
@@ -62,6 +77,8 @@ export const CheckLoginStatus = () => {
     now,
     refreshAccessToken,
     refreshToken,
+    dispatch,
+    setIsLoggedIn,
   ]);
 
   const toastShown = localStorage.getItem('toast_shown');
