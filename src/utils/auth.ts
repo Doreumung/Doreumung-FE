@@ -4,13 +4,14 @@ import { clearUser } from '@/store/userSlice';
 import { useDispatch } from 'react-redux';
 import { useAccessTokenRefreshMutation } from '@/api/userApi';
 import { setCookieWithExpiry } from '@/app/sign-in/setCookieWithExpiry';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 export const useCheckLoginStatus = () => {
   const [accessTokenRefresh] = useAccessTokenRefreshMutation();
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null); // 로그인 상태 관리
   const router = useRouter();
+  const pathName = usePathname();
 
   const refreshAccessToken = async (refreshToken: string) => {
     try {
@@ -42,8 +43,14 @@ export const useCheckLoginStatus = () => {
 
     setIsLoggedIn(false); // 로그아웃 상태로 변경
 
-    setCookie(null, 'redirectMode', 'NOT_SIGNED_IN');
-    router.push('/redirect');
+    if (
+      pathName === '/edit-profile' ||
+      pathName === '/confirm-password' ||
+      pathName === '/my-travel'
+    ) {
+      setCookie(null, 'redirectMode', 'NOT_SIGNED_IN');
+      router.push('/redirect');
+    }
   };
 
   return { isLoggedIn, setIsLoggedIn, refreshAccessToken, handleLogout };
