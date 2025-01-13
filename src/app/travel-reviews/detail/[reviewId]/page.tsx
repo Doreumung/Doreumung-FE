@@ -85,9 +85,22 @@ const Page = () => {
 
       if (receivedData.type === 'comment' && receivedData.review_id === review_id) {
         commentRefetch();
-        if (receivedData.method === 'POST') toast(POST_COMMENT_SUCCESS_MESSAGE);
-        if (receivedData.method === 'PATCH') toast(EDIT_COMMENT_SUCCESS_MESSAGE);
-        if (receivedData.method === 'DELETE') toast(DELETE_COMMENT_SUCCESS_MESSAGE);
+
+        if (user && receivedData.user_id === user.id) {
+          switch (receivedData.method) {
+            case 'POST':
+              toast(POST_COMMENT_SUCCESS_MESSAGE);
+              break;
+            case 'PATCH':
+              toast(EDIT_COMMENT_SUCCESS_MESSAGE);
+              break;
+            case 'DELETE':
+              toast(DELETE_COMMENT_SUCCESS_MESSAGE);
+              break;
+            default:
+              throw new Error('Invalid method');
+          }
+        }
       }
 
       if (receivedData.type === 'like') {
@@ -206,11 +219,7 @@ const Page = () => {
             <CommentForm />
             {commentsLoading && <LoadingSpinner />}
             {commentsError && <ApiErrorMessage />}
-            {commentData && (
-              <CommentList
-                comments={commentData}
-              />
-            )}
+            {commentData && <CommentList comments={commentData} />}
           </section>
 
           {showDeletePopup && (
