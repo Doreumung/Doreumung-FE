@@ -78,6 +78,10 @@ const useTiptap = (content?: string) => {
         class: 'h-full p-4 prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl',
       },
     },
+    onCreate: ({ editor }) => {
+      const currentImages = extractImages(editor.getHTML());
+      dispatch(setCurrentImages(currentImages));
+    },
     onUpdate: ({ editor }) => {
       const currentImages = extractImages(editor.getHTML());
       dispatch(setCurrentImages(currentImages));
