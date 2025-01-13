@@ -53,9 +53,9 @@ const PasswordForm = ({
   return (
     <div
       className={clsx(
-        'flex flex-col justify-between px-7 py-5 w-96 h-52 rounded-2xl border border-black bg-fadedGreen',
+        'flex flex-col justify-between px-7 py-5 w-96 h-32 rounded-2xl border border-black bg-fadedGreen',
         'transition-all duration-200',
-        isPasswordChangeActive && 'h-[350px]',
+        isPasswordChangeActive && 'h-[320px]',
       )}
     >
       <p className="self-start text-xl">비밀번호 변경</p>
