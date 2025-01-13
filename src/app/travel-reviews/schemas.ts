@@ -66,8 +66,8 @@ export const singleReviewSchema = reviewSchemas.pick({
   rating: true,
   like_count: true,
   comment_count: true,
+  thumbnail: true,
   created_at: true,
-  updated_at: true,
 });
 
 const pagingSchema = z.object({
@@ -75,8 +75,10 @@ const pagingSchema = z.object({
   size: z.number().optional(),
   total_pages: z.number(),
   total_reviews: z.number(),
-  order_by: z.string().optional(),
-  order: z.string().optional(),
+  order_by: z
+    .union([z.literal('created_at'), z.literal('like_count'), z.literal('comment_count')])
+    .optional(),
+  order: z.union([z.literal('asc'), z.literal('desc')]).optional(),
 });
 
 export const getReviewListRequestSchema = pagingSchema.pick({
@@ -97,18 +99,20 @@ export const getReviewListResponseSchema = pagingSchema
     reviews: singleReviewSchema.array(),
   });
 
-export const editReviewRequestSchema = reviewSchemas.pick({
-  review_id: true,
-  deleted_urls: true,
-
-}).extend({
-  body: reviewSchemas.pick({
-    title: true,
-    content: true,
-    rating: true,
-    thumbnail: true,
+export const editReviewRequestSchema = reviewSchemas
+  .pick({
+    review_id: true,
+    deleted_urls: true,
+    uploaded_urls: true,
   })
-})
+  .extend({
+    body: reviewSchemas.pick({
+      title: true,
+      content: true,
+      rating: true,
+      thumbnail: true,
+    }),
+  });
 
 export const editReviewResponseSchema = reviewSchemas.omit({
   comment_count: true,
