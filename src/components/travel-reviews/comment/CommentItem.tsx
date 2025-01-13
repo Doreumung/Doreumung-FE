@@ -28,42 +28,50 @@ const CommentItem = ({
   };
 
   return (
-    <div className="flex flex-col items-start gap-1 pb-2">
-      <div className="flex justify-between items-center gap-2 pl-1">
+    <div
+      className={clsx(
+        'flex flex-col items-start gap-1 w-full pb-2',
+        user_id === user?.id && 'self-end',
+      )}
+    >
+      <div
+        className={clsx(
+          'flex justify-between items-center gap-2 pl-1',
+          user_id === user?.id && 'self-end',
+        )}
+      >
         <span className="text-darkerGray text-sm">{nickname}</span>
         {user && user.id === user_id && (
-          <div className="flex justify-center items-center size-3.5">
-            <Pen
-              className="shrink-0 text-darkGray cursor-pointer size-3 hover:size-3.5"
-              strokeWidth={3}
-              onClick={() => setIsEditMode(prev => !prev)}
-            />
-          </div>
+          <Pen
+            className="shrink-0 text-darkGray cursor-pointer size-3"
+            strokeWidth={3}
+            onClick={() => setIsEditMode(prev => !prev)}
+          />
         )}
       </div>
-      <div className="flex items-end gap-2 w-full">
+      <div
+        className={clsx('flex items-end gap-2 w-full', user_id === user?.id && 'flex-row-reverse')}
+      >
         {isEditMode && (
           <CommentForm content={content} setShowForm={setIsEditMode} comment_id={comment_id} />
         )}
         {!isEditMode && (
           <div className="flex items-start gap-2 px-3 py-2 border border-darkerGray rounded-xl bg-white">
             {content}
-            {user && user.id === user_id && (
-              <>
-                <div className="flex justify-center items-center relative -top-0.5 -right-0.5 size-3.5">
-                  <X
-                    className="shrink-0 text-red cursor-pointer size-3 hover:size-3.5"
-                    strokeWidth={4}
-                    onClick={() => setShowLayerPopup(true)}
-                  />
-                </div>
-              </>
-            )}
           </div>
         )}
-        <span className={clsx('shrink-0 text-darkGray text-xs', isEditMode && 'hidden')}>
-          {dayjs().locale('ko').to(dayjs(created_at))}
-        </span>
+        <div className="flex flex-col items-end gap-1 shrink-0">
+          {user?.id === user_id && !isEditMode && (
+            <X
+              className="text-red cursor-pointer size-3"
+              strokeWidth={4}
+              onClick={() => setShowLayerPopup(true)}
+            />
+          )}
+          <span className={clsx('text-darkGray text-xs', isEditMode && 'hidden')}>
+            {dayjs().locale('ko').to(dayjs(created_at))}
+          </span>
+        </div>
       </div>
 
       {showLayerPopup && (
