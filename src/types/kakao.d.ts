@@ -43,6 +43,33 @@ declare namespace kakao.maps {
     fillOpacity: number;
   }
 
+  class Polyline {
+    constructor(options: PolylineOptions);
+    setMap(map: Map | null): void;
+    getPath(): LatLng[];
+    setPath(path: LatLng[]): void;
+    setOptions(options: Partial<PolylineOptions>): void;
+  }
+
+  interface PolylineOptions {
+    map: Map;
+    path: LatLng[];
+    strokeWeight: number;
+    strokeColor: string;
+    strokeOpacity: number;
+    strokeStyle?:
+      | 'solid'
+      | 'shortdash'
+      | 'shortdot'
+      | 'shortdashdot'
+      | 'shortdashdotdot'
+      | 'dot'
+      | 'dash'
+      | 'dashdot'
+      | 'longdash'
+      | 'longdashdot';
+  }
+
   class CustomOverlay {
     constructor(options: CustomOverlayOptions);
     setContent(content: HTMLElement | string): void;

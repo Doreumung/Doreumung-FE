@@ -1,4 +1,4 @@
-import { Schedule, ScheduleItem } from '@/app/travel-plan/types';
+import { Schedule } from '@/app/travel-plan/types';
 import { useAppSelector } from '@/store/hooks';
 import { useEffect } from 'react';
 
@@ -32,43 +32,78 @@ const TravelPlanMap = () => {
 
         const map = new window.kakao.maps.Map(container, options);
 
-        //장소 - 위도 경도 마커
-        if (schedule) {
+        const sortedPlaces: { name: string; latitude: number; longitude: number }[] = [
+          schedule.breakfast,
+          ...(Array.isArray(schedule.morning) ? schedule.morning : []),
+          schedule.lunch,
+          ...(Array.isArray(schedule.afternoon) ? schedule.afternoon : []),
+          schedule.dinner,
+        ].filter(Boolean) as { name: string; latitude: number; longitude: number }[];
+
+        // 경로 URL 생성 함수 (출발지 도착지 모두 포함)
+        const createKakaoMapRouteUrl = (
+          from: { name: string; latitude: number; longitude: number },
+          to: { name: string; latitude: number; longitude: number },
+        ) => {
+          return `https://map.naver.com/p/directions/${from.longitude},${from.latitude},${from.name}/${to.longitude},${to.latitude},${to.name}/-/car`;
+        };
+
+        // 마커 및 직선 생성
+        sortedPlaces.forEach((place, index) => {
+          const marker = new window.kakao.maps.Marker({
+            map: map,
+            position: new window.kakao.maps.LatLng(place.latitude, place.longitude),
+          });
+
+          // 다음 장소와의 직선 생성
+          if (index < sortedPlaces.length - 1) {
+            const nextPlace = sortedPlaces[index + 1];
+
+            // 폴리라인 생성
+            const polyline = new window.kakao.maps.Polyline({
+              map: map,
+              path: [
+                new window.kakao.maps.LatLng(place.latitude, place.longitude),
+                new window.kakao.maps.LatLng(nextPlace.latitude, nextPlace.longitude),
+              ],
+              strokeWeight: 5,
+              strokeColor: '#FF9B36',
+              strokeOpacity: 1,
+              strokeStyle: 'solid',
+            });
+
+            // 폴리라인 클릭 이벤트 추가
+            const kakaoMapRouteUrl = createKakaoMapRouteUrl(place, nextPlace);
+
+            window.kakao.maps.event.addListener(polyline, 'click', () => {
+              window.open(kakaoMapRouteUrl, '_blank');
+            });
+          }
+
+          // 마커 툴팁 (이름 표시)
           const customOverlay = new window.kakao.maps.CustomOverlay({
             map: null,
             content: '',
-            position: undefined,
           });
 
-          Object.keys(schedule).forEach(key => {
-            const items = Array.isArray(schedule[key as keyof Schedule])
-              ? (schedule[key as keyof Schedule] as ScheduleItem[])
-              : [schedule[key as keyof Schedule]];
+          // 마우스 오버 시 오버레이 업데이트 및 표시
+          window.kakao.maps.event.addListener(marker, 'mouseover', () => {
+            const overlayContent = document.createElement('div');
+            overlayContent.className =
+              'absolute bottom-2 left-4 p-1 bg-white border border-gray-400 rounded-md shadow-md text-sm';
+            overlayContent.innerText = `${index + 1}. ${place.name}`;
 
-            items.forEach(place => {
-              if (place && !Array.isArray(place)) {
-                const marker = new window.kakao.maps.Marker({
-                  map: map,
-                  position: new window.kakao.maps.LatLng(place.latitude, place.longitude),
-                });
-
-                // 마커 클릭 이벤트 추가
-                window.kakao.maps.event.addListener(marker, 'click', () => {
-                  const overlayContent = document.createElement('div');
-                  overlayContent.className =
-                    'p-1 bg-white border border-gray-400 rounded-md shadow-md text-sm';
-                  overlayContent.innerText = place.name;
-
-                  customOverlay.setContent(overlayContent);
-                  customOverlay.setPosition(
-                    new window.kakao.maps.LatLng(place.latitude, place.longitude),
-                  );
-                  customOverlay.setMap(map);
-                });
-              }
-            });
+            customOverlay.setContent(overlayContent);
+            customOverlay.setPosition(
+              new window.kakao.maps.LatLng(place.latitude, place.longitude),
+            );
+            customOverlay.setMap(map);
           });
-        }
+
+          window.kakao.maps.event.addListener(marker, 'mouseout', () => {
+            customOverlay.setMap(null);
+          });
+        });
       });
     };
 

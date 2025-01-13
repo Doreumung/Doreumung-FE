@@ -1,5 +1,5 @@
 const Page = () => {
-  return <>/travel-plan/:planId</>;
+  return <>/my-plan/:planId</>;
 };
 
 export default Page;
