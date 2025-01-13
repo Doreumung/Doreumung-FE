@@ -18,45 +18,40 @@ import { RootState } from '@/store/store';
 import { toast } from '@/components/common/toast/Toast';
 import { useGetCommentsQuery } from '@/api/commentApi';
 import ApiErrorMessage from '@/components/common/errorMessage/ApiErrorMessage';
-import useWebSocket from 'react-use-websocket';
 import clsx from 'clsx';
-import { LikeSocketResponseType } from '@/app/travel-reviews/types';
+import { SocketResponseType } from '@/app/travel-reviews/types';
 import {
+  DELETE_COMMENT_SUCCESS_MESSAGE,
   DELETE_REVIEW_ERROR_MESSAGE,
   DELETE_REVIEW_SUCCESS_MESSAGE,
+  EDIT_COMMENT_SUCCESS_MESSAGE,
   LIKE_MY_OWN_REVIEW_ERROR_MESSAGE,
+  POST_COMMENT_SUCCESS_MESSAGE,
   SOCKET_ERROR_MESSAGE,
 } from '@/components/travel-reviews/constants';
+import { useWebSocketContext } from '@/contexts/useWebSocketContext';
 
 const Page = () => {
   const router = useRouter();
-  const user = useAppSelector((state: RootState) => state.user.user);
+  const { reviewId: review_id }: { reviewId: string } = useParams();
+
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [likeCount, setLikeCount] = useState<number>(0);
   const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
   const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false);
-  const { reviewId: review_id }: { reviewId: string } = useParams();
 
+  const user = useAppSelector((state: RootState) => state.user.user);
+
+  const { data, isLoading, error } = useGetReviewDetailQuery(Number(review_id));
   const [deleteReview] = useDeleteReviewMutation();
-
   const {
     data: commentData,
     isLoading: commentsLoading,
     error: commentsError,
+    refetch: commentRefetch,
   } = useGetCommentsQuery(Number(review_id));
 
-  const socketUrl = review_id ? `wss://api.doreumung.site/ws/likes?review_id=${review_id}` : '';
-
-  const { sendJsonMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
-    onOpen: () => console.log('✨ WebSocket 연결 열림'),
-    onError: error => console.log('🚨 WebSocket 에러', error),
-    onClose: () => console.log('💀 WebSocket 연결 닫힘'),
-    shouldReconnect: () => true,
-  });
-
-  const isSocketOpen = readyState === 1;
-
-  const { data, isLoading, error } = useGetReviewDetailQuery(Number(review_id));
+  const { sendJsonMessage, lastMessage, isSocketOpen, setReviewId } = useWebSocketContext();
 
   const {
     user_id = '',
@@ -71,6 +66,57 @@ const Page = () => {
     themes = [],
     created_at = '',
   } = data || {};
+
+  useEffect(() => {
+    if (data) {
+      setIsLiked(liked_by_user);
+      setLikeCount(like_count);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  useEffect(() => {
+    setReviewId(review_id);
+  }, [setReviewId, review_id]);
+
+  useEffect(() => {
+    if (lastMessage) {
+      const receivedData: SocketResponseType = JSON.parse(lastMessage.data);
+
+      if (receivedData.type === 'comment' && receivedData.review_id === review_id) {
+        commentRefetch();
+        if (receivedData.method === 'POST') toast(POST_COMMENT_SUCCESS_MESSAGE);
+        if (receivedData.method === 'PATCH') toast(EDIT_COMMENT_SUCCESS_MESSAGE);
+        if (receivedData.method === 'DELETE') toast(DELETE_COMMENT_SUCCESS_MESSAGE);
+      }
+
+      if (receivedData.type === 'like') {
+        if (typeof receivedData.like_count === 'number' && receivedData.review_id === review_id)
+          setLikeCount(receivedData.like_count);
+        if (typeof receivedData.is_liked === 'boolean' && user && receivedData.user_id === user.id)
+          setIsLiked(receivedData.is_liked);
+      }
+
+      console.log('💬 websocket res:', receivedData);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastMessage]);
+
+  const handleClickLike = () => {
+    if (!user) return setShowLoginPopup(true);
+    if (user.id === user_id) return toast(LIKE_MY_OWN_REVIEW_ERROR_MESSAGE);
+    if (!isSocketOpen) return toast(SOCKET_ERROR_MESSAGE);
+
+    if (isLiked)
+      sendJsonMessage(
+        JSON.stringify({ type: 'like', user_id: user.id, review_id, is_liked: false }),
+      );
+    else if (!isLiked)
+      sendJsonMessage(
+        JSON.stringify({ type: 'like', user_id: user.id, review_id, is_liked: true }),
+      );
+  };
 
   const handleClickEdit = () => {
     router.push(`/travel-reviews/edit/${review_id}`);
@@ -87,40 +133,6 @@ const Page = () => {
         toast(DELETE_REVIEW_ERROR_MESSAGE);
       });
   };
-
-  useEffect(() => {
-    if (data) {
-      setIsLiked(liked_by_user);
-      setLikeCount(like_count);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
-
-  const handleClickLike = () => {
-    if (!user) return setShowLoginPopup(true);
-    if (user.id === user_id) return toast(LIKE_MY_OWN_REVIEW_ERROR_MESSAGE);
-    if (!isSocketOpen) return toast(SOCKET_ERROR_MESSAGE);
-
-    if (isLiked) sendJsonMessage(JSON.stringify({ user_id: user.id, review_id, is_liked: false }));
-    else if (!isLiked)
-      sendJsonMessage(JSON.stringify({ user_id: user.id, review_id, is_liked: true }));
-  };
-
-  useEffect(() => {
-    if (lastMessage) {
-      const receivedData: LikeSocketResponseType = JSON.parse(lastMessage.data);
-
-      if (typeof receivedData.like_count === 'number' && receivedData.review_id === review_id)
-        setLikeCount(receivedData.like_count);
-
-      if (typeof receivedData.is_liked === 'boolean' && user && receivedData.user_id === user.id)
-        setIsLiked(receivedData.is_liked);
-
-      console.log('♥️ like_count:', receivedData.like_count);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastMessage]);
 
   if (isLoading) return <LoadingSpinner />;
 
@@ -186,7 +198,7 @@ const Page = () => {
             </div>
           </div>
 
-          <section className="w-full border-b border-lighterGray">
+          <section className="w-full">
             <div className="flex items-center gap-2 py-4">
               <h3 className="text-xl">댓글</h3>
               <span className="text-sm">{commentData ? commentData.length : 0}개</span>
@@ -194,7 +206,11 @@ const Page = () => {
             <CommentForm />
             {commentsLoading && <LoadingSpinner />}
             {commentsError && <ApiErrorMessage />}
-            {commentData && <CommentList comments={commentData} />}
+            {commentData && (
+              <CommentList
+                comments={commentData}
+              />
+            )}
           </section>
 
           {showDeletePopup && (

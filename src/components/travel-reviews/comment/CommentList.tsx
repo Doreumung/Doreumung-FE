@@ -1,9 +1,9 @@
-import { GetCommentsResponseType } from '@/app/travel-reviews/types';
+import { CommentListProps } from '../types';
 import CommentItem from './CommentItem';
 
-const CommentList = ({ comments }: { comments: GetCommentsResponseType }) => {
+const CommentList = ({ comments }: CommentListProps) => {
   return (
-    <div className="flex flex-col gap-4 pt-6">
+    <div className="flex flex-col-reverse gap-2 pt-6">
       {comments.map(comment => (
         <CommentItem key={`${comment.nickname}-${comment.created_at}`} comment={comment} />
       ))}

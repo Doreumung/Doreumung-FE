@@ -7,8 +7,11 @@ import { LogoTextAndImageProps } from './types';
 import { INPUT_RANGE, LOGO_STYLES } from '../constants';
 import useIsMobile from '@/hooks/useIsMobile';
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import clsx from 'clsx';
 
 const LogoImage: React.FC<LogoTextAndImageProps> = ({ variant }) => {
+  const pathname = usePathname();
   const isMobile = useIsMobile();
   const { scrollYProgress } = useScroll();
   const deviceType = isMobile ? 'mobile' : 'web';
@@ -55,7 +58,7 @@ const LogoImage: React.FC<LogoTextAndImageProps> = ({ variant }) => {
 
   return (
     <>
-      <motion.div style={motionStyle}>
+      <motion.div style={motionStyle} className={clsx(pathname === '/travel-reviews' && 'hidden')}>
         <Image src={Dolmung} alt="dolmung" priority />
       </motion.div>
     </>

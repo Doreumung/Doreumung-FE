@@ -5,6 +5,7 @@ import { routeInfoContainerStyles } from './RouteInfoStyles';
 import { reviewStatsIconStyles } from './reviewCard/ReviewStatsStyles';
 import React, { Dispatch, SetStateAction } from 'react';
 import {
+  GetCommentsResponseType,
   GetReviewDetailResponseType,
   GetTravelRouteInfoResponseType,
   SingleCommentType,
@@ -61,6 +62,8 @@ export type CommentFormProps = {
   setShowForm?: Dispatch<SetStateAction<boolean>>;
   comment_id?: number;
 };
+
+export type CommentListProps = { comments: GetCommentsResponseType };
 
 export type CommentItemProps = {
   comment: SingleCommentType;

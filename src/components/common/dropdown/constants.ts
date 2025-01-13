@@ -5,7 +5,7 @@ const DROPDOWN_MENUS_USER = [
 ];
 
 const DROPDOWN_MENUS_TRAVEL = [
-  { label: '리뷰 작성', path: '/travel-reviews/create' },
+  { label: '후기 작성', action: 'createReview', path: '/travel-reviews/create' },
   { label: '삭제', action: 'deleteTravel' },
 ];
 

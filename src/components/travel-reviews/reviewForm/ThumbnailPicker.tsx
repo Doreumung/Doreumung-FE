@@ -2,9 +2,15 @@ import { useAppSelector } from '@/store/hooks';
 import { RootState } from '@/store/store';
 import Image from 'next/image';
 import { ThumbnailPickerProps } from '../types';
+import { useEffect } from 'react';
 
 const ThumbnailPicker = ({ thumbnailImageUrl, setThumbnailImageUrl }: ThumbnailPickerProps) => {
   const imagesInEditor = useAppSelector((state: RootState) => state.reviewImages.currentImages);
+
+  useEffect(() => {
+    if (!thumbnailImageUrl && imagesInEditor) setThumbnailImageUrl(imagesInEditor[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [imagesInEditor]);
 
   return (
     <section>

@@ -21,6 +21,8 @@ export const reviewSchemas = z.object({
   travel_route: z.string().array(),
   themes: z.string().array(),
   thumbnail: z.string(),
+  uploaded_urls: z.string().array(),
+  deleted_urls: z.string().array(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
 });
@@ -29,13 +31,20 @@ export const getReviewDetailResponseSchema = reviewSchemas.omit({
   comment_count: true,
 });
 
-export const postReviewRequestSchema = reviewSchemas.pick({
-  travel_route_id: true,
-  title: true,
-  rating: true,
-  content: true,
-  thumbnail: true,
-});
+export const postReviewRequestSchema = reviewSchemas
+  .pick({
+    uploaded_urls: true,
+    deleted_urls: true,
+  })
+  .extend({
+    body: reviewSchemas.pick({
+      travel_route_id: true,
+      title: true,
+      rating: true,
+      content: true,
+      thumbnail: true,
+    }),
+  });
 
 export const postReviewResponseSchema = reviewSchemas
   .pick({
@@ -90,11 +99,16 @@ export const getReviewListResponseSchema = pagingSchema
 
 export const editReviewRequestSchema = reviewSchemas.pick({
   review_id: true,
-  title: true,
-  content: true,
-  rating: true,
-  thumbnail: true,
-});
+  deleted_urls: true,
+
+}).extend({
+  body: reviewSchemas.pick({
+    title: true,
+    content: true,
+    rating: true,
+    thumbnail: true,
+  })
+})
 
 export const editReviewResponseSchema = reviewSchemas.omit({
   comment_count: true,
@@ -126,18 +140,6 @@ export const commentSchema = z.object({
   message: z.string(),
 });
 
-export const postCommentRequestSchema = commentSchema.pick({
-  review_id: true,
-  content: true,
-});
-
-export const postCommentResponseSchema = commentSchema.pick({
-  comment_id: true,
-  content: true,
-  created_at: true,
-  message: true,
-});
-
 export const singleCommentSchema = commentSchema.pick({
   user_id: true,
   comment_id: true,
@@ -147,21 +149,6 @@ export const singleCommentSchema = commentSchema.pick({
 });
 
 export const getCommentsResponseSchema = singleCommentSchema.array();
-
-export const editCommentRequestSchema = commentSchema.pick({
-  comment_id: true,
-  content: true,
-});
-
-export const editCommentResponseSchema = commentSchema;
-
-export const deleteCommentRequestSchema = commentSchema.pick({
-  comment_id: true,
-});
-
-export const deleteCommentResponseSchema = commentSchema.pick({
-  message: true,
-});
 
 export const reviewFormSchema = reviewSchemas.pick({
   title: true,
@@ -205,9 +192,40 @@ export const travelRouteInfoSchema = z.object({
   travel_route: z.string().array(),
 });
 
-export const likeSocketResponseSchema = reviewSchemas
+export const socketResponseSchema = reviewSchemas
   .pick({
     user_id: true,
     like_count: true,
+    content: true,
   })
-  .extend({ review_id: z.string(), is_liked: z.boolean() });
+  .extend({
+    review_id: z.string(),
+    is_liked: z.boolean(),
+    type: z.union([z.literal('like'), z.literal('comment')]),
+    method: z.union([z.literal('POST'), z.literal('PATCH'), z.literal('DELETE')]),
+  });
+
+const imageInfoSchema = z.object({
+  id: z.number(),
+  review_id: z.number(),
+  filepath: z.string(),
+  source_type: z.string(),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime(),
+});
+
+export const uploadImageResponseSchema = z.object({
+  uploaded_image: imageInfoSchema,
+  all_images: imageInfoSchema.array(),
+  uploaded_url: z.string(),
+});
+
+export const imageUrlSchema = uploadImageResponseSchema.pick({ uploaded_url: true });
+
+export const deleteImageRequestSchema = z.string().array();
+
+export const deleteImageResponseSchema = z.object({
+  message: z.string(),
+  deleted_files: z.string().array(),
+  not_found_files: z.string().array(),
+});
