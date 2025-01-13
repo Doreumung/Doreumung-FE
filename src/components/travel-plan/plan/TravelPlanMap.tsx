@@ -48,11 +48,56 @@ const TravelPlanMap = () => {
           return `https://map.naver.com/p/directions/${from.longitude},${from.latitude},${from.name}/${to.longitude},${to.latitude},${to.name}/-/car`;
         };
 
+        // 카카오 번호 마커 사용
+        const addNumberMarker = (position: kakao.maps.LatLng, idx: number, map: kakao.maps.Map) => {
+          const imageSrc =
+              'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png',
+            imageSize = new kakao.maps.Size(36, 37),
+            imgOptions = {
+              spriteSize: new kakao.maps.Size(36, 691),
+              spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10),
+              offset: new kakao.maps.Point(13, 37),
+            },
+            markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
+
+          const marker = new kakao.maps.Marker({
+            position: position,
+            image: markerImage,
+            map: map,
+          });
+
+          return marker;
+        };
+
         // 마커 및 직선 생성
         sortedPlaces.forEach((place, index) => {
-          const marker = new window.kakao.maps.Marker({
-            map: map,
-            position: new window.kakao.maps.LatLng(place.latitude, place.longitude),
+          const markerPosition = new kakao.maps.LatLng(place.latitude, place.longitude);
+
+          // 숫자 마커 추가
+          const marker = addNumberMarker(markerPosition, index, map);
+
+          // 마커 툴팁 (이름 표시)
+          const customOverlay = new window.kakao.maps.CustomOverlay({
+            map: null,
+            content: '',
+          });
+
+          // 마우스 오버 시 오버레이 업데이트 및 표시
+          window.kakao.maps.event.addListener(marker, 'mouseover', () => {
+            const overlayContent = document.createElement('div');
+            overlayContent.className =
+              'absolute bottom-2 left-4 p-1 bg-white border border-gray-400 rounded-md shadow-md text-sm';
+            overlayContent.innerText = `${index + 1}. ${place.name}`;
+
+            customOverlay.setContent(overlayContent);
+            customOverlay.setPosition(
+              new window.kakao.maps.LatLng(place.latitude, place.longitude),
+            );
+            customOverlay.setMap(map);
+          });
+
+          window.kakao.maps.event.addListener(marker, 'mouseout', () => {
+            customOverlay.setMap(null);
           });
 
           // 다음 장소와의 직선 생성
@@ -94,30 +139,6 @@ const TravelPlanMap = () => {
               });
             });
           }
-
-          // 마커 툴팁 (이름 표시)
-          const customOverlay = new window.kakao.maps.CustomOverlay({
-            map: null,
-            content: '',
-          });
-
-          // 마우스 오버 시 오버레이 업데이트 및 표시
-          window.kakao.maps.event.addListener(marker, 'mouseover', () => {
-            const overlayContent = document.createElement('div');
-            overlayContent.className =
-              'absolute bottom-2 left-4 p-1 bg-white border border-gray-400 rounded-md shadow-md text-sm';
-            overlayContent.innerText = `${index + 1}. ${place.name}`;
-
-            customOverlay.setContent(overlayContent);
-            customOverlay.setPosition(
-              new window.kakao.maps.LatLng(place.latitude, place.longitude),
-            );
-            customOverlay.setMap(map);
-          });
-
-          window.kakao.maps.event.addListener(marker, 'mouseout', () => {
-            customOverlay.setMap(null);
-          });
         });
       });
     };
