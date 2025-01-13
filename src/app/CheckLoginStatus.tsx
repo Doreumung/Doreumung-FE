@@ -50,7 +50,12 @@ export const CheckLoginStatus = () => {
         console.log('액세스 토큰 만료');
         if (autoSignin === 'true') {
           console.log('액세스 토큰 재발급');
-          refreshAccessToken(refreshToken as string);
+
+          if (refreshToken) {
+            refreshAccessToken(refreshToken); // 액세스 토큰 재발급
+          } else {
+            handleLogout('리프레시 토큰 만료로 인한 로그아웃');
+          }
         } else {
           handleLogout('액세스 토큰 만료로 인한 로그아웃');
         }

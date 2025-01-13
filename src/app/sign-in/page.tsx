@@ -11,7 +11,6 @@ import Link from 'next/link';
 import { useGetUserInfoMutation, useLoginMutation } from '@/api/userApi';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/userSlice';
-import { useRouter } from 'next/navigation';
 import { setCookieWithExpiry } from './setCookieWithExpiry';
 import clsx from 'clsx';
 
@@ -21,7 +20,6 @@ const Page = () => {
   const [loginUser, { isLoading }] = useLoginMutation(); // isSuccess, isError
   const [getUserInfo] = useGetUserInfoMutation();
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const {
     register, // 연결하여 유효성 검사 진행
@@ -54,7 +52,7 @@ const Page = () => {
       setErrorMessage(''); // 에러 초기화
 
       // 액세스 토큰을 쿠키에 저장
-      // 쿠키 설정 및 토큰 유효기간 로컬 스토리지에 저장장
+      // 쿠키 설정 및 토큰 유효기간 로컬 스토리지에 저장
       setCookieWithExpiry('access_token', result?.access_token, 60 * 60);
       setCookieWithExpiry('refresh_token', result?.refresh_token, 7 * 24 * 60 * 60);
 
@@ -66,7 +64,6 @@ const Page = () => {
       dispatch(setUser({ user: userData.data, loginType: 'email' }));
 
       // 홈으로 이동 후 새로고침
-      router.push('/'); // 홈으로 이동
       window.location.href = '/'; // 새로고침
     } catch (err) {
       console.error('로그인 실패:', err);
