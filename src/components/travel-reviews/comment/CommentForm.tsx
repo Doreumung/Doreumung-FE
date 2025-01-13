@@ -9,6 +9,8 @@ import { CommentFormProps } from '../types';
 import { useAppSelector } from '@/store/hooks';
 import { RootState } from '@/store/store';
 import { useWebSocketContext } from '@/contexts/useWebSocketContext';
+import { SOCKET_ERROR_MESSAGE } from '../constants';
+import { toast } from '@/components/common/toast/Toast';
 
 const CommentForm = ({ content = '', setShowForm, comment_id }: CommentFormProps) => {
   const { reviewId: review_id } = useParams();
@@ -29,6 +31,7 @@ const CommentForm = ({ content = '', setShowForm, comment_id }: CommentFormProps
     const comment = data.content;
 
     if (!user) return;
+    if (!isSocketOpen) return toast(SOCKET_ERROR_MESSAGE);
 
     if (isSocketOpen) {
       if (!comment_id) {

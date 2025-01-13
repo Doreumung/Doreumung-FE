@@ -18,12 +18,16 @@ const WebSocketContextProvider = ({ children }: { children: React.ReactNode }) =
   const [reviewId, setReviewId] = useState<string>('');
   const socketUrl = reviewId ? `${SOCKET_URL}?review_id=${reviewId}` : null;
 
-  const { sendJsonMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
-    onOpen: () => console.log('✨ WebSocket 연결 열림'),
-    onError: error => console.log('🚨 WebSocket 에러', error),
-    onClose: () => console.log('💀 WebSocket 연결 닫힘'),
-    shouldReconnect: () => true,
-  });
+  const { sendJsonMessage, lastMessage, readyState } = useWebSocket(
+    socketUrl,
+    {
+      onOpen: () => console.log('✨ WebSocket 연결 열림'),
+      onError: error => console.log('🚨 WebSocket 에러', error),
+      onClose: () => console.log('💀 WebSocket 연결 닫힘'),
+      shouldReconnect: () => true,
+    },
+    !!socketUrl,
+  );
 
   const isSocketOpen = readyState === 1;
 
