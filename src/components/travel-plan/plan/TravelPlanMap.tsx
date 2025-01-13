@@ -66,9 +66,9 @@ const TravelPlanMap = () => {
                 new window.kakao.maps.LatLng(place.latitude, place.longitude),
                 new window.kakao.maps.LatLng(nextPlace.latitude, nextPlace.longitude),
               ],
-              strokeWeight: 5,
+              strokeWeight: 4,
               strokeColor: '#FF9B36',
-              strokeOpacity: 1,
+              strokeOpacity: 0.7,
               strokeStyle: 'solid',
             });
 
@@ -77,6 +77,21 @@ const TravelPlanMap = () => {
 
             window.kakao.maps.event.addListener(polyline, 'click', () => {
               window.open(kakaoMapRouteUrl, '_blank');
+            });
+
+            window.kakao.maps.event.addListener(polyline, 'mouseover', () => {
+              polyline.setOptions({
+                strokeWeight: 7,
+                strokeOpacity: 1,
+              });
+            });
+
+            // 마우스 아웃 이벤트: 색상 복원
+            window.kakao.maps.event.addListener(polyline, 'mouseout', () => {
+              polyline.setOptions({
+                strokeWeight: 4,
+                strokeOpacity: 0.7,
+              });
             });
           }
 
