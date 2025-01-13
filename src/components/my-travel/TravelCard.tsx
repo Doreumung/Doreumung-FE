@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import clsx from 'clsx';
 import Dropdown from '../common/dropdown/Dropdown';
+import Link from 'next/link';
 
 type TravelCardProps = {
   title: string;
@@ -16,8 +17,17 @@ type TravelCardProps = {
 const TravelCard = ({ title, theme, region, placeArray, travel_route_id }: TravelCardProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const handleDropdownClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsOpen(prev => !prev);
+  };
+
   return (
-    <div className="flex flex-col md:flex-row items-center px-4 text-foreground transition duration-300 ease-in-out hover:rotate-1 active:rotate-2">
+    <Link
+      href={`my-travel/${travel_route_id}`}
+      className="flex flex-col md:flex-row items-center px-4 text-foreground "
+    >
       {/* 이미지 영역 */}
       <div
         className={clsx(
@@ -44,12 +54,11 @@ const TravelCard = ({ title, theme, region, placeArray, travel_route_id }: Trave
               alt="menu image"
               width={28}
               height={28}
-              onClick={() => setIsOpen(prev => !prev)}
+              onClick={handleDropdownClick}
               className="cursor-pointer"
             />
-            {/* 점 3개 이미지 */}
             {isOpen && (
-              <div className={clsx('absolute pt-2', 'scale-90 md:scale-100', 'left-7 md:-left-10')}>
+              <div className={clsx('absolute pt-2 scale-90 md:scale-100 left-7 md:-left-10')}>
                 <Dropdown
                   variant="travelMenu"
                   setIsOpen={setIsOpen}
@@ -78,7 +87,7 @@ const TravelCard = ({ title, theme, region, placeArray, travel_route_id }: Trave
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

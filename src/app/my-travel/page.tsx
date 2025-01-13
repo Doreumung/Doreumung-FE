@@ -7,7 +7,6 @@ import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import Pagination from '@/components/common/pagination/Pagination';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
-import Link from 'next/link';
 
 const Page = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,11 +35,7 @@ const Page = () => {
       <p className="py-16 text-3xl">{userData?.nickname}님의 저장 경로</p>{' '}
       <div className="flex flex-col w-full max-w-[768px] mx-auto gap-8 md:pb-10">
         {travelRoute.travel_list.map(route => (
-          <Link
-            key={route.travel_route_id}
-            href={`my-travel/${route.travel_route_id}`}
-            className="flex-shrink-0"
-          >
+          <div key={route.travel_route_id} className="flex-shrink-0">
             <TravelCard
               title={route.title}
               theme={route.config.themes}
@@ -48,7 +43,7 @@ const Page = () => {
               placeArray={route.travel_route}
               travel_route_id={route.travel_route_id}
             />
-          </Link>
+          </div>
         ))}
       </div>
       <Pagination
