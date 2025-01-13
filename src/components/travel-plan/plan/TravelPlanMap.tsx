@@ -13,6 +13,8 @@ const TravelPlanMap = () => {
 
     const schedule = schedules.schedule as Schedule;
 
+    console.log('지도에 띄워진 경로: ', schedule);
+
     const script = document.createElement('script');
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_KEY}&libraries=services&autoload=false`;
     script.async = true;
@@ -53,10 +55,10 @@ const TravelPlanMap = () => {
                 });
 
                 // 마커 클릭 이벤트 추가
-                window.kakao.maps.event.addListener(marker, 'click', () => {
+                window.kakao.maps.event.addListener(marker, 'mouseover', () => {
                   const overlayContent = document.createElement('div');
                   overlayContent.className =
-                    'p-1 bg-white border border-gray-400 rounded-md shadow-md text-sm';
+                    'absolute bottom-2 left-4 p-1 bg-white border border-lightGray rounded-md text-sm';
                   overlayContent.innerText = place.name;
 
                   customOverlay.setContent(overlayContent);
@@ -64,6 +66,10 @@ const TravelPlanMap = () => {
                     new window.kakao.maps.LatLng(place.latitude, place.longitude),
                   );
                   customOverlay.setMap(map);
+                });
+
+                window.kakao.maps.event.addListener(marker, 'mouseout', () => {
+                  customOverlay.setMap(null);
                 });
               }
             });
