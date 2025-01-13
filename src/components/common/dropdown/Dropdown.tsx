@@ -53,7 +53,7 @@ const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen, travel_route_id
                 toast({ message: ['일정이 성공적으로 삭제되었습니다.'] });
               })
               .catch(() => {
-                toast({ message: ['리뷰가 작성된 일정은 삭제할 수 없습니다.'], type: 'error' });
+                toast({ message: ['후기가 작성된 일정은 삭제할 수 없습니다.'], type: 'error' });
               });
           }
           break;
