@@ -13,8 +13,6 @@ const TravelPlanMap = () => {
 
     const schedule = schedules.schedule as Schedule;
 
-    console.log('지도에 띄워진 경로: ', schedule);
-
     const script = document.createElement('script');
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_KEY}&libraries=services&autoload=false`;
     script.async = true;
@@ -42,41 +40,73 @@ const TravelPlanMap = () => {
           schedule.dinner,
         ].filter(Boolean) as { name: string; latitude: number; longitude: number }[];
 
-        //장소 - 위도 경도 마커
+        // 경로 URL 생성 함수 (출발지 도착지 모두 포함)
+        const createKakaoMapRouteUrl = (
+          from: { name: string; latitude: number; longitude: number },
+          to: { name: string; latitude: number; longitude: number },
+        ) => {
+          return `https://map.kakao.com/?sName=${encodeURIComponent(from.name)}&sX=${
+            from.longitude
+          }&sY=${from.latitude}&eName=${encodeURIComponent(to.name)}&eX=${to.longitude}&eY=${
+            to.latitude
+          }`;
+        };
+
+        // 마커 및 직선 생성
         sortedPlaces.forEach((place, index) => {
-          if (place && !Array.isArray(place)) {
-            const marker = new window.kakao.maps.Marker({
+          const marker = new window.kakao.maps.Marker({
+            map: map,
+            position: new window.kakao.maps.LatLng(place.latitude, place.longitude),
+          });
+
+          // 다음 장소와의 직선 생성
+          if (index < sortedPlaces.length - 1) {
+            const nextPlace = sortedPlaces[index + 1];
+
+            // 폴리라인 생성
+            const polyline = new window.kakao.maps.Polyline({
               map: map,
-              position: new window.kakao.maps.LatLng(place.latitude, place.longitude),
+              path: [
+                new window.kakao.maps.LatLng(place.latitude, place.longitude),
+                new window.kakao.maps.LatLng(nextPlace.latitude, nextPlace.longitude),
+              ],
+              strokeWeight: 5,
+              strokeColor: '#FF9B36',
+              strokeOpacity: 1,
+              strokeStyle: 'solid',
             });
 
-            // 커스텀 오버레이 생성 (번호와 장소 이름 표시)
-            const overlayContent = document.createElement('div');
-            overlayContent.style.position = 'absolute';
-            overlayContent.style.background = '#fff';
-            overlayContent.style.border = '1px solid #ccc';
-            overlayContent.style.borderRadius = '4px';
-            overlayContent.style.padding = '5px';
-            overlayContent.style.fontSize = '12px';
-            overlayContent.style.fontWeight = 'bold';
-            overlayContent.style.color = '#333';
-            overlayContent.innerText = `${index + 1}. ${place.name}`;
+            // 폴리라인 클릭 이벤트 추가
+            const kakaoMapRouteUrl = createKakaoMapRouteUrl(place, nextPlace);
 
-            const customOverlay = new window.kakao.maps.CustomOverlay({
-              content: overlayContent,
-              position: new window.kakao.maps.LatLng(place.latitude, place.longitude),
-              map: map,
-            });
-
-            // 마우스 이벤트로 툴팁 표시
-            window.kakao.maps.event.addListener(marker, 'mouseover', () => {
-              customOverlay.setMap(map);
-            });
-
-            window.kakao.maps.event.addListener(marker, 'mouseout', () => {
-              customOverlay.setMap(null);
+            window.kakao.maps.event.addListener(polyline, 'click', () => {
+              window.open(kakaoMapRouteUrl, '_blank');
             });
           }
+
+          // 마커 툴팁 (이름 표시)
+          const customOverlay = new window.kakao.maps.CustomOverlay({
+            map: null,
+            content: '',
+          });
+
+          // 마우스 오버 시 오버레이 업데이트 및 표시
+          window.kakao.maps.event.addListener(marker, 'mouseover', () => {
+            const overlayContent = document.createElement('div');
+            overlayContent.className =
+              'absolute bottom-2 left-4 p-1 bg-white border border-gray-400 rounded-md shadow-md text-sm';
+            overlayContent.innerText = `${index + 1}. ${place.name}`;
+
+            customOverlay.setContent(overlayContent);
+            customOverlay.setPosition(
+              new window.kakao.maps.LatLng(place.latitude, place.longitude),
+            );
+            customOverlay.setMap(map);
+          });
+
+          window.kakao.maps.event.addListener(marker, 'mouseout', () => {
+            customOverlay.setMap(null);
+          });
         });
       });
     };
