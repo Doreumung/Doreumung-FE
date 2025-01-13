@@ -5,7 +5,6 @@ import PasswordForm from '@/components/edit-profile/form/PasswordForm';
 import UserDataForm from '@/components/edit-profile/form/UserDataForm';
 import Button from '@/components/common/buttons/Button';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
-import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { toast } from '@/components/common/toast/Toast';
@@ -71,12 +70,7 @@ const Page = () => {
 
   return (
     <div className="flex justify-center items-center overflow-y-auto">
-      <div
-        className={clsx(
-          'flex flex-col justify-center items-center gap-6 w-96',
-          loginType !== 'email' ? 'h-[calc(100vh-80px)] pb-[80px]' : 'pt-10 pb-10',
-        )}
-      >
+      <div className="flex flex-col justify-center items-center gap-6 w-96 min-h-[calc(100vh-80px)] py-5">
         <p className="pb-2 text-3xl text-darkerGray">회원정보 수정</p>
         {loginType == 'email' ? <PasswordForm setIsUserUpdate={setIsUserUpdate} /> : null}
         <UserDataForm setIsUserUpdate={setIsUserUpdate} />

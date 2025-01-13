@@ -94,82 +94,86 @@ const Page = () => {
   return (
     <div
       className={clsx(
-        'flex flex-col justify-center items-center h-[calc(100vh-80px)] scale-90 md:scale-100',
-        errorMessage || errors.email?.message || errors.password?.message ? 'pb-12' : 'pb-[80px]',
+        'flex flex-col justify-center items-center min-h-[calc(100vh-80px)] py-5 scale-90 md:scale-100',
       )}
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center justify-center">
-        <p className="pb-8 text-3xl text-darkerGray">로그인</p>
-        <div className="flex flex-col gap-3 w-96">
-          <Input id="email" label="이메일" type="email" variant="signin" {...register('email')} />
-          <Input
-            id="password"
-            label="비밀번호"
-            type="password"
-            variant="signin"
-            {...register('password')}
-          />
-          <div className="flex gap-1.5 pb-10 px-2 text-darkGray">
-            <div
-              className={`w-5 h-5 rounded-md ${
-                isChecked ? 'bg-green' : 'border border-green bg-background'
-              } flex items-center justify-center transition-transform duration-200 transform active:scale-125`}
-              onClick={() => {
-                setIsChecked(!isChecked);
-              }}
-            >
-              {isChecked && (
-                <svg
-                  className="w-5 h-5 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              )}
+      <div>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col items-center justify-center"
+        >
+          <p className="pb-8 text-3xl text-darkerGray">로그인</p>
+          <div className="flex flex-col gap-3 w-96">
+            <Input id="email" label="이메일" type="email" variant="signin" {...register('email')} />
+            <Input
+              id="password"
+              label="비밀번호"
+              type="password"
+              variant="signin"
+              {...register('password')}
+            />
+            <div className="flex gap-1.5 pb-10 px-2 text-darkGray">
+              <div
+                className={`w-5 h-5 rounded-md ${
+                  isChecked ? 'bg-green' : 'border border-green bg-background'
+                } flex items-center justify-center transition-transform duration-200 transform active:scale-125`}
+                onClick={() => {
+                  setIsChecked(!isChecked);
+                }}
+              >
+                {isChecked && (
+                  <svg
+                    className="w-5 h-5 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                )}
+              </div>
+              <p>자동 로그인</p>
             </div>
-            <p>자동 로그인</p>
           </div>
-        </div>
-        {/* 이메일 에러 우선 표시 */}
-        {errors.email ? (
-          <p className={errorMessageStyle}>{errors.email.message}</p>
-        ) : errors.password ? (
-          <p className={errorMessageStyle}>{errors.password.message}</p>
-        ) : errorMessage ? (
-          <p className={errorMessageStyle}>{errorMessage}</p>
-        ) : null}
-        <div className="flex flex-col items-center gap-10">
-          <Button label="로그인" className="w-96" type="submit" disabled={isLoading} />
-          <div className="flex justify-center gap-2 pb-10 text-lightGray">
-            <p>아직 회원이 아니신가요?</p>
-            <Link href="/sign-up">
-              <p className="text-darkerGray underline underline-offset-4">회원가입</p>
-            </Link>
+          {/* 이메일 에러 우선 표시 */}
+          {errors.email ? (
+            <p className={errorMessageStyle}>{errors.email.message}</p>
+          ) : errors.password ? (
+            <p className={errorMessageStyle}>{errors.password.message}</p>
+          ) : errorMessage ? (
+            <p className={errorMessageStyle}>{errorMessage}</p>
+          ) : null}
+          <div className="flex flex-col items-center gap-10">
+            <Button label="로그인" className="w-96" type="submit" disabled={isLoading} />
+            <div className="flex justify-center gap-2 pb-10 text-lightGray">
+              <p>아직 회원이 아니신가요?</p>
+              <Link href="/sign-up">
+                <p className="text-darkerGray underline underline-offset-4">회원가입</p>
+              </Link>
+            </div>
           </div>
+        </form>
+        <div className="flex flex-col items-center gap-4">
+          <SocialLoginButton
+            provider="kakao"
+            onClick={() => {
+              handleLogin('kakao');
+            }}
+          />
+          <SocialLoginButton provider="naver" onClick={() => {}} />
+          <SocialLoginButton
+            provider="google"
+            onClick={() => {
+              handleLogin('google');
+            }}
+          />
         </div>
-      </form>
-      <div className="flex flex-col items-center gap-4">
-        <SocialLoginButton
-          provider="kakao"
-          onClick={() => {
-            handleLogin('kakao');
-          }}
-        />
-        <SocialLoginButton provider="naver" onClick={() => {}} />
-        <SocialLoginButton
-          provider="google"
-          onClick={() => {
-            handleLogin('google');
-          }}
-        />
       </div>
     </div>
   );

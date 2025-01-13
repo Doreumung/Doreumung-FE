@@ -11,7 +11,6 @@ import { useSignUpMutation } from '@/api/userApi';
 import { omit } from 'lodash';
 import { toast } from '@/components/common/toast/Toast';
 import { useRouter } from 'next/navigation';
-import clsx from 'clsx';
 
 const Page = () => {
   const genderOptions: string[] = ['여성', '남성', '선택안함'];
@@ -70,19 +69,9 @@ const Page = () => {
     <div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col justify-center items-center h-[calc(100vh-80px)] max-[375px]:h-[100%] scale-90 md:scale-100"
-        style={{
-          paddingTop: `${Object.keys(errors).length * 50}px`, // 에러 개수에 따라 동적 pt 설정
-        }}
+        className="flex flex-col justify-center items-center min-h-[calc(100vh-80px)] max-[375px]:h-[100%] py-5 scale-90 md:scale-100 overflow-y-visible"
       >
-        <div
-          className={clsx(
-            'inline-block w-96',
-            errors.email || errors.nickname || errors.password || errors.confirmPassword
-              ? 'pb-10'
-              : null,
-          )}
-        >
+        <div className="inline-block w-96">
           <p className="pb-8 text-3xl text-darkerGray text-center">회원가입</p>
           <div className="flex flex-col gap-3">
             <Input
