@@ -45,11 +45,7 @@ const TravelPlanMap = () => {
           from: { name: string; latitude: number; longitude: number },
           to: { name: string; latitude: number; longitude: number },
         ) => {
-          return `https://map.kakao.com/?sName=${encodeURIComponent(from.name)}&sX=${
-            from.longitude
-          }&sY=${from.latitude}&eName=${encodeURIComponent(to.name)}&eX=${to.longitude}&eY=${
-            to.latitude
-          }`;
+          return `https://map.naver.com/p/directions/${from.longitude},${from.latitude},${from.name}/${to.longitude},${to.latitude},${to.name}/-/car`;
         };
 
         // 마커 및 직선 생성
