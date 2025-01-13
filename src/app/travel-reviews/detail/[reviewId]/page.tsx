@@ -216,7 +216,7 @@ const Page = () => {
               <h3 className="text-xl">댓글</h3>
               <span className="text-sm">{commentData ? commentData.length : 0}개</span>
             </div>
-            <CommentForm />
+            {user && <CommentForm />}
             {commentsLoading && <LoadingSpinner />}
             {commentsError && <ApiErrorMessage />}
             {commentData && <CommentList comments={commentData} />}
