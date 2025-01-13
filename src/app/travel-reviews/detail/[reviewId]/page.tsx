@@ -98,16 +98,17 @@ const Page = () => {
               toast(DELETE_COMMENT_SUCCESS_MESSAGE);
               break;
             default:
-              throw new Error('Invalid method');
+              toast(SOCKET_ERROR_MESSAGE);
           }
         }
       }
 
       if (receivedData.type === 'like') {
-        if (typeof receivedData.like_count === 'number' && receivedData.review_id === review_id)
+        if (receivedData.review_id === review_id) {
           setLikeCount(receivedData.like_count);
-        if (typeof receivedData.is_liked === 'boolean' && user && receivedData.user_id === user.id)
-          setIsLiked(receivedData.is_liked);
+
+          if (user && receivedData.user_id === user.id) setIsLiked(receivedData.is_liked);
+        }
       }
 
       console.log('💬 websocket res:', receivedData);
