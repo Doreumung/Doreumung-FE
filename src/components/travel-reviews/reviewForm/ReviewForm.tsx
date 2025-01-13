@@ -100,6 +100,7 @@ const ReviewForm = ({
             thumbnail,
           },
           deleted_urls,
+          uploaded_urls,
         };
 
         editReview(editedReview)
