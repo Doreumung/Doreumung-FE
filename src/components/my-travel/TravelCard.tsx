@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import clsx from 'clsx';
 import Dropdown from '../common/dropdown/Dropdown';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 type TravelCardProps = {
   title: string;
@@ -16,6 +16,7 @@ type TravelCardProps = {
 
 const TravelCard = ({ title, theme, region, placeArray, travel_route_id }: TravelCardProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleDropdownClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -23,10 +24,16 @@ const TravelCard = ({ title, theme, region, placeArray, travel_route_id }: Trave
     setIsOpen(prev => !prev);
   };
 
+  const handleCardClick = () => {
+    if (!isOpen) {
+      router.push(`/my-travel/${travel_route_id}`);
+    }
+  };
+
   return (
-    <Link
-      href={`my-travel/${travel_route_id}`}
-      className="flex flex-col md:flex-row items-center px-4 text-foreground "
+    <div
+      onClick={handleCardClick}
+      className="flex flex-col md:flex-row items-center px-4 text-foreground cursor-pointer"
     >
       {/* 이미지 영역 */}
       <div
@@ -87,7 +94,7 @@ const TravelCard = ({ title, theme, region, placeArray, travel_route_id }: Trave
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
