@@ -74,7 +74,7 @@ const Page = () => {
       <div
         className={clsx(
           'flex flex-col justify-center items-center gap-6 w-96',
-          loginType !== 'email' ? 'h-[calc(100vh-80px)] pb-[80px]' : 'pt-10',
+          loginType !== 'email' ? 'h-[calc(100vh-80px)] pb-[80px]' : 'pt-10 pb-10',
         )}
       >
         <p className="pb-2 text-3xl text-darkerGray">회원정보 수정</p>
