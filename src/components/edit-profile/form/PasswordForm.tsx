@@ -53,7 +53,7 @@ const PasswordForm = ({
   return (
     <div
       className={clsx(
-        'flex flex-col justify-between px-7 py-5 w-96 h-32 rounded-2xl border border-black bg-fadedGreen',
+        'flex flex-col justify-between px-7 py-5 w-full h-32 rounded-2xl border border-black bg-fadedGreen',
         'transition-all duration-200',
         isPasswordChangeActive && 'h-[320px]',
       )}
@@ -69,7 +69,7 @@ const PasswordForm = ({
               labelColor="darkerGray"
               variant="eye"
               placeholder="새 비밀번호 입력"
-              className="self-start w-80"
+              className="self-start w-full"
               {...register('password')}
             />
             {errors.password && <p className="px-3 text-xs text-red">{errors.password.message}</p>}
@@ -82,7 +82,7 @@ const PasswordForm = ({
               label="새 비밀번호 확인"
               labelColor="darkerGray"
               placeholder="새 비밀번호 확인"
-              className="self-start w-80"
+              className="self-start w-full"
               {...register('confirmPassword')}
             />
             {errors.confirmPassword && (

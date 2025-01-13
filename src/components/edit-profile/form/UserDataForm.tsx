@@ -137,7 +137,7 @@ const UserDataForm = ({
   const divStyle = `flex flex-col gap-2`;
 
   return (
-    <div className="flex flex-col justify-between px-7 py-5 w-96 h-[440px] rounded-2xl border border-black bg-fadedGreen">
+    <div className="flex flex-col justify-between w-full px-7 py-5 h-[440px] rounded-2xl border border-black bg-fadedGreen">
       <div className={divStyle}>
         <p className="text-xl">이메일</p>
         <div className="flex items-center gap-2">
@@ -155,7 +155,7 @@ const UserDataForm = ({
           <Input
             id="nickname"
             variant="default"
-            className="self-start w-80"
+            className="self-start w-full"
             placeholder={userData?.nickname}
             {...register('nickname')}
           />
