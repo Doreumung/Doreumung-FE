@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/userSlice';
 import { setCookieWithExpiry } from './setCookieWithExpiry';
 import clsx from 'clsx';
+import { parseCookies } from 'nookies';
 // import { useRouter } from 'next/navigation';
 // import { parseCookies } from 'nookies';
 
@@ -56,10 +57,11 @@ const Page = () => {
 
       // 액세스 토큰을 쿠키에 저장
       // 쿠키 설정 및 토큰 유효기간 로컬 스토리지에 저장
-      setCookieWithExpiry('access_token', result?.access_token, 24 * 60 * 60);
-      setCookieWithExpiry('refresh_token', result?.refresh_token, 7 * 24 * 60 * 60);
-      // const cookies = parseCookies();
-      // const accessToken = cookies['access_token'];
+      setCookieWithExpiry('access_token', 60 * 60);
+      // setCookieWithExpiry('refresh_token', result?.refresh_token, 7 * 24 * 60 * 60);
+
+      const cookies = parseCookies(); // 확인용
+      const accessToken = cookies['access_token'];
 
       // 로컬 스토리지에 액세스 토큰, 자동 로그인 유무, 로그인 만료 토스트 팝업 노출 여부 저장
       // localStorage.setItem('access_token', accessToken);
@@ -69,7 +71,11 @@ const Page = () => {
       const userData = await getUserInfo({});
       dispatch(setUser({ user: userData.data, loginType: 'email' }));
 
-      // console.log('accessToken', accessToken);
+      console.log('accessToken', accessToken);
+
+      if (isChecked == false) {
+        setCookieWithExpiry('logout_time', 2 * 60 * 60);
+      }
 
       // 홈으로 이동 후 새로고침
       // router.push('/');

@@ -28,8 +28,8 @@ const KakaoCallback = () => {
     if (data) {
       console.log('토큰 정보:', data);
 
-      setCookieWithExpiry('access_token', data?.access_token, 24 * 60 * 60);
-      setCookieWithExpiry('refresh_token', data?.refresh_token, 7 * 24 * 60 * 60);
+      setCookieWithExpiry('access_token', 24 * 60 * 60);
+      // setCookieWithExpiry('refresh_token', data?.refresh_token, 7 * 24 * 60 * 60);
       // const cookies = parseCookies();
       // const accessToken = cookies['access_token'];
 

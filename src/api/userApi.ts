@@ -26,10 +26,9 @@ export const userApi = createApi({
       }),
     }),
     logout: builder.mutation({
-      query: newUser => ({
+      query: () => ({
         url: '/user/logout', // 로그아웃 엔드포인트
-        method: 'POST',
-        body: newUser, // 요청 데이터
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -83,10 +82,9 @@ export const userApi = createApi({
       }),
     }),
     accessTokenRefresh: builder.mutation({
-      query: rt => ({
+      query: () => ({
         url: '/user/refresh',
-        method: 'POST',
-        body: rt,
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
