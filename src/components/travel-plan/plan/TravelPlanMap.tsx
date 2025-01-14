@@ -129,6 +129,7 @@ const TravelPlanMap = () => {
                 strokeWeight: 7,
                 strokeOpacity: 1,
               });
+              map.setCursor('pointer');
             });
 
             // 마우스 아웃 이벤트: 색상 복원
@@ -137,6 +138,8 @@ const TravelPlanMap = () => {
                 strokeWeight: 4,
                 strokeOpacity: 0.7,
               });
+
+              map.setCursor('');
             });
           }
         });

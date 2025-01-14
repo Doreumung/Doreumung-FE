@@ -7,6 +7,7 @@ import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import Pagination from '@/components/common/pagination/Pagination';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
+import ApiErrorMessage from '@/components/common/errorMessage/ApiErrorMessage';
 
 const Page = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,7 +29,12 @@ const Page = () => {
       </div>
     );
 
-  if (error || !travelRoute) return <p>데이터를 불러오는 중 오류가 발생했습니다.</p>;
+  if (error || !travelRoute)
+    return (
+      <div className="flex flex-col items-center pt-4 overflow-x-hidden pb-10">
+        <ApiErrorMessage />
+      </div>
+    );
 
   return (
     <div className="flex flex-col items-center pt-4 overflow-x-hidden pb-10">
