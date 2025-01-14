@@ -28,13 +28,8 @@ const KakaoCallback = () => {
     if (data) {
       console.log('토큰 정보:', data);
 
-      setCookieWithExpiry('access_token', 24 * 60 * 60);
-      // setCookieWithExpiry('refresh_token', data?.refresh_token, 7 * 24 * 60 * 60);
-      // const cookies = parseCookies();
-      // const accessToken = cookies['access_token'];
-
-      // 로컬 스토리지에 액세스 토큰 저장
-      // localStorage.setItem('access_token', accessToken);
+      setCookieWithExpiry('access_token', data?.access_token, 24 * 60 * 60);
+      setCookieWithExpiry('refresh_token', data?.refresh_token, 7 * 24 * 60 * 60);
 
       // 로그인 성공 후 유저 데이터 받아오기
       getUserInfo({})
