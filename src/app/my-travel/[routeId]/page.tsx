@@ -13,7 +13,6 @@ const Page = () => {
   const { routeId: travel_route_id } = useParams<{ routeId: string }>();
   const dispatch = useDispatch();
 
-  console.log(travel_route_id);
   const { data, isLoading, error } = useGetTravelRouteByIdQuery(Number(travel_route_id));
 
   useEffect(() => {
