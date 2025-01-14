@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 
-const TravelPlan = () => {
+const TravelPlan = ({ isReadOnly = false, title = '' }) => {
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
   const [showNavigationPopup, setShowNavigationPopup] = useState(false);
@@ -38,12 +38,18 @@ const TravelPlan = () => {
           <header className="pt-8 text-base md:pt-6">
             <BackNavigation to="home" onNavigate={handleNavigation} />
           </header>
-          <TravelHeader
-            step="마음에 드는 장소는 고정하고 다시 뽑을 수 있어요!"
-            stepName="일정 확인"
-          />
+          {isReadOnly ? (
+            <h1 className="text-2xl font-bold mt-4">{title}</h1>
+          ) : (
+            <TravelHeader
+              step="마음에 드는 장소는 고정하고 다시 뽑을 수 있어요!"
+              stepName="일정 확인"
+            />
+          )}
         </div>
-        <div className="flex-grow overflow-auto">{!isMobile && <PlaceList />}</div>
+        <div className="flex-grow overflow-auto">
+          {!isMobile && <PlaceList isReadOnly={isReadOnly} />}
+        </div>
       </div>
 
       <div className="flex-1 relative z-0 h-full">
@@ -51,7 +57,7 @@ const TravelPlan = () => {
       </div>
       {isMobile && (
         <ResizeablePanel initialHeight={400} minHeight={200} maxHeight={window.innerHeight - 200}>
-          <PlaceList />
+          <PlaceList isReadOnly={isReadOnly} />
         </ResizeablePanel>
       )}
 

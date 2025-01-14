@@ -5,25 +5,30 @@ import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import ApiErrorMessage from '@/components/common/errorMessage/ApiErrorMessage';
+import { useDispatch } from 'react-redux';
+import { setScheduleResponse } from '@/store/travelPlanSlice';
+import TravelPlan from '@/components/travel-plan/plan/TravelPlan';
 
 const Page = () => {
   const { routeId: travel_route_id } = useParams<{ routeId: string }>();
+  const dispatch = useDispatch();
 
   console.log(travel_route_id);
   const { data, isLoading, error } = useGetTravelRouteByIdQuery(Number(travel_route_id));
 
   useEffect(() => {
     if (data) {
-      console.log('Travel Route Data:', data);
+      console.log('사용자 저장 경로: ', data);
+      dispatch(setScheduleResponse(data));
     }
-  }, [data]);
+  }, [data, dispatch]);
 
   if (isLoading) return <LoadingSpinner />;
 
   return (
     <div>
       {error && <ApiErrorMessage />}
-      <p>여행 경로 ID: {travel_route_id}</p>
+      <div>{data && <TravelPlan title={data.title} isReadOnly={true} />}</div>
     </div>
   );
 };

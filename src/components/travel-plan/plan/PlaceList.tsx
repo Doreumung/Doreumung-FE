@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-const PlaceList = () => {
+const PlaceList = ({ isReadOnly = false }) => {
   const [showRandomLayerPopup, setShowRandomLayerPopup] = useState<boolean>(false);
   const [showAllFixedLayerPopup, setShowAllFixedLayerPopup] = useState<boolean>(false);
   const [showSaveLayerPopup, setShowSaveLayerPopup] = useState<boolean>(false);
@@ -28,43 +28,45 @@ const PlaceList = () => {
   const [postSavedTravelRoute, { isLoading }] = usePostSavedTravelRouteMutation();
   const [patchTravelRoute] = usePatchTravelRouteMutation();
 
-  const travelPlaces = [
-    travelRoute.schedule.breakfast
-      ? {
-          id: travelRoute.schedule.breakfast.place_id,
-          name: `🍚 ${travelRoute.schedule.breakfast.name}`,
-          isMeal: true,
-        }
-      : null,
-    ...(Array.isArray(travelRoute.schedule.morning)
-      ? travelRoute.schedule.morning.map(item => ({
-          id: item.place_id,
-          name: `☀️ ${item.name}`,
-          isMeal: false,
-        }))
-      : []),
-    travelRoute.schedule.lunch
-      ? {
-          id: travelRoute.schedule.lunch.place_id,
-          name: `🍚 ${travelRoute.schedule.lunch.name}`,
-          isMeal: true,
-        }
-      : null,
-    ...(Array.isArray(travelRoute.schedule.afternoon)
-      ? travelRoute.schedule.afternoon.map(item => ({
-          id: item.place_id,
-          name: `🌕 ${item.name}`,
-          isMeal: false,
-        }))
-      : []),
-    travelRoute.schedule.dinner
-      ? {
-          id: travelRoute.schedule.dinner.place_id,
-          name: `🍚 ${travelRoute.schedule.dinner.name}`,
-          isMeal: true,
-        }
-      : null,
-  ].filter(Boolean);
+  const travelPlaces = travelRoute?.schedule
+    ? [
+        travelRoute.schedule.breakfast
+          ? {
+              id: travelRoute.schedule.breakfast.place_id,
+              name: `🍚 ${travelRoute.schedule.breakfast.name}`,
+              isMeal: true,
+            }
+          : null,
+        ...(Array.isArray(travelRoute.schedule.morning)
+          ? travelRoute.schedule.morning.map(item => ({
+              id: item.place_id,
+              name: `☀️ ${item.name}`,
+              isMeal: false,
+            }))
+          : []),
+        travelRoute.schedule.lunch
+          ? {
+              id: travelRoute.schedule.lunch.place_id,
+              name: `🍚 ${travelRoute.schedule.lunch.name}`,
+              isMeal: true,
+            }
+          : null,
+        ...(Array.isArray(travelRoute.schedule.afternoon)
+          ? travelRoute.schedule.afternoon.map(item => ({
+              id: item.place_id,
+              name: `🌕 ${item.name}`,
+              isMeal: false,
+            }))
+          : []),
+        travelRoute.schedule.dinner
+          ? {
+              id: travelRoute.schedule.dinner.place_id,
+              name: `🍚 ${travelRoute.schedule.dinner.name}`,
+              isMeal: true,
+            }
+          : null,
+      ].filter(Boolean)
+    : [];
 
   const handleToggleChange = (place_id: number, isToggled: boolean) => {
     setToggledState(prev => ({ ...prev, [place_id]: isToggled }));
@@ -154,46 +156,48 @@ const PlaceList = () => {
 
   return (
     <div className="flex flex-col justify-between h-full">
-      <div className="flex flex-col gap-8 pb-8 md:flex-grow md:px-8 md:py-4 md:overflow-auto">
+      <div className="flex flex-col gap-12 pb-8 md:flex-grow md:px-8 md:py-4 md:overflow-auto">
         {travelPlaces.map(travelPlace => (
           <div
             key={travelPlace?.id}
             className="flex flex-row justify-around items-center gap-4 min-w-full"
           >
-            <div className="w-14 h-14 border border-darkerGray rounded-2xl bg-lighterGray md:w-16 md:h-16"></div>
             <div className="flex-grow text-base text-darkerGray md:text-lg">
               {travelPlace?.name}
             </div>
-            {travelPlace?.isMeal ? (
-              <Toggle label="고정불가" disabled />
-            ) : (
-              <Toggle
-                label="고정"
-                color="yellow"
-                onChange={(isToggled: boolean) =>
-                  travelPlace && handleToggleChange(travelPlace.id, isToggled)
-                }
-              />
-            )}
+            {!isReadOnly &&
+              (travelPlace?.isMeal ? (
+                <Toggle label="고정불가" disabled />
+              ) : (
+                <Toggle
+                  label="고정"
+                  color="yellow"
+                  onChange={(isToggled: boolean) =>
+                    travelPlace && handleToggleChange(travelPlace.id, isToggled)
+                  }
+                />
+              ))}
           </div>
         ))}
       </div>
-      <div className="flex flex-row justify-between w-full pt-2 pb-6 md:gap-10 md:px-8 md:py-8 md:bg-background">
-        <Button
-          size="md"
-          color="skyblue"
-          shadow="dropShadow"
-          label="다시 뽑기"
-          onClick={() => setShowRandomLayerPopup(true)}
-        />
-        <Button
-          size="md"
-          color="blue"
-          shadow="dropShadow"
-          label="저장하기"
-          onClick={handleSaveClick}
-        />
-      </div>
+      {!isReadOnly && (
+        <div className="flex flex-row justify-between w-full pt-2 pb-6 md:gap-10 md:px-8 md:py-8 md:bg-background">
+          <Button
+            size="md"
+            color="skyblue"
+            shadow="dropShadow"
+            label="다시 뽑기"
+            onClick={() => setShowRandomLayerPopup(true)}
+          />
+          <Button
+            size="md"
+            color="blue"
+            shadow="dropShadow"
+            label="저장하기"
+            onClick={handleSaveClick}
+          />
+        </div>
+      )}
 
       {showRandomLayerPopup && (
         <LayerPopup
