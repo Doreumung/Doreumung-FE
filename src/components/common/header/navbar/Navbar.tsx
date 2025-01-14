@@ -3,33 +3,45 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { navbarStyles } from './NavbarStyles';
 import { NAVBAR_MENUS } from './constants';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DropdownOption } from '@/components/common/dropdown/types';
 import Dropdown from '@/components/common/dropdown/Dropdown';
 import useOutsideClick from '@/hooks/useOutsideClick';
 import useIsMobile from '@/hooks/useIsMobile';
 import { MenuIcon } from 'lucide-react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 
-const USERNAME = '김돌멍';
+// const USERNAME = '김돌멍';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const path = usePathname();
   const isMobile = useIsMobile();
   const variant = path.includes('/sign-') ? 'hidden' : 'default';
+  const userData = useSelector((state: RootState) => state.user.user);
 
   useOutsideClick({ ref: ref, callback: () => setIsOpen(false) });
 
   // 로그인 상태에 따른 분기처리를 위해 로그인 상태를 가져오는 코드 작성 필요
   // 이 때 username도 가져와 동적으로 구현 필요
-  const isSignedIn = () => false;
+  useEffect(() => {
+    if (userData) {
+      setIsSignedIn(true);
+    } else {
+      setIsSignedIn(false);
+    }
+  }, [userData]);
 
   // isSignedIn 함수 구현 후 필요 시 수정 필요
   // username 가져오면 상수 처리된 USERNAME 대신 가져온 username 사용할 것
-  const navbarMenus = isSignedIn() ? NAVBAR_MENUS.signedIn(USERNAME) : NAVBAR_MENUS.signedOut;
-  const mobileDropdownVariant = isSignedIn() ? 'mobileUserMenu' : 'mobileMenu';
+  const navbarMenus = isSignedIn
+    ? NAVBAR_MENUS.signedIn(userData?.nickname ?? '') // undefined인 경우 빈 문자열
+    : NAVBAR_MENUS.signedOut;
+  const mobileDropdownVariant = isSignedIn ? 'mobileUserMenu' : 'mobileMenu';
 
   const handleMenuClick = (menu: DropdownOption) => {
     if (menu.path) {

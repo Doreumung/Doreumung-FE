@@ -1,16 +1,32 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '@/components/common/buttons/Button';
 import Input from '@/components/common/inputs/Input';
+import { useRouter } from 'next/navigation';
+import { useCheckPasswordMutation } from '@/api/userApi';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 
 const Page = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [checkPw, { isLoading }] = useCheckPasswordMutation();
+  const router = useRouter();
+  const { loginType } = useSelector((state: RootState) => state.user);
 
-  const sessionPassword = 'example123'; // 예시
+  useEffect(() => {
+    if (loginType !== 'email') {
+      router.push('/edit-profile'); // 렌더링 이후 상태 변경
+    }
+  }, [loginType, router]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  if (loginType !== 'email') {
+    return <LoadingSpinner />;
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(confirmPassword);
 
@@ -20,33 +36,41 @@ const Page = () => {
       return;
     }
 
-    if (confirmPassword === sessionPassword) {
-      setErrorMessage(''); // 오류 메시지 제거
-    } else {
-      setErrorMessage('비밀번호가 일치하지 않습니다.');
+    try {
+      const result = await checkPw(JSON.stringify(confirmPassword)).unwrap();
+
+      if (result.authentication == true) {
+        setErrorMessage(''); // 오류 메시지 제거
+        router.push('/edit-profile');
+      } else {
+        setErrorMessage('비밀번호가 일치하지 않습니다.');
+      }
+    } catch (err) {
+      console.log('확인 실패', err);
+      setErrorMessage('에러가 발생했습니다. 잠시 후 다시 시도해 주세요.');
     }
   };
 
   return (
-    <div className="flex justify-center w-screen h-screen px-4 md:px-0">
+    <div className="flex justify-center w-screen h-[calc(100vh-80px)]">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col justify-center items-center gap-3 w-96"
+        className="flex flex-col justify-start items-center gap-5 w-96 h-72 px-4 md:px-0 pt-16"
       >
         <p className="text-xl text-darkerGray">비밀번호 확인</p>
         <Input
           id="confirmPassword"
           type="password"
-          variant="default"
+          variant="eye"
           placeholder="비밀번호 확인"
           value={confirmPassword}
           onChange={e => setConfirmPassword(e.target.value)} // 상태 업데이트
         />
         {/* 오류 메시지 표시 */}
         {errorMessage && (
-          <p className="self-start px-11 md:px-3 pb-3 text-xs text-red-600">{errorMessage}</p>
+          <p className="self-center px-11 md:px-3 pb-3 text-xs text-red">{errorMessage}</p>
         )}
-        <Button label="확인" onClick={() => {}} className="w-80 md:w-96 text-sm" />
+        <Button label="확인" className="w-full h-10 text-base" disabled={isLoading} />
       </form>
     </div>
   );

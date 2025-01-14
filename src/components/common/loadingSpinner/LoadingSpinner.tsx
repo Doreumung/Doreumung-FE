@@ -5,9 +5,14 @@ import { motion } from 'motion/react';
 import Image from 'next/image';
 import { twMerge } from 'tailwind-merge';
 
-const LoadingSpinner = ({ className }: { className: string }) => {
+const LoadingSpinner = ({ className }: { className?: string }) => {
   return (
-    <div className={twMerge('flex justify-center w-full', className)}>
+    <div
+      className={twMerge(
+        'flex justify-center items-center w-full',
+        className,
+      )}
+    >
       <motion.div
         className="w-12"
         animate={{

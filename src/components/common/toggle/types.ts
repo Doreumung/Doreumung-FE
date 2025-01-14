@@ -16,4 +16,5 @@ export type ToggleGroupProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement
     items?: ToggleItem[];
     onChange: (indices: number[]) => void;
     className?: string;
+    activeToggles?: number[];
   };

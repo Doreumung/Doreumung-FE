@@ -78,3 +78,16 @@ body {
 .ProseMirror-focused {
   @apply outline-none;
 }
+
+ol > li {
+  @apply list-decimal pl-2;
+}
+
+ul > li {
+  @apply list-disc pl-2;
+}
+
+ol,
+ul {
+  @apply pl-5;
+}

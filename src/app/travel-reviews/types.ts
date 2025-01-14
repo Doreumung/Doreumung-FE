@@ -1,30 +1,38 @@
 import { z } from 'zod';
 import {
-  cancelLikeReviewResponseSchema,
-  deleteCommentResponseSchema,
-  deleteReviewResponseSchema,
-  editCommentRequestSchema,
-  editCommentResponseSchema,
+  deleteReviewRequestSchema,
   editReviewRequestSchema,
   editReviewResponseSchema,
   getCommentsResponseSchema,
-  getReviewResponseSchema,
+  getReviewDetailResponseSchema,
+  getReviewListRequestSchema,
   getReviewListResponseSchema,
-  likeReviewResponseSchema,
-  postCommentRequestSchema,
-  postCommentResponseSchema,
+  getTravelRouteInfoResponseSchema,
+  getTravelRouteInfoRequestSchema,
   postReviewRequestSchema,
   postReviewResponseSchema,
-  reviewInReviewListSchema,
+  singleReviewSchema,
+  commentSchema,
+  reviewFormSchema,
+  commentFormSchema,
+  travelRouteInfoSchema,
+  singleCommentSchema,
+  socketResponseSchema,
+  uploadImageResponseSchema,
+  imageUrlSchema,
+  deleteImageRequestSchema,
+  deleteImageResponseSchema,
 } from './schemas';
 
-export type GetReviewResponseType = z.infer<typeof getReviewResponseSchema>;
+export type GetReviewDetailResponseType = z.infer<typeof getReviewDetailResponseSchema>;
 
 export type PostReviewRequestType = z.infer<typeof postReviewRequestSchema>;
 
 export type PostReviewResponseType = z.infer<typeof postReviewResponseSchema>;
 
-export type ReviewInReviewListType = z.infer<typeof reviewInReviewListSchema>;
+export type SingleReviewType = z.infer<typeof singleReviewSchema>;
+
+export type GetReviewListRequestType = z.infer<typeof getReviewListRequestSchema>;
 
 export type GetReviewListResponseType = z.infer<typeof getReviewListResponseSchema>;
 
@@ -32,20 +40,30 @@ export type EditReviewRequestType = z.infer<typeof editReviewRequestSchema>;
 
 export type EditReviewResponseType = z.infer<typeof editReviewResponseSchema>;
 
-export type DeleteReviewResponseType = z.infer<typeof deleteReviewResponseSchema>;
+export type DeleteReviewRequestType = z.infer<typeof deleteReviewRequestSchema>;
 
-export type LikeReviewResponseType = z.infer<typeof likeReviewResponseSchema>;
+export type GetTravelRouteInfoRequestType = z.infer<typeof getTravelRouteInfoRequestSchema>;
 
-export type CancelLikeReviewResponseType = z.infer<typeof cancelLikeReviewResponseSchema>;
+export type GetTravelRouteInfoResponseType = z.infer<typeof getTravelRouteInfoResponseSchema>;
 
-export type PostCommentRequestType = z.infer<typeof postCommentRequestSchema>;
+export type CommentType = z.infer<typeof commentSchema>;
 
-export type PostCommentResponseType = z.infer<typeof postCommentResponseSchema>;
+export type SingleCommentType = z.infer<typeof singleCommentSchema>;
 
 export type GetCommentsResponseType = z.infer<typeof getCommentsResponseSchema>;
 
-export type EditCommentRequestType = z.infer<typeof editCommentRequestSchema>;
+export type ReviewFormType = z.infer<typeof reviewFormSchema>;
 
-export type EditCommentResponseType = z.infer<typeof editCommentResponseSchema>;
+export type CommentFormType = z.infer<typeof commentFormSchema>;
 
-export type DeleteCommentResponseType = z.infer<typeof deleteCommentResponseSchema>;
+export type TravelRouteInfoType = z.infer<typeof travelRouteInfoSchema>;
+
+export type SocketResponseType = z.infer<typeof socketResponseSchema>;
+
+export type UploadImageResponseType = z.infer<typeof uploadImageResponseSchema>;
+
+export type ImageUrlType = z.infer<typeof imageUrlSchema>;
+
+export type DeleteImageRequestType = z.infer<typeof deleteImageRequestSchema>;
+
+export type DeleteImageResponseType = z.infer<typeof deleteImageResponseSchema>;

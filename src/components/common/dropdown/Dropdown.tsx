@@ -4,20 +4,56 @@ import { DROPDOWN_MENU } from './constants';
 import { useRouter } from 'next/navigation';
 import { dropdownStyles } from './dropdownStyles';
 import useIsMobile from '@/hooks/useIsMobile';
+import { useDispatch } from 'react-redux';
+import { clearUser } from '@/store/userSlice';
+import { destroyCookie, parseCookies } from 'nookies';
+import { useLogoutMutation } from '@/api/userApi';
 
-const Dropdown: React.FC<DropdownProps> = ({ variant, setIsOpen }) => {
+const Dropdown: React.FC<DropdownProps> = ({
+  variant,
+  setIsOpen,
+  travel_route_id,
+  onDeleteConfirm,
+}) => {
   const isMobile = useIsMobile();
   const router = useRouter();
   const options: DropdownOption[] = DROPDOWN_MENU[variant];
+  const dispatch = useDispatch();
+  const [logoutUser] = useLogoutMutation();
 
   const handleSelect = (option: DropdownOption) => {
     if (option.action) {
       switch (option.action) {
         case 'signOut':
           // 로그아웃 로직 구현
+          localStorage.removeItem('persist:user');
+          localStorage.removeItem('auto_signin');
+          dispatch(clearUser());
+
+          logoutUser(
+            JSON.stringify({
+              access_token: parseCookies().access_token,
+              refresh_token: parseCookies().refresh_token,
+            }),
+          )
+            .unwrap()
+            .then(res => console.log(res))
+            .catch(err => console.log('로그아웃 실패', err));
+
+          destroyCookie(null, 'access_token', { path: '/' });
+          destroyCookie(null, 'refresh_token', { path: '/' });
+          // localStorage.removeItem('access_token');
+
+          router.push('/'); // 메인으로 이동
           break;
         case 'deleteTravel':
           // 저장 경로 삭제 로직 구현
+          if (onDeleteConfirm) {
+            onDeleteConfirm();
+          }
+          break;
+        case 'createReview':
+          router.push(`${option.path}/${travel_route_id}`);
           break;
         default:
           throw new Error(`Unknown action type: ${option.action}`);

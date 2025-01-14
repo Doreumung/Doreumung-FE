@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toggleStyles } from './toggleStyles';
 import { THEMES } from './constants';
 import { ToggleGroupProps } from './types';
@@ -12,21 +12,21 @@ const ToggleGroup: React.FC<ToggleGroupProps> = ({
   items = THEMES,
   onChange,
   className,
+  activeToggles = [],
 }) => {
-  const [activeToggles, setActiveToggle] = useState<number[]>([]);
+  const [activeIndices, setActiveIndices] = useState<number[]>(activeToggles);
+
+  useEffect(() => {
+    setActiveIndices(activeToggles);
+  }, [activeToggles]);
 
   const handleToggle = (index: number) => {
-    setActiveToggle(prev => {
-      const indices: number[] = prev.includes(index)
-        ? prev.filter(i => i !== index)
-        : [...prev, index];
+    const updatedIndices = activeIndices.includes(index)
+      ? activeIndices.filter(i => i !== index)
+      : [...activeIndices, index];
 
-      setTimeout(() => {
-        onChange(indices);
-      }, 0);
-
-      return indices;
-    });
+    setActiveIndices(updatedIndices);
+    onChange(updatedIndices);
   };
 
   return (
@@ -38,7 +38,7 @@ const ToggleGroup: React.FC<ToggleGroupProps> = ({
             toggleStyles({
               size: 'md',
               color,
-              checked: activeToggles.includes(index),
+              checked: activeIndices.includes(index),
             }),
             className,
           )}

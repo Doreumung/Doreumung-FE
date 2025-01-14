@@ -1,11 +1,11 @@
 const DROPDOWN_MENUS_USER = [
-  { label: '회원정보 수정', path: '/edit-profile' },
+  { label: '회원정보 수정', path: '/confirm-password' },
   { label: '저장한 경로', path: '/my-travel' },
   { label: '로그아웃', action: 'signOut' },
 ];
 
 const DROPDOWN_MENUS_TRAVEL = [
-  { label: '리뷰 작성', path: '/travel-reviews/create' },
+  { label: '후기 작성', action: 'createReview', path: '/travel-reviews/create' },
   { label: '삭제', action: 'deleteTravel' },
 ];
 

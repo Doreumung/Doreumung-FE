@@ -21,6 +21,7 @@ declare namespace kakao.maps {
 
   class Map {
     constructor(container: HTMLElement, options: MapOptions);
+    setCursor(cursor: string): void;
   }
 
   interface MapOptions {
@@ -43,6 +44,33 @@ declare namespace kakao.maps {
     fillOpacity: number;
   }
 
+  class Polyline {
+    constructor(options: PolylineOptions);
+    setMap(map: Map | null): void;
+    getPath(): LatLng[];
+    setPath(path: LatLng[]): void;
+    setOptions(options: Partial<PolylineOptions>): void;
+  }
+
+  interface PolylineOptions {
+    map: Map;
+    path: LatLng[];
+    strokeWeight: number;
+    strokeColor: string;
+    strokeOpacity: number;
+    strokeStyle?:
+      | 'solid'
+      | 'shortdash'
+      | 'shortdot'
+      | 'shortdashdot'
+      | 'shortdashdotdot'
+      | 'dot'
+      | 'dash'
+      | 'dashdot'
+      | 'longdash'
+      | 'longdashdot';
+  }
+
   class CustomOverlay {
     constructor(options: CustomOverlayOptions);
     setContent(content: HTMLElement | string): void;
@@ -54,6 +82,45 @@ declare namespace kakao.maps {
     content?: HTMLElement | string;
     map?: Map | null;
     position?: LatLng;
+  }
+
+  class Marker {
+    constructor(options: MarkerOptions);
+    setMap(map: Map | null): void;
+    setPosition(position: LatLng): void;
+    getPosition(): LatLng;
+    setImage(image: MarkerImage): void;
+    getTitle(): string;
+    setTitle(title: string): void;
+    setClickable(clickable: boolean): void;
+  }
+
+  interface MarkerOptions {
+    position: LatLng;
+    map?: Map;
+    title?: string;
+    image?: MarkerImage;
+    clickable?: boolean;
+    draggable?: boolean;
+    zIndex?: number;
+  }
+
+  class MarkerImage {
+    constructor(src: string, size: Size, options?: MarkerImageOptions);
+  }
+
+  interface MarkerImageOptions {
+    offset?: Point;
+    shape?: string;
+    coords?: string;
+  }
+
+  class Size {
+    constructor(width: number, height: number);
+  }
+
+  class Point {
+    constructor(x: number, y: number);
   }
 
   function load(callback: () => void): void;

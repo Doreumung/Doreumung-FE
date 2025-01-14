@@ -1,7 +1,9 @@
 export type UserDataType = {
-  nickname: string;
-  password: string;
-  age: number;
+  id: string | 'default-id';
+  email: string | '';
+  nickname: string | '';
   gender: 'male' | 'female' | 'none';
-  birthday: Date;
-};
+  birthday: string | '1925-01-01';
+  created_at: string | '';
+  updated_at: string | '';
+} | null;
