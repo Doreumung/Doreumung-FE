@@ -40,6 +40,7 @@
     "react-use-websocket": "^4.11.1",
     "redux-persist": "^6.0.0",
     "relativeTime": "link:dayjs/plugin/relativeTime",
+    "swiper": "^11.2.1",
     "tailwind-merge": "^2.6.0",
     "tailwind-scrollbar-hide": "^2.0.0",
     "uuid": "^11.0.5",
