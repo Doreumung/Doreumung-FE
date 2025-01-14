@@ -42,8 +42,8 @@ const Header = () => {
       )}
     >
       <motion.div style={{ height }}>
-        <Navbar />
         <Logo />
+        <Navbar />
       </motion.div>
     </header>
   );
