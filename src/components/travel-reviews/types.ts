@@ -42,7 +42,7 @@ export type ReviewStatsProps = VariantProps<typeof reviewStatsIconStyles> & {
 
 export type ReviewFormProps = {
   mode: 'create' | 'edit';
-  defaultValues?: { title: string; rating: number; content: string; thumbnail: string };
+  defaultValues?: { title: string; rating: number; content: string; thumbnail: string | null };
   travelRouteInfo: GetTravelRouteInfoResponseType;
 };
 
@@ -53,8 +53,8 @@ export type EditAndDeleteProps = {
 };
 
 export type ThumbnailPickerProps = {
-  thumbnailImageUrl: string;
-  setThumbnailImageUrl: Dispatch<SetStateAction<string>>;
+  thumbnailImageUrl: string | null;
+  setThumbnailImageUrl: Dispatch<SetStateAction<string | null>>;
 };
 
 export type CommentFormProps = {

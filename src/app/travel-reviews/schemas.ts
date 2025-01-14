@@ -20,9 +20,9 @@ export const reviewSchemas = z.object({
   regions: z.string().array(),
   travel_route: z.string().array(),
   themes: z.string().array(),
-  thumbnail: z.string(),
-  uploaded_urls: z.string().array(),
-  deleted_urls: z.string().array(),
+  thumbnail: z.string().nullable(),
+  uploaded_urls: z.string().array().optional(),
+  deleted_urls: z.string().array().optional(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
 });

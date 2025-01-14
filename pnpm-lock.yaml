@@ -101,6 +101,9 @@ importers:
       relativeTime:
         specifier: link:dayjs/plugin/relativeTime
         version: link:dayjs/plugin/relativeTime
+      swiper:
+        specifier: ^11.2.1
+        version: 11.2.1
       tailwind-merge:
         specifier: ^2.6.0
         version: 2.6.0
@@ -701,8 +704,8 @@ packages:
       '@tiptap/core': ^2.7.0
       '@tiptap/pm': ^2.7.0
 
-  '@tiptap/extension-hard-break@2.11.0':
-    resolution: {integrity: sha512-7pMgPNk2FnPT0LcWaWNNxOLK3LQnRSYFgrdBGMXec3sy+y3Lit3hM+EZhbZcHpTIQTbWWs+eskh1waRMIt0ZaQ==}
+  '@tiptap/extension-hard-break@2.11.2':
+    resolution: {integrity: sha512-FNcXemfuwkiP4drZ9m90BC6GD4nyikfYHYEUyYuVd74Mm6w5vXpueWXus3mUcdT78xTs1XpQVibDorilLu7X8w==}
     peerDependencies:
       '@tiptap/core': ^2.7.0
 
@@ -2285,6 +2288,10 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
+  swiper@11.2.1:
+    resolution: {integrity: sha512-62G69+iQRIfUqTmJkWpZDcX891Ra8O9050ckt1/JI2H+0483g+gq0m7gINecDqMtDh2zt5dK+uzBRxGhGOOvQA==}
+    engines: {node: '>= 4.7.0'}
+
   tailwind-merge@2.6.0:
     resolution: {integrity: sha512-P+Vu1qXfzediirmHOC3xKGAYeZtPcV9g76X+xg2FD4tYgR71ewMA35Y3sCz3zhiN/dwefRpJX0yBcgwi1fXNQA==}
 
@@ -2957,7 +2964,7 @@ snapshots:
       '@tiptap/core': 2.11.0(@tiptap/pm@2.11.0)
       '@tiptap/pm': 2.11.0
 
-  '@tiptap/extension-hard-break@2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.11.0))':
+  '@tiptap/extension-hard-break@2.11.2(@tiptap/core@2.11.0(@tiptap/pm@2.11.0))':
     dependencies:
       '@tiptap/core': 2.11.0(@tiptap/pm@2.11.0)
 
@@ -3059,7 +3066,7 @@ snapshots:
       '@tiptap/extension-document': 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.11.0))
       '@tiptap/extension-dropcursor': 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.11.0))(@tiptap/pm@2.11.0)
       '@tiptap/extension-gapcursor': 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.11.0))(@tiptap/pm@2.11.0)
-      '@tiptap/extension-hard-break': 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.11.0))
+      '@tiptap/extension-hard-break': 2.11.2(@tiptap/core@2.11.0(@tiptap/pm@2.11.0))
       '@tiptap/extension-heading': 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.11.0))
       '@tiptap/extension-history': 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.11.0))(@tiptap/pm@2.11.0)
       '@tiptap/extension-horizontal-rule': 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.11.0))(@tiptap/pm@2.11.0)
@@ -4832,6 +4839,8 @@ snapshots:
       has-flag: 4.0.0
 
   supports-preserve-symlinks-flag@1.0.0: {}
+
+  swiper@11.2.1: {}
 
   tailwind-merge@2.6.0: {}
 

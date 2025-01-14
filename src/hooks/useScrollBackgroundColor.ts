@@ -21,7 +21,16 @@ const useScrollBackgroundColor = (startColor: number[], endColor: number[], maxS
 
     window.addEventListener('scroll', handleScroll);
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      const [r, g, b] = startColor;
+
+      document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+      document.getElementsByTagName('header')[0].style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+
+      window.removeEventListener('scroll', handleScroll);
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [y]);
 };
 
