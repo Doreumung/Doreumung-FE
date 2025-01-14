@@ -4,45 +4,46 @@ import { useCheckLoginStatus } from '@/utils/auth';
 import { useEffect } from 'react';
 import Toast, { toast } from '@/components/common/toast/Toast';
 import { useDispatch } from 'react-redux';
-// import { clearUser } from '@/store/userSlice';
+import { destroyCookie, parseCookies } from 'nookies';
+import { clearUser } from '@/store/userSlice';
 
 export const CheckLoginStatus = () => {
   const { isLoggedIn, setIsLoggedIn, refreshAccessToken, handleLogout } = useCheckLoginStatus();
   const dispatch = useDispatch();
 
   const autoSignin = localStorage.getItem('auto_signin');
-  // const cookies = parseCookies();
-  // const refreshToken = cookies['refresh_token'];
+  const cookies = parseCookies();
+  const refreshToken = cookies['refresh_token'];
 
   const accessTokenExpireTime = localStorage.getItem('access_token_expiry');
-  // const refreshTokenExpireTime = localStorage.getItem('refresh_token_expiry');
+  const refreshTokenExpireTime = localStorage.getItem('refresh_token_expiry');
 
   const now = new Date().getTime();
   const accessTokenExpireDate = new Date(accessTokenExpireTime as string).getTime();
-  // const refreshTokenExpireDate = new Date(refreshTokenExpireTime as string).getTime();
+  const refreshTokenExpireDate = new Date(refreshTokenExpireTime as string).getTime();
 
   useEffect(() => {
-    // if (!accessTokenExpireDate) {
-    //   console.log('이미 로그아웃 됨');
+    if (!accessTokenExpireDate) {
+      console.log('이미 로그아웃 됨');
 
-    //   localStorage.removeItem('access_token');
-    //   localStorage.removeItem('persist:user');
-    //   localStorage.removeItem('auto_signin');
-    //   localStorage.removeItem('access_token_expiry');
-    //   // localStorage.removeItem('refresh_token_expiry');
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('persist:user');
+      localStorage.removeItem('auto_signin');
+      localStorage.removeItem('access_token_expiry');
+      localStorage.removeItem('refresh_token_expiry');
 
-    //   dispatch(clearUser());
+      dispatch(clearUser());
 
-    //   // destroyCookie(null, 'access_token', { path: '/' });
-    //   // destroyCookie(null, 'refresh_token', { path: '/' });
+      destroyCookie(null, 'access_token', { path: '/' });
+      destroyCookie(null, 'refresh_token', { path: '/' });
 
-    //   setIsLoggedIn(false); // 로그아웃 상태로 변경
+      setIsLoggedIn(false); // 로그아웃 상태로 변경
 
-    //   return;
-    // }
+      return;
+    }
 
     let accessTimeout: NodeJS.Timeout | undefined;
-    // let refreshTimeout: NodeJS.Timeout | undefined;
+    let refreshTimeout: NodeJS.Timeout | undefined;
 
     // 액세스 토큰 만료 타이머
     if (accessTokenExpireDate > now) {
@@ -52,38 +53,37 @@ export const CheckLoginStatus = () => {
           console.log('액세스 토큰 재발급');
 
           // 액세스 토큰 없는 경우 재발급, 실패할 경우 로그아웃 처리
-          // refreshAccessToken();
-          // if (refreshToken) {
-          //   refreshAccessToken(refreshToken); // 액세스 토큰 재발급
-          // } else {
-          //   handleLogout('리프레시 토큰 만료로 인한 로그아웃');
-          // }
+          if (refreshToken) {
+            refreshAccessToken(refreshToken); // 액세스 토큰 재발급
+          } else {
+            handleLogout('리프레시 토큰 만료로 인한 로그아웃');
+          }
         } else {
           handleLogout('액세스 토큰 만료로 인한 로그아웃');
         }
       }, accessTokenExpireDate - now);
     }
 
-    // // 리프레시 토큰 만료 타이머
-    // if (refreshTokenExpireDate > now) {
-    //   refreshTimeout = setTimeout(() => {
-    //     console.log('리프레시 토큰 만료');
-    //     handleLogout('리프레시 토큰 만료로 인한 로그아웃');
-    //   }, refreshTokenExpireDate - now);
-    // }
+    // 리프레시 토큰 만료 타이머
+    if (refreshTokenExpireDate > now) {
+      refreshTimeout = setTimeout(() => {
+        console.log('리프레시 토큰 만료');
+        handleLogout('리프레시 토큰 만료로 인한 로그아웃');
+      }, refreshTokenExpireDate - now);
+    }
 
     return () => {
       if (accessTimeout) clearTimeout(accessTimeout);
-      // if (refreshTimeout) clearTimeout(refreshTimeout);
+      if (refreshTimeout) clearTimeout(refreshTimeout);
     };
   }, [
     accessTokenExpireDate,
-    // refreshTokenExpireDate,
+    refreshTokenExpireDate,
     autoSignin,
     handleLogout,
     now,
     refreshAccessToken,
-    // refreshToken,
+    refreshToken,
     dispatch,
     setIsLoggedIn,
   ]);

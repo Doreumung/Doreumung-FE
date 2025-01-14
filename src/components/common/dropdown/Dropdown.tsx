@@ -6,7 +6,7 @@ import { dropdownStyles } from './dropdownStyles';
 import useIsMobile from '@/hooks/useIsMobile';
 import { useDispatch } from 'react-redux';
 import { clearUser } from '@/store/userSlice';
-import { parseCookies } from 'nookies';
+import { destroyCookie, parseCookies } from 'nookies';
 import { useLogoutMutation } from '@/api/userApi';
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -40,9 +40,9 @@ const Dropdown: React.FC<DropdownProps> = ({
             .then(res => console.log(res))
             .catch(err => console.log('로그아웃 실패', err));
 
-          // destroyCookie(null, 'access_token', { path: '/' });
-          // destroyCookie(null, 'refresh_token', { path: '/' });
-          localStorage.removeItem('access_token');
+          destroyCookie(null, 'access_token', { path: '/' });
+          destroyCookie(null, 'refresh_token', { path: '/' });
+          // localStorage.removeItem('access_token');
 
           router.push('/'); // 메인으로 이동
           break;
