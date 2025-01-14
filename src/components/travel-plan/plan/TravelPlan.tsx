@@ -36,10 +36,14 @@ const TravelPlan = ({ isReadOnly = false, title = '' }) => {
       <div className="px-4 flex-shrink-0 md:flex md:flex-col md:w-[440px] md:px-0">
         <div className="pb-4 md:px-8">
           <header className="pt-8 text-base md:pt-6">
-            <BackNavigation to="home" onNavigate={handleNavigation} />
+            {isReadOnly ? (
+              <BackNavigation to="mytravelList" />
+            ) : (
+              <BackNavigation to="home" onNavigate={handleNavigation} />
+            )}
           </header>
           {isReadOnly ? (
-            <h1 className="text-2xl font-bold mt-4">{title}</h1>
+            <TravelHeader step="내가 만든 일정~" stepName={title} />
           ) : (
             <TravelHeader
               step="마음에 드는 장소는 고정하고 다시 뽑을 수 있어요!"
