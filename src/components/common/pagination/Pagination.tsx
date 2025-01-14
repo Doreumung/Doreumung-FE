@@ -24,6 +24,7 @@ const Pagination = ({ totalResults, currentPage, setPage, perPage = 9 }: Paginat
       (page === totalPages && currentPage === totalPages)
     )
       return;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setPage(page);
   };
 
@@ -54,7 +55,7 @@ const Pagination = ({ totalResults, currentPage, setPage, perPage = 9 }: Paginat
             currentPage === page && 'text-logo',
             page > totalPages && 'hidden',
           )}
-          onClick={() => setPage(page)}
+          onClick={() => handlePageChange(page)}
         >
           {page}
         </button>
