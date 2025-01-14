@@ -48,37 +48,33 @@ const TravelPlanMap = () => {
           return `https://map.naver.com/p/directions/${from.longitude},${from.latitude},${from.name}/${to.longitude},${to.latitude},${to.name}/-/car`;
         };
 
-        // 마커 및 직선 생성
-        sortedPlaces.forEach((place, index) => {
-          const marker = new window.kakao.maps.Marker({
+        // 카카오 번호 마커 사용
+        const addNumberMarker = (position: kakao.maps.LatLng, idx: number, map: kakao.maps.Map) => {
+          const imageSrc =
+              'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png',
+            imageSize = new kakao.maps.Size(36, 37),
+            imgOptions = {
+              spriteSize: new kakao.maps.Size(36, 691),
+              spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10),
+              offset: new kakao.maps.Point(13, 37),
+            },
+            markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
+
+          const marker = new kakao.maps.Marker({
+            position: position,
+            image: markerImage,
             map: map,
-            position: new window.kakao.maps.LatLng(place.latitude, place.longitude),
           });
 
-          // 다음 장소와의 직선 생성
-          if (index < sortedPlaces.length - 1) {
-            const nextPlace = sortedPlaces[index + 1];
+          return marker;
+        };
 
-            // 폴리라인 생성
-            const polyline = new window.kakao.maps.Polyline({
-              map: map,
-              path: [
-                new window.kakao.maps.LatLng(place.latitude, place.longitude),
-                new window.kakao.maps.LatLng(nextPlace.latitude, nextPlace.longitude),
-              ],
-              strokeWeight: 5,
-              strokeColor: '#FF9B36',
-              strokeOpacity: 1,
-              strokeStyle: 'solid',
-            });
+        // 마커 및 직선 생성
+        sortedPlaces.forEach((place, index) => {
+          const markerPosition = new kakao.maps.LatLng(place.latitude, place.longitude);
 
-            // 폴리라인 클릭 이벤트 추가
-            const kakaoMapRouteUrl = createKakaoMapRouteUrl(place, nextPlace);
-
-            window.kakao.maps.event.addListener(polyline, 'click', () => {
-              window.open(kakaoMapRouteUrl, '_blank');
-            });
-          }
+          // 숫자 마커 추가
+          const marker = addNumberMarker(markerPosition, index, map);
 
           // 마커 툴팁 (이름 표시)
           const customOverlay = new window.kakao.maps.CustomOverlay({
@@ -103,6 +99,46 @@ const TravelPlanMap = () => {
           window.kakao.maps.event.addListener(marker, 'mouseout', () => {
             customOverlay.setMap(null);
           });
+
+          // 다음 장소와의 직선 생성
+          if (index < sortedPlaces.length - 1) {
+            const nextPlace = sortedPlaces[index + 1];
+
+            // 폴리라인 생성
+            const polyline = new window.kakao.maps.Polyline({
+              map: map,
+              path: [
+                new window.kakao.maps.LatLng(place.latitude, place.longitude),
+                new window.kakao.maps.LatLng(nextPlace.latitude, nextPlace.longitude),
+              ],
+              strokeWeight: 4,
+              strokeColor: '#FF9B36',
+              strokeOpacity: 0.7,
+              strokeStyle: 'solid',
+            });
+
+            // 폴리라인 클릭 이벤트 추가
+            const kakaoMapRouteUrl = createKakaoMapRouteUrl(place, nextPlace);
+
+            window.kakao.maps.event.addListener(polyline, 'click', () => {
+              window.open(kakaoMapRouteUrl, '_blank');
+            });
+
+            window.kakao.maps.event.addListener(polyline, 'mouseover', () => {
+              polyline.setOptions({
+                strokeWeight: 7,
+                strokeOpacity: 1,
+              });
+            });
+
+            // 마우스 아웃 이벤트: 색상 복원
+            window.kakao.maps.event.addListener(polyline, 'mouseout', () => {
+              polyline.setOptions({
+                strokeWeight: 4,
+                strokeOpacity: 0.7,
+              });
+            });
+          }
         });
       });
     };
