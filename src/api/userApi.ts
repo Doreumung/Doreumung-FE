@@ -84,7 +84,7 @@ export const userApi = createApi({
     }),
     accessTokenRefresh: builder.mutation({
       query: rt => ({
-        url: '/refresh',
+        url: '/user/refresh',
         method: 'POST',
         body: rt,
         headers: {
