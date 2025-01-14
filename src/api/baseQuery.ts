@@ -25,7 +25,7 @@ const prepareHeaders = (headers: Headers) => {
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://api.doreumung.site/api/v1',
-  // credentials: 'include',
+  credentials: 'include',
   prepareHeaders,
 });
 
