@@ -20,8 +20,8 @@ const RootLayout = ({
       <body>
         <Providers>
           <Header />
+          <main className="flex justify-center w-full px-4 mt-16 md:px-6 md:mt-20">{children}</main>
           <CheckLoginStatus />
-          <main className="flex justify-center w-full px-6 mt-16 md:mt-20">{children}</main>
           <Toast />
         </Providers>
       </body>
