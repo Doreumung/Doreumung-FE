@@ -79,7 +79,7 @@ const Page = () => {
 
       // 홈으로 이동 후 새로고침
       // router.push('/');
-      window.location.href = '/'; // 새로고침
+      // window.location.href = '/'; // 새로고침
     } catch (err) {
       console.error('로그인 실패:', err);
 
