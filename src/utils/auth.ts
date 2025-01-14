@@ -4,7 +4,7 @@ import { clearUser } from '@/store/userSlice';
 import { useDispatch } from 'react-redux';
 import { useAccessTokenRefreshMutation } from '@/api/userApi';
 import { usePathname, useRouter } from 'next/navigation';
-// import { setCookieWithExpiry } from '@/app/sign-in/setCookieWithExpiry';
+import { setCookieWithExpiry } from '@/app/sign-in/setCookieWithExpiry';
 
 export const useCheckLoginStatus = () => {
   const [accessTokenRefresh] = useAccessTokenRefreshMutation();
@@ -13,13 +13,13 @@ export const useCheckLoginStatus = () => {
   const router = useRouter();
   const pathName = usePathname();
 
-  const refreshAccessToken = async () => {
+  const refreshAccessToken = async (refreshToken: string) => {
     try {
-      const result = await accessTokenRefresh({});
-      console.log(result);
+      const result = await accessTokenRefresh(
+        JSON.stringify({ refresh_token: refreshToken }),
+      ).unwrap();
 
-      // setCookieWithExpiry('access_token', result?.access_token, 60);
-      // localStorage.setItem('access_token', result?.access_token);
+      setCookieWithExpiry('access_token', result?.access_token, 24 * 60 * 60);
 
       setIsLoggedIn(true); // 로그인 상태로 변경
     } catch (err) {
@@ -33,10 +33,9 @@ export const useCheckLoginStatus = () => {
 
     localStorage.removeItem('persist:user');
     localStorage.removeItem('auto_signin');
-    // localStorage.removeItem('access_token');
     localStorage.removeItem('access_token_expiry');
+    localStorage.removeItem('refresh_token_expiry');
     localStorage.removeItem('logout_time_expiry');
-    // localStorage.removeItem('refresh_token_expiry');
 
     dispatch(clearUser());
 

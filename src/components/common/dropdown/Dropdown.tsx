@@ -6,6 +6,7 @@ import { dropdownStyles } from './dropdownStyles';
 import useIsMobile from '@/hooks/useIsMobile';
 import { useDispatch } from 'react-redux';
 import { clearUser } from '@/store/userSlice';
+import { destroyCookie, parseCookies } from 'nookies';
 import { useLogoutMutation } from '@/api/userApi';
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -25,20 +26,28 @@ const Dropdown: React.FC<DropdownProps> = ({
       switch (option.action) {
         case 'signOut':
           // 로그아웃 로직 구현
+          localStorage.setItem('toast_shown', 'true');
+
           localStorage.removeItem('persist:user');
           localStorage.removeItem('auto_signin');
           localStorage.removeItem('access_token_expiry');
           localStorage.removeItem('logout_time_expiry');
+          localStorage.removeItem('refresh_token_expiry');
+
           dispatch(clearUser());
 
-          logoutUser({})
+          logoutUser(
+            JSON.stringify({
+              access_token: parseCookies().access_token,
+              refresh_token: parseCookies().refresh_token,
+            }),
+          )
             .unwrap()
             .then(res => console.log(res))
             .catch(err => console.log('로그아웃 실패', err));
 
-          // destroyCookie(null, 'access_token', { path: '/' });
-          // destroyCookie(null, 'refresh_token', { path: '/' });
-          // localStorage.removeItem('access_token');
+          destroyCookie(null, 'access_token', { path: '/' });
+          destroyCookie(null, 'refresh_token', { path: '/' });
 
           router.push('/'); // 메인으로 이동
           break;
