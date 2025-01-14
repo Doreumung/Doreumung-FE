@@ -65,12 +65,12 @@ const Dropdown: React.FC<DropdownProps> = ({
     <div className={dropdownStyles({ variant: isMobile ? 'mobile' : 'default' })}>
       {options.map((option, index) => (
         <div key={`${index}-${option.label}`}>
-          <div
-            className="h-9 px-4 py-2 text-base text-darkerGray cursor-pointer hover:bg-fadedOrange"
+          <button
+            className="w-full h-9 px-4 py-2 text-base text-darkerGray text-start cursor-pointer hover:bg-fadedOrange"
             onClick={() => handleSelect(option)}
           >
             {option.label}
-          </div>
+          </button>
           {isMobile && option.separator && <hr className="border-px border-darkGray" />}
         </div>
       ))}
