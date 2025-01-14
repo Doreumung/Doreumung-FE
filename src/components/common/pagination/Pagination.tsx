@@ -29,21 +29,25 @@ const Pagination = ({ totalResults, currentPage, setPage, perPage = 9 }: Paginat
 
   return (
     <div className="flex gap-5 px-5 py-1 border border-darkerGray rounded-md bg-white text-darkGray">
-      <ChevronFirst
-        className={twMerge(
-          clsx(PAGE_BUTTON_STYLES, currentPage === 1 && DISABLED_PAGE_BUTTON_STYLES),
-        )}
-        onClick={() => handlePageChange(1)}
-      />
-      <ChevronLeft
-        className={twMerge(
-          clsx(PAGE_BUTTON_STYLES, currentPage === 1 && DISABLED_PAGE_BUTTON_STYLES),
-        )}
-        onClick={() => handlePageChange(currentPage - 1)}
-      />
+      <button>
+        <ChevronFirst
+          className={twMerge(
+            clsx(PAGE_BUTTON_STYLES, currentPage === 1 && DISABLED_PAGE_BUTTON_STYLES),
+          )}
+          onClick={() => handlePageChange(1)}
+        />
+      </button>
+      <button>
+        <ChevronLeft
+          className={twMerge(
+            clsx(PAGE_BUTTON_STYLES, currentPage === 1 && DISABLED_PAGE_BUTTON_STYLES),
+          )}
+          onClick={() => handlePageChange(currentPage - 1)}
+        />
+      </button>
 
       {pages.map(page => (
-        <span
+        <button
           key={page}
           className={clsx(
             PAGE_BUTTON_STYLES,
@@ -53,23 +57,25 @@ const Pagination = ({ totalResults, currentPage, setPage, perPage = 9 }: Paginat
           onClick={() => setPage(page)}
         >
           {page}
-        </span>
+        </button>
       ))}
 
-      <>
+      <button>
         <ChevronRight
           className={twMerge(
             clsx(PAGE_BUTTON_STYLES, totalPages === currentPage && DISABLED_PAGE_BUTTON_STYLES),
           )}
           onClick={() => handlePageChange(currentPage + 1)}
         />
+      </button>
+      <button>
         <ChevronLast
           className={twMerge(
             clsx(PAGE_BUTTON_STYLES, totalPages === currentPage && DISABLED_PAGE_BUTTON_STYLES),
           )}
           onClick={() => handlePageChange(totalPages)}
         />
-      </>
+      </button>
     </div>
   );
 };
