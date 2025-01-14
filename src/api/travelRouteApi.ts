@@ -7,6 +7,7 @@ import {
   PostSavedTravelRouteRequest,
   PostSavedTravelRouteResponse,
   PostTravelRouteRequest,
+  TravelRoute,
   TravelRouteResponse,
 } from '@/app/travel-plan/types';
 
@@ -63,7 +64,7 @@ export const travelRouteApi = createApi({
       }),
     }),
     // 사용자 저장된 여행 경로 조회 GET by ID
-    getTravelRouteById: builder.query<GetTravelRoutesResponse, number>({
+    getTravelRouteById: builder.query<TravelRoute, number>({
       query: id => ({
         url: `/travelroute/${id}`,
         method: 'GET',
