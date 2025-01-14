@@ -34,8 +34,14 @@ const Header = () => {
   }, [deviceType]);
 
   return (
-    <header className={clsx(variant === 'travelPlan' && 'hidden')}>
-      <motion.div className="fixed z-30 top-0 left-0 w-full bg-background" style={{ height }}>
+    <header
+      className={clsx(
+        variant === 'travelPlan' && 'hidden',
+        'fixed z-30 top-0 left-0 w-full bg-background',
+        'header',
+      )}
+    >
+      <motion.div style={{ height }}>
         <Navbar />
         <Logo />
       </motion.div>
