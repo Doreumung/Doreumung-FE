@@ -56,7 +56,7 @@ const Page = () => {
 
       // 액세스 토큰을 쿠키에 저장
       // 쿠키 설정 및 토큰 유효기간 로컬 스토리지에 저장
-      setCookieWithExpiry('access_token', result?.access_token, 60);
+      setCookieWithExpiry('access_token', result?.access_token, 24 * 60 * 60);
       setCookieWithExpiry('refresh_token', result?.refresh_token, 7 * 24 * 60 * 60);
       // const cookies = parseCookies();
       // const accessToken = cookies['access_token'];
