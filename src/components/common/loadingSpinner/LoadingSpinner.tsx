@@ -9,7 +9,7 @@ const LoadingSpinner = ({ className }: { className?: string }) => {
   return (
     <div
       className={twMerge(
-        'flex justify-center items-center w-full h-screen -mt-16 md:-mt-20',
+        'flex justify-center items-center w-full',
         className,
       )}
     >
