@@ -3,6 +3,7 @@ import { PatchTravelRouteRequest, TravelRouteResponse } from '@/app/travel-plan/
 import Button from '@/components/common/buttons/Button';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
+import { toast } from '@/components/common/toast/Toast';
 import Toggle from '@/components/common/toggle/Toggle';
 import { useAppSelector } from '@/store/hooks';
 import { setScheduleResponse } from '@/store/travelPlanSlice';
@@ -142,11 +143,14 @@ const PlaceList = ({ isReadOnly = false }) => {
       config: travelRoute.config,
     };
     try {
-      await postSavedTravelRoute(saveTravelRoute).unwrap();
+      await postSavedTravelRoute(saveTravelRoute)
+        .unwrap()
+        .then(res => {
+          toast({ message: ['성공적으로 저장되었습니다.', '상세 화면으로 이동합니다.'] });
+          router.push(`/my-travel/${res.travel_route_id}`);
+        });
 
       setShowSaveLayerPopup(false);
-      // 추후 저장 경로 상세페이지로 이동시키기
-      router.push('/');
     } catch (error) {
       console.log('저장실패: ', error);
     }
