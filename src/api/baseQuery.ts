@@ -20,6 +20,7 @@ const prepareHeaders = (headers: Headers) => {
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://api.doreumung.site/api/v1',
+  credentials: 'include', // 테스트용으로 새로 추가
   prepareHeaders,
 });
 
