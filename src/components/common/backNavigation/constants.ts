@@ -11,4 +11,8 @@ export const BACK_NAVIGATION_PATHS = {
     path: null,
     label: '이전으로',
   },
+  mytravelList: {
+    path: '/my-travel',
+    label: '목록으로',
+  },
 };
