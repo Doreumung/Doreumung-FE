@@ -49,7 +49,7 @@ const GoogleCallback = () => {
 
   if (isLoading) return <div>Loading...</div>;
 
-  return <div>Processing Google Login...</div>;
+  return <></>;
 };
 
 export default GoogleCallback;
