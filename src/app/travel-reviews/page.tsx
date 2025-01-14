@@ -79,7 +79,7 @@ const Page = () => {
                 ))}
               </div>
 
-              <div className="flex flex-col items-center gap-12">
+              <div className="flex flex-col items-center gap-12 w-full">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 place-items-center gap-8 w-full">
                   {data.reviews.map((review: SingleReviewType) => (
                     <ReviewCard key={`${review.review_id}-${review.created_at}`} review={review} />
