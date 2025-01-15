@@ -116,7 +116,7 @@ export const CheckLoginStatus = () => {
     if (justLoggedIn === 'true') {
       localStorage.removeItem('just_logged_in');
     }
-  }, [isLoggedIn, toastShown]);
+  }, [isLoggedIn, toastShown, fromSaveRoute, justLoggedIn]);
 
   return <>{isLoggedIn === false && <Toast />}</>;
 };

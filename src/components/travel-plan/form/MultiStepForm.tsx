@@ -16,12 +16,11 @@ import { usePostTravelRouteMutation } from '@/api/travelRouteApi';
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import { jejuArea } from './region/jejumap';
 import { THEMES } from '@/components/common/toggle/constants';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import RedirectNotice from '@/components/common/redirectNotice/RedirectNotice';
 
 const MultiStepForm = () => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const travelPlanConfig = useAppSelector(state => state.travelPlan);
   const [postTravelRoute, { isLoading }] = usePostTravelRouteMutation();
 
