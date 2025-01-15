@@ -43,7 +43,6 @@ export const socialLoginButtonStyles = cva(
     variants: {
       provider: {
         kakao: 'bg-kakaoContainer text-kakaoLabel',
-        naver: 'bg-naverContainer text-naverLabel',
         google: 'bg-googleContainer text-googleLabel',
       },
     },
