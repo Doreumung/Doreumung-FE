@@ -55,7 +55,7 @@ export const getTravelRouteListResponseSchema = z.object({
   size: z.number(),
   total_pages: z.number(),
   total_travel_routes: z.number(),
-  travel_list: travelRouteSchema.array(),
+  travel_list: travelRouteSchema.extend({ review_id: z.number().array() }).array(),
 });
 
 // 여행 경로 생성 POST (요청)
