@@ -62,7 +62,7 @@ const CommentForm = ({ content = '', setShowForm, comment_id }: CommentFormProps
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2 w-full pb-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2 w-full">
       <textarea
         {...register('content')}
         maxLength={255}
