@@ -38,7 +38,7 @@ const Footer = () => {
         className="flex absolute bottom-0 left-1/2 size-24 bg-dolmung bg-center bg-cover md:size-36"
       />
 
-      <div className="flex flex-col w-full h-full md:w-3/5 md:max-w-6xl z-10">
+      <div className="flex flex-col w-full h-full md:w-3/5 md:max-w-6xl">
         <div className="grow w-full">
           <div className="flex flex-col w-full md:flex-row md:justify-between">
             <div className="w-full md:min-w-1/3">
@@ -49,7 +49,7 @@ const Footer = () => {
           </div>
           <CompanyInfo />
         </div>
-        <p className="text-sm text-darkGray tracking-tight">© 2025 도르멍. All rights reserved.</p>
+        <p className="text-xs text-darkGray tracking-tight">© 2025 도르멍. All rights reserved.</p>
       </div>
     </footer>
   );
