@@ -88,9 +88,5 @@ export type SortState = {
 export type SortCriteria = 'created_at' | 'like_count' | 'comment_count';
 
 export type SortingOptionProps = {
-  orderBy: SortCriteria;
-  setOrderBy: Dispatch<SetStateAction<SortCriteria>>;
-  sortingOptions: SortState;
-  setSortingOptions: Dispatch<SetStateAction<SortState>>;
   option: SortCriteria;
 };

@@ -2,7 +2,6 @@
 
 import ReviewCard from '@/components/travel-reviews/reviewCard/ReviewCard';
 import Pagination from '@/components/common/pagination/Pagination';
-import { useState } from 'react';
 import { useGetReviewListQuery } from '@/api/reviewApi';
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import { SingleReviewType } from './types';
@@ -11,25 +10,28 @@ import Button from '@/components/common/buttons/Button';
 import ApiErrorMessage from '@/components/common/errorMessage/ApiErrorMessage';
 import SpeechBubble from '@/components/common/speechBubble/SpeechBubble';
 import SortingOption from '@/components/travel-reviews/SortingOption';
-import { SortCriteria, SortState } from '@/components/travel-reviews/types';
+import { SortCriteria } from '@/components/travel-reviews/types';
 import { SORTING_OPTIONS } from '@/components/travel-reviews/constants';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { RootState } from '@/store/store';
+import { setReviewPage } from '@/store/pageSlice';
 
 const Page = () => {
   const router = useRouter();
 
-  const [page, setPage] = useState<number>(1);
-  const [orderBy, setOrderBy] = useState<SortCriteria>('created_at');
-  const [sortingOptions, setSortingOptions] = useState<SortState>({
-    like_count: 'desc',
-    comment_count: 'desc',
-    created_at: 'desc',
-  });
+  const dispatch = useAppDispatch();
+  const { sortState, orderBy } = useAppSelector((state: RootState) => state.sort);
+  const { reviewPage: page } = useAppSelector((state: RootState) => state.page);
 
   const { data, isLoading, error } = useGetReviewListQuery({
     page,
     order_by: orderBy,
-    order: sortingOptions[orderBy],
+    order: sortState[orderBy],
   });
+
+  const handlePage = (pageNumber: number) => {
+    dispatch(setReviewPage(pageNumber));
+  };
 
   if (isLoading) return <LoadingSpinner />;
 
@@ -68,14 +70,7 @@ const Page = () => {
             <>
               <div className="flex gap-2 self-end">
                 {SORTING_OPTIONS.map((option: SortCriteria) => (
-                  <SortingOption
-                    key={option}
-                    orderBy={orderBy}
-                    setOrderBy={setOrderBy}
-                    sortingOptions={sortingOptions}
-                    setSortingOptions={setSortingOptions}
-                    option={option}
-                  />
+                  <SortingOption key={option} option={option} />
                 ))}
               </div>
 
@@ -88,7 +83,7 @@ const Page = () => {
                 <Pagination
                   totalResults={data.total_reviews}
                   currentPage={page}
-                  setPage={setPage}
+                  setPage={handlePage}
                 />
               </div>
             </>

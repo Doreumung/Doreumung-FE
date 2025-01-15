@@ -8,6 +8,8 @@ import persistStore from 'redux-persist/es/persistStore';
 import reviewImages from './reviewImagesSlice';
 import navigation from './navigationSlice';
 import toast from './toastSlice';
+import sort from './sortSlice';
+import page from './pageSlice';
 import travelRouteApi from '@/api/travelRouteApi';
 import imageApi from '@/api/imageApi';
 
@@ -23,6 +25,8 @@ export const store = configureStore({
     reviewImages,
     navigation,
     toast,
+    sort,
+    page,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import TravelCard from '@/components/my-travel/TravelCard';
 import { useGetTraveRoutesQuery } from '@/api/travelRouteApi';
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
@@ -8,19 +7,27 @@ import Pagination from '@/components/common/pagination/Pagination';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import ApiErrorMessage from '@/components/common/errorMessage/ApiErrorMessage';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setMyTravelPage } from '@/store/pageSlice';
 
 const Page = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const dispatch = useAppDispatch();
+  const userData = useSelector((state: RootState) => state.user.user);
+  const { myTravelPage: page } = useAppSelector((state: RootState) => state.page);
+
   const itemsPerPage = 5;
   const {
     data: travelRoute,
     isLoading,
     error,
   } = useGetTraveRoutesQuery({
-    page: currentPage,
+    page,
     size: itemsPerPage,
   });
-  const userData = useSelector((state: RootState) => state.user.user);
+
+  const handlePage = (pageNumber: number) => {
+    dispatch(setMyTravelPage(pageNumber));
+  };
 
   if (isLoading)
     return (
@@ -55,8 +62,8 @@ const Page = () => {
       </div>
       <Pagination
         totalResults={travelRoute.total_travel_routes}
-        currentPage={currentPage}
-        setPage={setCurrentPage}
+        currentPage={page}
+        setPage={handlePage}
         perPage={itemsPerPage}
       />
     </div>
