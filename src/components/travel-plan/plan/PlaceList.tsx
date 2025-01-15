@@ -19,8 +19,8 @@ const PlaceList = ({ isReadOnly = false }) => {
   const [toggledStates, setToggledState] = useState<Record<number, boolean>>({});
 
   const router = useRouter();
-
   const dispatch = useDispatch();
+
   const isLoggedIn = useAppSelector(state => !!state.user.user);
   const travelRoute = useAppSelector(
     state => state.travelPlan.scheduleResponse,
@@ -99,8 +99,6 @@ const PlaceList = ({ isReadOnly = false }) => {
       return acc;
     }, {} as Record<string, unknown>);
 
-    console.log('필터 장소: ', filteredSchedule);
-
     const payload: PatchTravelRouteRequest = {
       schedule: {
         breakfast: null,
@@ -115,7 +113,6 @@ const PlaceList = ({ isReadOnly = false }) => {
 
     try {
       const response = await patchTravelRoute(payload).unwrap();
-      console.log('patch 결과: ', response);
       dispatch(setScheduleResponse(response));
       setShowRandomLayerPopup(false);
     } catch (error) {
@@ -137,8 +134,6 @@ const PlaceList = ({ isReadOnly = false }) => {
       schedule: travelRoute.schedule,
       config: travelRoute.config,
     };
-    console.log('임시 경로 저장: ', tempRoute);
-    // 라우터 통해 로그인 페이지 이동
     dispatch(setTempSavedRoute(tempRoute));
     localStorage.setItem('tempSavedRoute', JSON.stringify(tempRoute));
     localStorage.setItem('from_save_route', 'true');
@@ -169,7 +164,7 @@ const PlaceList = ({ isReadOnly = false }) => {
 
   return (
     <div className="flex flex-col justify-between h-full">
-      <div className="flex flex-col gap-12 pb-8 md:flex-grow md:px-8 md:py-4 md:overflow-auto">
+      <div className="flex flex-col gap-12 px-12 pb-8 md:flex-grow md:py-4 md:overflow-auto">
         {travelPlaces.map(travelPlace => (
           <div
             key={travelPlace?.id}
@@ -194,7 +189,7 @@ const PlaceList = ({ isReadOnly = false }) => {
         ))}
       </div>
       {!isReadOnly && (
-        <div className="flex flex-row justify-between w-full pt-2 pb-6 md:gap-10 md:px-8 md:py-8 md:bg-background">
+        <div className="flex flex-row justify-around w-full pt-2 pb-6 md:gap-10 md:px-8 md:py-8 md:bg-background">
           <Button
             size="md"
             color="skyblue"

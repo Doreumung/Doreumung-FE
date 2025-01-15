@@ -17,6 +17,7 @@ import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import { jejuArea } from './region/jejumap';
 import { THEMES } from '@/components/common/toggle/constants';
 import { useSearchParams } from 'next/navigation';
+import RedirectNotice from '@/components/common/redirectNotice/RedirectNotice';
 
 const MultiStepForm = () => {
   const dispatch = useAppDispatch();
@@ -27,6 +28,7 @@ const MultiStepForm = () => {
 
   const [step, setStep] = useState(1);
   const [showLayerPopup, setShowLayerPopup] = useState(false);
+  const [showRedirect, setShowRedirect] = useState(false);
 
   const { showNavigationPopup, handleNavigation, handleNavigationConfirm, handleNavigationCancel } =
     useNavigationPopup();
@@ -40,7 +42,11 @@ const MultiStepForm = () => {
     if (stepParam) {
       const step = parseInt(stepParam);
       if (step >= 1 && step <= 3) {
-        setStep(step);
+        if (step === 3 && !tempSavedRoute && !travelPlanConfig.scheduleResponse) {
+          setShowRedirect(true);
+        } else {
+          setStep(step);
+        }
       }
     }
 
@@ -48,7 +54,7 @@ const MultiStepForm = () => {
       dispatch(setScheduleResponse(tempSavedRoute));
       dispatch(setTempSavedRoute(null));
     }
-  }, [dispatch, stepParam, tempSavedRoute]);
+  }, [dispatch, stepParam, tempSavedRoute, travelPlanConfig.scheduleResponse]);
 
   useEffect(() => {
     return () => {
@@ -93,6 +99,10 @@ const MultiStepForm = () => {
 
   if (isLoading) {
     return <LoadingSpinner />;
+  }
+
+  if (showRedirect) {
+    return <RedirectNotice mode="NOT_FOUND" />;
   }
 
   return (
