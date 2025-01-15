@@ -6,7 +6,7 @@ import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import { toast } from '@/components/common/toast/Toast';
 import Toggle from '@/components/common/toggle/Toggle';
 import { useAppSelector } from '@/store/hooks';
-import { setScheduleResponse } from '@/store/travelPlanSlice';
+import { setScheduleResponse, setTempSavedRoute } from '@/store/travelPlanSlice';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -112,7 +112,7 @@ const PlaceList = ({ isReadOnly = false }) => {
       },
       config: travelRoute.config,
     };
-    console.log('보내는 데이터: ', payload);
+
     try {
       const response = await patchTravelRoute(payload).unwrap();
       console.log('patch 결과: ', response);
@@ -133,7 +133,16 @@ const PlaceList = ({ isReadOnly = false }) => {
 
   const handleRedirectToSignin = () => {
     setShowSigninLayerPopup(false);
+    const tempRoute: TravelRouteResponse = {
+      schedule: travelRoute.schedule,
+      config: travelRoute.config,
+    };
+    console.log('임시 경로 저장: ', tempRoute);
     // 라우터 통해 로그인 페이지 이동
+    dispatch(setTempSavedRoute(tempRoute));
+    localStorage.setItem('tempSavedRoute', JSON.stringify(tempRoute));
+    localStorage.setItem('from_save_route', 'true');
+    router.push('/sign-in');
   };
 
   const handleSaveTravelRoute = async (title: string = '') => {

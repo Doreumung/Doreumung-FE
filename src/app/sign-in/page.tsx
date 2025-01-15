@@ -3,17 +3,20 @@
 import Button from '@/components/common/buttons/Button';
 import SocialLoginButton from '@/components/common/buttons/SocialLoginButton';
 import Input from '@/components/common/inputs/Input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { signInSchema, SignInSchema } from './signInSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useGetUserInfoMutation, useLoginMutation } from '@/api/userApi';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '@/store/userSlice';
 import { setCookieWithExpiry } from './setCookieWithExpiry';
 import clsx from 'clsx';
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
+import { useRouter } from 'next/navigation';
+import { setTempSavedRoute } from '@/store/travelPlanSlice';
+import { RootState } from '@/store/store';
 
 const Page = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false); // 자동 로그인 체크 여부
@@ -21,6 +24,23 @@ const Page = () => {
   const [loginUser, { isLoading }] = useLoginMutation(); // isSuccess, isError
   const [getUserInfo] = useGetUserInfoMutation();
   const dispatch = useDispatch();
+  const router = useRouter();
+
+  const tempSavedRoute = useSelector((state: RootState) => state.travelPlan.tempSavedRoute);
+
+  useEffect(() => {
+    const savedRoute = localStorage.getItem('tempSavedRoute');
+    if (savedRoute) {
+      const parsedRoute = JSON.parse(savedRoute);
+      dispatch(setTempSavedRoute(parsedRoute));
+      localStorage.removeItem('tempSavedRoute');
+      localStorage.setItem('from_save_route', 'true');
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log('로그인화면에서 일정: ', tempSavedRoute);
+  }, [tempSavedRoute]);
 
   const {
     register, // 연결하여 유효성 검사 진행
@@ -60,18 +80,22 @@ const Page = () => {
       // 로컬 스토리지에 자동 로그인 유무, 로그인 만료 토스트 팝업 노출 여부 저장
       localStorage.setItem('auto_signin', JSON.stringify(isChecked));
       localStorage.setItem('toast_shown', 'false');
+      localStorage.setItem('just_logged_in', 'true');
 
       if (!isChecked) {
         const expiryDate = new Date(Date.now() + 24 * 60 * 60 * 1000); // 현재 시간 + 1일
-
         localStorage.setItem('logout_time_expiry', expiryDate.toISOString());
       }
 
       const userData = await getUserInfo({});
       dispatch(setUser({ user: userData.data, loginType: 'email' }));
 
-      // 홈으로 이동 후 새로고침
-      window.location.href = '/';
+      if (tempSavedRoute) {
+        router.push('/travel-plan?step=3');
+      } else {
+        // 홈으로 이동 후 새로고침
+        window.location.href = '/';
+      }
     } catch (err) {
       console.error('로그인 실패:', err);
 
