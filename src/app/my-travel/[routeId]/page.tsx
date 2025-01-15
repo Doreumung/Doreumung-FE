@@ -25,7 +25,7 @@ const Page = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div>
+    <div className="-mt-16 md:-mt-20">
       {error && <ApiErrorMessage />}
       <div>{data && <TravelPlan title={data.title} isReadOnly={true} />}</div>
     </div>
