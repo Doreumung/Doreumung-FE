@@ -8,11 +8,13 @@ import { useDispatch } from 'react-redux';
 import { clearUser } from '@/store/userSlice';
 import { destroyCookie, parseCookies } from 'nookies';
 import { useLogoutMutation } from '@/api/userApi';
+import clsx from 'clsx';
 
 const Dropdown: React.FC<DropdownProps> = ({
   variant,
   setIsOpen,
   travel_route_id,
+  review_id,
   onDeleteConfirm,
 }) => {
   const isMobile = useIsMobile();
@@ -60,6 +62,12 @@ const Dropdown: React.FC<DropdownProps> = ({
         case 'createReview':
           router.push(`${option.path}/${travel_route_id}`);
           break;
+        case 'seeDetails':
+          router.push(`${option.path}/${travel_route_id}`);
+          break;
+        case 'seeMyReview':
+          router.push(`${option.path}/${review_id}`);
+          break;
         default:
           throw new Error(`Unknown action type: ${option.action}`);
       }
@@ -73,7 +81,13 @@ const Dropdown: React.FC<DropdownProps> = ({
   return (
     <div className={dropdownStyles({ variant: isMobile ? 'mobile' : 'default' })}>
       {options.map((option, index) => (
-        <div key={`${index}-${option.label}`}>
+        <div
+          key={`${index}-${option.label}`}
+          className={clsx(
+            !review_id && option.label === '작성한 후기' && 'hidden',
+            review_id && option.label === '후기 작성' && 'hidden',
+          )}
+        >
           <button
             className="w-full h-9 px-4 py-2 text-base text-darkerGray text-start cursor-pointer hover:bg-fadedOrange"
             onClick={() => handleSelect(option)}
