@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/userSlice';
 import { setCookieWithExpiry } from './setCookieWithExpiry';
 import clsx from 'clsx';
+import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 
 const Page = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false); // 자동 로그인 체크 여부
@@ -53,12 +54,18 @@ const Page = () => {
 
       // 액세스 토큰을 쿠키에 저장
       // 쿠키 설정 및 토큰 유효기간 로컬 스토리지에 저장
-      setCookieWithExpiry('access_token', result?.access_token, 24 * 60 * 60);
+      setCookieWithExpiry('access_token', result?.access_token, 60);
       setCookieWithExpiry('refresh_token', result?.refresh_token, 7 * 24 * 60 * 60);
 
-      // 로컬 스토리지에 액세스 토큰, 자동 로그인 유무, 로그인 만료 토스트 팝업 노출 여부 저장
+      // 로컬 스토리지에 자동 로그인 유무, 로그인 만료 토스트 팝업 노출 여부 저장
       localStorage.setItem('auto_signin', JSON.stringify(isChecked));
       localStorage.setItem('toast_shown', 'false');
+
+      if (!isChecked) {
+        const expiryDate = new Date(Date.now() + 2 * 60 * 1000); // 현재 시간 + 1일
+
+        localStorage.setItem('logout_time_expiry', expiryDate.toISOString());
+      }
 
       const userData = await getUserInfo({});
       dispatch(setUser({ user: userData.data, loginType: 'email' }));
@@ -94,6 +101,7 @@ const Page = () => {
         'flex flex-col justify-center items-center min-h-[calc(100vh-80px)] py-5 scale-90 md:scale-100',
       )}
     >
+      <div className="absolute top-1">{isLoading && <LoadingSpinner />}</div>
       <div>
         <form
           onSubmit={handleSubmit(onSubmit)}

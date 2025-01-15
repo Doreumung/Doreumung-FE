@@ -5,7 +5,6 @@ import { setCookieWithExpiry } from '@/app/sign-in/setCookieWithExpiry';
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import { setUser } from '@/store/userSlice';
 import { useRouter } from 'next/navigation';
-// import { parseCookies } from 'nookies';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -55,7 +54,7 @@ const KakaoCallback = () => {
     }
   }, [data, error, router, code, dispatch, getUserInfo]);
 
-  if (isLoading) return <LoadingSpinner className="hi" />;
+  if (isLoading) return <LoadingSpinner />;
 
   return <></>;
 };

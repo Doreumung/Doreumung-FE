@@ -11,6 +11,7 @@ import { useSignUpMutation } from '@/api/userApi';
 import { omit } from 'lodash';
 import { toast } from '@/components/common/toast/Toast';
 import { useRouter } from 'next/navigation';
+import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 
 const Page = () => {
   const genderOptions: string[] = ['여성', '남성', '선택안함'];
@@ -67,6 +68,7 @@ const Page = () => {
 
   return (
     <div>
+      {isLoading && <LoadingSpinner />}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col justify-center items-center min-h-[calc(100vh-80px)] max-[375px]:h-[100%] py-5 scale-90 md:scale-100 overflow-y-visible"
