@@ -6,6 +6,7 @@ import Providers from '@/components/providers/Providers';
 import { CheckLoginStatus } from './CheckLoginStatus';
 import Toast from '@/components/common/toast/Toast';
 import Footer from '@/components/landingPage/footer/Footer';
+import ResetSortAndPage from './ResetSortAndPage';
 
 export const metadata: Metadata = {
   title: '도르멍',
@@ -25,6 +26,7 @@ const RootLayout = ({
           <main className="flex justify-center w-full px-4 mt-16 md:px-6 md:mt-20">{children}</main>
           <Footer />
           <CheckLoginStatus />
+          <ResetSortAndPage />
           <Toast />
         </Providers>
       </body>
