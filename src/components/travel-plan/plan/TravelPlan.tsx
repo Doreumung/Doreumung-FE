@@ -6,6 +6,7 @@ import ResizeablePanel from './ResizeablePanel';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
+import clsx from 'clsx';
 
 const TravelPlan = ({ isReadOnly = false, title = '' }) => {
   const router = useRouter();
@@ -32,7 +33,12 @@ const TravelPlan = ({ isReadOnly = false, title = '' }) => {
   }, []);
 
   return (
-    <div className="w-screen h-screen flex flex-col md:flex-row">
+    <div
+      className={clsx(
+        'w-screen flex flex-col md:flex-row',
+        isReadOnly ? 'h-[calc(100vh-80px)]' : 'h-screen',
+      )}
+    >
       <div className="px-4 flex-shrink-0 md:flex md:flex-col md:w-[440px] md:px-0">
         <div className="pb-4 md:px-8">
           <header className="pt-8 text-base md:pt-6">

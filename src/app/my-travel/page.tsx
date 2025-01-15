@@ -39,7 +39,7 @@ const Page = () => {
   return (
     <div className="flex flex-col items-center pt-4 overflow-x-hidden pb-10">
       <p className="py-16 text-3xl">{userData?.nickname}님의 저장 경로</p>{' '}
-      <div className="flex flex-col w-full max-w-[768px] mx-auto gap-8 md:pb-10">
+      <div className="flex flex-col gap-8 w-full max-w-[768px] mx-auto pb-10">
         {travelRoute.travel_list.map(route => (
           <div key={route.travel_route_id} className="flex-shrink-0">
             <TravelCard
