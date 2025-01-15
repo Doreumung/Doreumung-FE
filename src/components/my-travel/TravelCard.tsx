@@ -61,27 +61,16 @@ const TravelCard = ({
   return (
     <>
       <div className="flex flex-col md:flex-row items-center px-4 text-foreground">
-        {/* 이미지 영역 */}
         <div
           className={clsx(
-            'flex border border-darkerGray bg-fadedSkyblue p-3 rounded-t-2xl md:rounded-none md:rounded-l-2xl',
-            'w-80 h-56 md:w-96 md:h-80',
+            'flex flex-col justify-between border border-darkerGray bg-white',
+            'p-4 md:p-5 rounded-2xl md:rounded-2xl',
+            'w-80 h-96 md:w-[768px] md:h-80',
           )}
         >
-          {/* 이미지 */}
-        </div>
-
-        {/* 텍스트 영역 */}
-        <div
-          className={clsx(
-            'flex flex-col justify-between border border-t-0 md:border-t md:border-l-0 border-darkerGray bg-white',
-            'pl-4 py-3 md:p-5 rounded-b-2xl md:rounded-none md:rounded-r-2xl',
-            'w-80 h-80 md:w-96',
-          )}
-        >
-          <div className="flex gap-3 md:gap-6">
+          <div className="flex justify-between gap-3 md:gap-6">
             <p className={clsx('w-64 md:w-80', 'text-xl', 'line-clamp-2')}>{title}</p>
-            <div ref={ref} className="relative pt-1">
+            <div ref={ref}>
               <Image
                 src="/images/myTravelMenu.svg"
                 alt="menu image"
@@ -104,7 +93,7 @@ const TravelCard = ({
             </div>
           </div>
 
-          <div className="flex flex-col justify-end gap-3 pr-4">
+          <div className="flex flex-col justify-end gap-5 pr-4">
             {/* 여행 테마 */}
             <div className="flex flex-col gap-2">
               <p className="text-base">여행 테마</p>
