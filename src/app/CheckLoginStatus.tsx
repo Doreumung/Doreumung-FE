@@ -17,10 +17,12 @@ export const CheckLoginStatus = () => {
 
   const accessTokenExpireTime = localStorage.getItem('access_token_expiry');
   const refreshTokenExpireTime = localStorage.getItem('refresh_token_expiry');
+  const logoutExpireTime = localStorage.getItem('logout_time_expiry');
 
   const now = new Date().getTime();
   const accessTokenExpireDate = new Date(accessTokenExpireTime as string).getTime();
   const refreshTokenExpireDate = new Date(refreshTokenExpireTime as string).getTime();
+  const logoutExpireDate = new Date(logoutExpireTime as string).getTime();
 
   useEffect(() => {
     if (!accessTokenExpireDate || !refreshTokenExpireDate) {
@@ -31,6 +33,7 @@ export const CheckLoginStatus = () => {
       localStorage.removeItem('auto_signin');
       localStorage.removeItem('access_token_expiry');
       localStorage.removeItem('refresh_token_expiry');
+      localStorage.removeItem('logout_time_expiry');
 
       dispatch(clearUser());
 
@@ -44,22 +47,18 @@ export const CheckLoginStatus = () => {
 
     let accessTimeout: NodeJS.Timeout | undefined;
     let refreshTimeout: NodeJS.Timeout | undefined;
+    let logoutTimeout: NodeJS.Timeout | undefined;
 
     // 액세스 토큰 만료 타이머
     if (accessTokenExpireDate > now) {
       accessTimeout = setTimeout(() => {
-        console.log('액세스 토큰 만료');
-        if (autoSignin === 'true') {
-          console.log('액세스 토큰 재발급');
+        console.log('액세스 토큰 재발급');
 
-          // 액세스 토큰 없는 경우 재발급, 실패할 경우 로그아웃 처리
-          if (refreshToken) {
-            refreshAccessToken(refreshToken); // 액세스 토큰 재발급
-          } else {
-            handleLogout('리프레시 토큰 만료로 인한 로그아웃');
-          }
+        if (refreshToken) {
+          refreshAccessToken(refreshToken); // 액세스 토큰 재발급
+          console.log('재발급 완료');
         } else {
-          handleLogout('액세스 토큰 만료로 인한 로그아웃');
+          handleLogout('리프레시 토큰 만료로 인한 로그아웃');
         }
       }, accessTokenExpireDate - now);
     }
@@ -72,9 +71,17 @@ export const CheckLoginStatus = () => {
       }, refreshTokenExpireDate - now);
     }
 
+    // 자동 로그인 X, 로그인 만료 타이머
+    if (autoSignin == 'false' && logoutExpireDate > now) {
+      logoutTimeout = setTimeout(() => {
+        handleLogout('자동 로그인 X, 로그인 만료');
+      }, logoutExpireDate - now);
+    }
+
     return () => {
       if (accessTimeout) clearTimeout(accessTimeout);
       if (refreshTimeout) clearTimeout(refreshTimeout);
+      if (logoutTimeout) clearTimeout(logoutTimeout);
     };
   }, [
     accessTokenExpireDate,
@@ -86,6 +93,7 @@ export const CheckLoginStatus = () => {
     refreshToken,
     dispatch,
     setIsLoggedIn,
+    logoutExpireDate,
   ]);
 
   const toastShown = localStorage.getItem('toast_shown');

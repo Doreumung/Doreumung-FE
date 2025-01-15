@@ -19,7 +19,7 @@ export const useCheckLoginStatus = () => {
         JSON.stringify({ refresh_token: refreshToken }),
       ).unwrap();
 
-      setCookieWithExpiry('access_token', result?.access_token, 24 * 60 * 60);
+      setCookieWithExpiry('access_token', result?.access_token, 30 * 60);
 
       setIsLoggedIn(true); // 로그인 상태로 변경
     } catch (err) {
