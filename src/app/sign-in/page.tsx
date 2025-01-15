@@ -21,7 +21,7 @@ import { RootState } from '@/store/store';
 const Page = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false); // 자동 로그인 체크 여부
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [loginUser, { isLoading }] = useLoginMutation(); // isSuccess, isError
+  const [loginUser, { isLoading, isSuccess }] = useLoginMutation(); // isSuccess, isError
   const [getUserInfo] = useGetUserInfoMutation();
   const dispatch = useDispatch();
   const router = useRouter();
@@ -119,13 +119,14 @@ const Page = () => {
   // 공통 tailwind
   const errorMessageStyle = 'px-3 pb-4 text-xs text-red';
 
+  if (isLoading || isSuccess) return <LoadingSpinner />;
+
   return (
     <div
       className={clsx(
         'flex flex-col justify-center items-center min-h-[calc(100vh-80px)] py-5 scale-90 md:scale-100',
       )}
     >
-      <div className="absolute top-1">{isLoading && <LoadingSpinner />}</div>
       <div>
         <form
           onSubmit={handleSubmit(onSubmit)}
