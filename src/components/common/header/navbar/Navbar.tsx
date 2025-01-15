@@ -9,8 +9,10 @@ import Dropdown from '@/components/common/dropdown/Dropdown';
 import useOutsideClick from '@/hooks/useOutsideClick';
 import useIsMobile from '@/hooks/useIsMobile';
 import { MenuIcon } from 'lucide-react';
-import { useSelector } from 'react-redux';
+
 import { RootState } from '@/store/store';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setNavigationPath, showPopup } from '@/store/navigationSlice';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -19,7 +21,11 @@ const Navbar = () => {
   const path = usePathname();
   const isMobile = useIsMobile();
   const variant = path.includes('/sign-') ? 'hidden' : 'default';
-  const user = useSelector((state: RootState) => state.user.user);
+  const user = useAppSelector((state: RootState) => state.user.user);
+  const { isNavigationConfirmationRequired } = useAppSelector(
+    (state: RootState) => state.navigation,
+  );
+  const dispatch = useAppDispatch();
 
   useOutsideClick({ ref: ref, callback: () => setIsOpen(false) });
 
@@ -27,8 +33,12 @@ const Navbar = () => {
   const mobileDropdownVariant = user ? 'mobileUserMenu' : 'mobileMenu';
 
   const handleMenuClick = (menu: DropdownOption) => {
-    if (menu.path) router.push(menu.path);
-    else if (menu.action === 'toggleDropdown') setIsOpen(prev => !prev);
+    if (menu.path) {
+      if (isNavigationConfirmationRequired) {
+        dispatch(setNavigationPath(menu.path));
+        dispatch(showPopup());
+      } else router.push(menu.path);
+    } else if (menu.action === 'toggleDropdown') setIsOpen(prev => !prev);
   };
 
   return (
