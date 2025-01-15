@@ -31,6 +31,7 @@ import { useAppSelector } from '@/store/hooks';
 import { RootState } from '@/store/store';
 import { useEditReviewMutation, usePostReviewMutation } from '@/api/reviewApi';
 import { toast } from '@/components/common/toast/Toast';
+import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 
 const ReviewForm = ({
   mode = 'create',
@@ -39,11 +40,14 @@ const ReviewForm = ({
 }: ReviewFormProps) => {
   const router = useRouter();
   const { routeId, reviewId } = useParams();
+
   const user = useAppSelector((state: RootState) => state.user.user);
   const uploaded_urls = useAppSelector((state: RootState) => state.reviewImages.currentImages);
   const deleted_urls = useAppSelector((state: RootState) => state.reviewImages.deletedImages);
-  const [postReview] = usePostReviewMutation();
-  const [editReview] = useEditReviewMutation();
+
+  const [postReview, { isSuccess: postSuccess }] = usePostReviewMutation();
+  const [editReview, { isSuccess: editSuccess }] = useEditReviewMutation();
+
   const [title, setTitle] = useState<string>(defaultValues.title);
   const [rating, setRating] = useState<number>(defaultValues.rating);
   const [content, setContent] = useState<string>(defaultValues.content);
@@ -116,6 +120,8 @@ const ReviewForm = ({
       }
     }
   };
+
+  if (postSuccess || editSuccess) return <LoadingSpinner />;
 
   return (
     <>
