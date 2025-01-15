@@ -19,8 +19,8 @@ const PlaceList = ({ isReadOnly = false }) => {
   const [toggledStates, setToggledState] = useState<Record<number, boolean>>({});
 
   const router = useRouter();
-
   const dispatch = useDispatch();
+
   const isLoggedIn = useAppSelector(state => !!state.user.user);
   const travelRoute = useAppSelector(
     state => state.travelPlan.scheduleResponse,
@@ -137,8 +137,6 @@ const PlaceList = ({ isReadOnly = false }) => {
       schedule: travelRoute.schedule,
       config: travelRoute.config,
     };
-    console.log('임시 경로 저장: ', tempRoute);
-    // 라우터 통해 로그인 페이지 이동
     dispatch(setTempSavedRoute(tempRoute));
     localStorage.setItem('tempSavedRoute', JSON.stringify(tempRoute));
     localStorage.setItem('from_save_route', 'true');
