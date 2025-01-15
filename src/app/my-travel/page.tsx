@@ -22,12 +22,7 @@ const Page = () => {
   });
   const userData = useSelector((state: RootState) => state.user.user);
 
-  if (isLoading)
-    return (
-      <div>
-        <LoadingSpinner />;
-      </div>
-    );
+  if (isLoading) return <LoadingSpinner />;
 
   if (error || !travelRoute)
     return (
