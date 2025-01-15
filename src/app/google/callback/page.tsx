@@ -1,6 +1,7 @@
 'use client';
 
 import { useGetUserInfoMutation, useSendGoogleCodeQuery } from '@/api/userApi';
+import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import { setUser } from '@/store/userSlice';
 import { useRouter } from 'next/navigation';
 import { setCookie } from 'nookies';
@@ -47,7 +48,7 @@ const GoogleCallback = () => {
     }
   }, [data, error, router, code, dispatch, getUserInfo]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingSpinner />;
 
   return <></>;
 };
