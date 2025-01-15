@@ -26,7 +26,9 @@ const Header = () => {
     (state: RootState) => state.navigation,
   );
 
-  dispatch(checkPath(pathname));
+  useEffect(() => {
+    dispatch(checkPath(pathname));
+  }, [dispatch, pathname]);
 
   const variant: 'home' | 'common' | 'travelPlan' =
     pathname === '/' ? 'home' : !pathname.includes('/travel-plan') ? 'common' : 'travelPlan';
