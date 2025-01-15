@@ -70,7 +70,7 @@ const TravelCard = ({
         >
           <div className="flex justify-between gap-3 md:gap-6">
             <p className={clsx('w-64 md:w-80', 'text-xl', 'line-clamp-2')}>{title}</p>
-            <div ref={ref}>
+            <div ref={ref} className="relative top-1">
               <Image
                 src="/images/myTravelMenu.svg"
                 alt="menu image"
