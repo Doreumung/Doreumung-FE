@@ -42,8 +42,10 @@ const Page = () => {
 
   const user = useAppSelector((state: RootState) => state.user.user);
 
-  const { data, isLoading, error } = useGetReviewDetailQuery(Number(review_id));
-  const [deleteReview] = useDeleteReviewMutation();
+  const [deleteReview, { isLoading: deleteLoading, isSuccess }] = useDeleteReviewMutation();
+  const { data, isLoading, error } = useGetReviewDetailQuery(Number(review_id), {
+    skip: deleteLoading,
+  });
   const {
     data: commentData,
     isLoading: commentsLoading,
@@ -140,15 +142,15 @@ const Page = () => {
     deleteReview({ review_id: Number(review_id) })
       .unwrap()
       .then(() => {
-        toast(DELETE_REVIEW_SUCCESS_MESSAGE);
         router.push('/travel-reviews');
+        toast(DELETE_REVIEW_SUCCESS_MESSAGE);
       })
       .catch(() => {
         toast(DELETE_REVIEW_ERROR_MESSAGE);
       });
   };
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading || deleteLoading || isSuccess) return <LoadingSpinner />;
 
   return (
     <div className="flex flex-col items-center w-full">
