@@ -13,7 +13,7 @@ export const REDIRECT_MESSAGE = {
 } as const;
 
 export const REDIRECT_TO = {
-  SIGNED_IN: '이전',
+  SIGNED_IN: '홈',
   NOT_SIGNED_IN: '로그인',
   UNAUTHORIZED: '후기 목록',
   NOT_FOUND: '홈',
