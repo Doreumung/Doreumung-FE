@@ -2,16 +2,27 @@
 
 import DoreumungLogo from '@public/images/logo.svg';
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion, MotionValue, useMotionValue, useScroll, useTransform } from 'motion/react';
-import { LogoTextAndImageProps } from './types';
+import { LogoTextAndImageProps } from '../types';
 import { INPUT_RANGE, LOGO_STYLES } from '../constants';
 import useIsMobile from '@/hooks/useIsMobile';
 import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { RootState } from '@/store/store';
+import { setNavigationPath, showPopup } from '@/store/navigationSlice';
+import { useRouter } from 'next/navigation';
 
 const LogoText: React.FC<LogoTextAndImageProps> = ({ variant }) => {
-  const isMobile = useIsMobile();
+  const dispatch = useAppDispatch();
+  const { isNavigationConfirmationRequired } = useAppSelector(
+    (state: RootState) => state.navigation,
+  );
+
+  const router = useRouter();
+
   const { scrollYProgress } = useScroll();
+
+  const isMobile = useIsMobile();
   const deviceType = isMobile ? 'mobile' : 'web';
 
   const motionStyles = LOGO_STYLES.text.motion[deviceType];
@@ -45,12 +56,19 @@ const LogoText: React.FC<LogoTextAndImageProps> = ({ variant }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deviceType]);
 
+  const handleLogoClick = () => {
+    if (isNavigationConfirmationRequired) {
+      dispatch(setNavigationPath('/'));
+      dispatch(showPopup());
+    } else router.push('/');
+  };
+
   return (
     <>
       <motion.div style={motionStyle}>
-        <Link href="/">
+        <button onClick={handleLogoClick} className="flex justify-center items-center">
           <Image src={DoreumungLogo} alt="logo" priority />
-        </Link>
+        </button>
       </motion.div>
     </>
   );

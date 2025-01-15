@@ -4,11 +4,13 @@ import { DROPDOWN_MENU } from './constants';
 import { useRouter } from 'next/navigation';
 import { dropdownStyles } from './dropdownStyles';
 import useIsMobile from '@/hooks/useIsMobile';
-import { useDispatch } from 'react-redux';
 import { clearUser } from '@/store/userSlice';
 import { destroyCookie, parseCookies } from 'nookies';
 import { useLogoutMutation } from '@/api/userApi';
 import clsx from 'clsx';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setNavigationPath, showPopup } from '@/store/navigationSlice';
+import { RootState } from '@/store/store';
 
 const Dropdown: React.FC<DropdownProps> = ({
   variant,
@@ -20,7 +22,10 @@ const Dropdown: React.FC<DropdownProps> = ({
   const isMobile = useIsMobile();
   const router = useRouter();
   const options: DropdownOption[] = DROPDOWN_MENU[variant];
-  const dispatch = useDispatch();
+  const { isNavigationConfirmationRequired } = useAppSelector(
+    (state: RootState) => state.navigation,
+  );
+  const dispatch = useAppDispatch();
   const [logoutUser] = useLogoutMutation();
 
   const handleSelect = (option: DropdownOption) => {
@@ -72,7 +77,12 @@ const Dropdown: React.FC<DropdownProps> = ({
           throw new Error(`Unknown action type: ${option.action}`);
       }
     } else if (option.path) {
-      router.push(option.path);
+      if (isNavigationConfirmationRequired) {
+        dispatch(setNavigationPath(option.path));
+        dispatch(showPopup());
+      } else {
+        router.push(option.path);
+      }
     }
 
     setIsOpen(false);
