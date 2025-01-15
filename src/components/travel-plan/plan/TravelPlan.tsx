@@ -43,7 +43,10 @@ const TravelPlan = ({ isReadOnly = false, title = '' }) => {
             )}
           </header>
           {isReadOnly ? (
-            <TravelHeader step="내가 만든 일정~" stepName={title} />
+            <TravelHeader
+              step="장소 간 직선을 클릭하면 이동 경로를 알 수 있어요!"
+              stepName={title}
+            />
           ) : (
             <TravelHeader
               step="마음에 드는 장소는 고정하고 다시 뽑을 수 있어요!"
@@ -68,7 +71,13 @@ const TravelPlan = ({ isReadOnly = false, title = '' }) => {
       {showNavigationPopup && (
         <LayerPopup
           type="confirm"
-          label={<>작성 중인 내용이 저장되지 않습니다. 정말 나가시겠습니까?</>}
+          label={
+            <>
+              작성 중인 내용이 저장되지 않습니다.
+              <br />
+              정말 나가시겠습니까?
+            </>
+          }
           onConfirm={handleNavigationConfirm}
           setShowLayerPopup={setShowNavigationPopup}
         />
