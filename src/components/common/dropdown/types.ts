@@ -11,5 +11,6 @@ export type DropdownProps = {
   variant: 'userMenu' | 'travelMenu' | 'mobileMenu' | 'mobileUserMenu';
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   travel_route_id?: number;
+  review_id?: number;
   onDeleteConfirm?: () => void;
 };
