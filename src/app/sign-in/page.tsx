@@ -54,7 +54,7 @@ const Page = () => {
 
       // 액세스 토큰을 쿠키에 저장
       // 쿠키 설정 및 토큰 유효기간 로컬 스토리지에 저장
-      setCookieWithExpiry('access_token', result?.access_token, 60);
+      setCookieWithExpiry('access_token', result?.access_token, 30 * 60);
       setCookieWithExpiry('refresh_token', result?.refresh_token, 7 * 24 * 60 * 60);
 
       // 로컬 스토리지에 자동 로그인 유무, 로그인 만료 토스트 팝업 노출 여부 저장
@@ -62,7 +62,7 @@ const Page = () => {
       localStorage.setItem('toast_shown', 'false');
 
       if (!isChecked) {
-        const expiryDate = new Date(Date.now() + 2 * 60 * 1000); // 현재 시간 + 1일
+        const expiryDate = new Date(Date.now() + 24 * 60 * 60 * 1000); // 현재 시간 + 1일
 
         localStorage.setItem('logout_time_expiry', expiryDate.toISOString());
       }
@@ -171,7 +171,6 @@ const Page = () => {
               handleLogin('kakao');
             }}
           />
-          <SocialLoginButton provider="naver" onClick={() => {}} />
           <SocialLoginButton
             provider="google"
             onClick={() => {

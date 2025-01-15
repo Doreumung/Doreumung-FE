@@ -13,5 +13,5 @@ export type SocialLoginButtonProps = Omit<
   ButtonProps,
   'label' | 'size' | 'color' | 'shadow' | 'disabled'
 > & {
-  provider: 'kakao' | 'naver' | 'google';
+  provider: 'kakao' | 'google';
 };
