@@ -7,7 +7,14 @@ import FollowUs from './FollowUs';
 import { motion } from 'motion/react';
 import useIsMobile from '@/hooks/useIsMobile';
 
-const FOOTER_HIDDEN_PATHS = ['/sign', '/travel-plan', '/not-found', '/redirect'];
+const FOOTER_HIDDEN_PATHS = [
+  '/sign',
+  '/travel-plan',
+  '/not-found',
+  '/redirect',
+  '/confirm-password',
+  '/edit-profile',
+];
 
 const Footer = () => {
   const isMobile = useIsMobile();
