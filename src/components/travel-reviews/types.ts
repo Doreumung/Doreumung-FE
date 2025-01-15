@@ -77,7 +77,7 @@ export type ProtectedRouteProps = {
   ) => React.ReactNode;
 };
 
-type SortOrder = 'asc' | 'desc';
+export type SortOrder = 'asc' | 'desc';
 
 export type SortState = {
   created_at: SortOrder;
