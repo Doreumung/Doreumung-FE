@@ -14,6 +14,7 @@ const FOOTER_HIDDEN_PATHS = [
   '/redirect',
   '/confirm-password',
   '/edit-profile',
+  '/my-travel/',
 ];
 
 const Footer = () => {
