@@ -218,7 +218,7 @@ const PlaceList = ({ isReadOnly = false }) => {
         ))}
       </div>
       {!isReadOnly && (
-        <div className="flex flex-row justify-around w-full pt-2 pb-6 md:gap-10 md:px-8 md:py-8 md:bg-background">
+        <div className="flex flex-row justify-evenly w-full pt-2 pb-6 md:gap-10 md:px-10 md:py-8 md:bg-background">
           <Button
             size="md"
             color="skyblue"
