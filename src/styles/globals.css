@@ -44,7 +44,7 @@
 }
 
 body {
-  @apply w-screen;
+  @apply flex flex-col w-screen min-h-screen;
   @apply font-default text-foreground bg-background;
   @apply select-none;
 }
