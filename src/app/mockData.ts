@@ -2,7 +2,7 @@ import { GetReviewDetailResponseType } from './travel-reviews/types';
 
 export const BEST_REVIEWS: GetReviewDetailResponseType[] = [
   {
-    review_id: 85,
+    review_id: 94,
     user_id: '6a412af8-7fe2-49f1-a24d-7991b36fe66a',
     nickname: '정센',
     travel_route_id: 47,
