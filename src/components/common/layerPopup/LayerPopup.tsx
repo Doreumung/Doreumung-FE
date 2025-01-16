@@ -16,6 +16,7 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
   const isConfirmPopup = type === 'confirm'; // 입력창 없는 팝업
   const isConfirmOnlyPopup = type === 'confirm-only'; // 확인 버튼만 있는 팝업
   const [titleData, setTitleData] = useState<string>(''); // 제목 지정
+  const [error, setError] = useState<string>(''); // 유효성 검사 에러 상태
 
   // 오늘 날짜
   const getToday = () => {
@@ -27,10 +28,21 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
     return `${year}.${month}.${day}`;
   };
 
+  // 제목 유효성 검사
+  const validateTitle = (title: string) => {
+    if (title.length > 50) {
+      return '제목은 50자 이하로 입력해 주세요.';
+    }
+    return '';
+  };
+
   const handleConfirm = () => {
-    if (isConfirmPopup) {
-      onConfirm();
-    } else if (!isConfirmOnlyPopup) {
+    if (!isConfirmOnlyPopup && !isConfirmPopup) {
+      const validationError = validateTitle(titleData);
+      if (validationError) {
+        setError(validationError);
+        return;
+      }
       const titleToSave = titleData || getToday();
       onConfirm(titleToSave); // 부모 컴포넌트에 데이터 전달
     } else {
@@ -41,6 +53,15 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
 
   const handleCancel = () => {
     setShowLayerPopup(false);
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setTitleData(value);
+
+    // 유효성 검사 수행
+    const validationError = validateTitle(value);
+    setError(validationError);
   };
 
   useEffect(() => {
@@ -101,12 +122,18 @@ const LayerPopup: React.FC<LayerPopupProps> = ({
                   variant="title"
                   placeholder={getToday()}
                   value={titleData}
-                  onChange={event => setTitleData(event.target.value)}
+                  onChange={handleInputChange}
                 />
+                {error && <p className="text-xs">{error}</p>}
               </div>
               <div className={buttonContainerStyles}>
                 <Button label="취소" size="xs" color="lighterGray" onClick={handleCancel} />
-                <Button label="확인" size="xs" onClick={handleConfirm} />
+                <Button
+                  label="확인"
+                  size="xs"
+                  onClick={handleConfirm}
+                  disabled={!!error} // 유효성 검사 실패 시 비활성화
+                />
               </div>
             </div>
           )}
