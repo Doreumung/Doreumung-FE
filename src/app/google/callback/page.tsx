@@ -1,14 +1,14 @@
 'use client';
 
 import { useGetUserInfoMutation, useSendGoogleCodeQuery } from '@/api/userApi';
+import { setCookieWithExpiry } from '@/app/sign-in/setCookieWithExpiry';
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import { setUser } from '@/store/userSlice';
 import { useRouter } from 'next/navigation';
-import { setCookie } from 'nookies';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-const GoogleCallback = () => {
+const KakaoCallback = () => {
   const router = useRouter();
   const params = new URLSearchParams(window.location.search);
   const code = params.get('code'); // 인증 코드 추출
@@ -26,7 +26,9 @@ const GoogleCallback = () => {
   useEffect(() => {
     if (data) {
       console.log('토큰 정보:', data);
-      setCookie(null, 'access_token', data.access_token);
+
+      setCookieWithExpiry('access_token', data?.access_token, 24 * 60 * 60);
+      setCookieWithExpiry('refresh_token', data?.refresh_token, 7 * 24 * 60 * 60);
 
       // 로그인 성공 후 유저 데이터 받아오기
       getUserInfo({})
@@ -34,7 +36,11 @@ const GoogleCallback = () => {
         .then(userData => {
           console.log('유저 정보:', userData);
           dispatch(setUser({ user: userData, loginType: 'google' })); // Redux에 유저 정보 저장
-          router.push('/'); // 홈으로 이동
+
+          localStorage.setItem('toast_shown', 'false');
+
+          // 홈으로 이동 후 새로고침
+          window.location.href = '/'; // 새로고침
         })
         .catch(error => {
           console.error('유저 정보 요청 실패:', error);
@@ -53,4 +59,4 @@ const GoogleCallback = () => {
   return <></>;
 };
 
-export default GoogleCallback;
+export default KakaoCallback;
