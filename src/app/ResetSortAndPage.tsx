@@ -22,7 +22,7 @@ const ResetSortAndPage = () => {
       dispatch(resetSortState());
       dispatch(resetReviewPage());
     }
-    if (!isReviewDetailPage && !isMyTravelDetailPage && !isReviewCreatePage && isMyTravelPage) {
+    if (!isReviewDetailPage && !isMyTravelDetailPage && !isReviewCreatePage && !isMyTravelPage) {
       dispatch(resetMyTravelPage());
     }
   }, [pathname, dispatch]);
