@@ -18,3 +18,9 @@ export type ResizeablePanelProps = {
   minHeight: number;
   maxHeight: number;
 };
+
+export type TravelPlanProps = {
+  isReadOnly: boolean;
+  title: string;
+  reviewId?: number;
+};

@@ -6,8 +6,9 @@ import ResizeablePanel from './ResizeablePanel';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
+import { TravelPlanProps } from '../types';
 
-const TravelPlan = ({ isReadOnly = false, title = '' }) => {
+const TravelPlan = ({ isReadOnly = false, title = '', reviewId }: TravelPlanProps) => {
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
   const [showNavigationPopup, setShowNavigationPopup] = useState(false);
@@ -35,9 +36,13 @@ const TravelPlan = ({ isReadOnly = false, title = '' }) => {
     <div className="w-screen h-screen flex flex-col md:flex-row">
       <div className="px-4 flex-shrink-0 md:flex md:flex-col md:w-[440px] md:px-0">
         <div className="pb-4 md:px-8">
-          <header className="pt-8 text-base md:pt-6">
+          <header className="pt-8 pb-4 text-base md:pt-6">
             {isReadOnly ? (
-              <BackNavigation to="mytravelList" />
+              reviewId ? (
+                <BackNavigation to="review" reviewId={reviewId} />
+              ) : (
+                <BackNavigation to="mytravelList" />
+              )
             ) : (
               <BackNavigation to="home" onNavigate={handleNavigation} />
             )}

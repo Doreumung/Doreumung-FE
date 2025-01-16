@@ -65,7 +65,7 @@ const TravelCard = ({
           className={clsx(
             'flex flex-col justify-between border border-darkerGray bg-white',
             'p-4 md:p-5 rounded-2xl md:rounded-2xl',
-            'w-80 h-96 md:w-[768px] md:h-80',
+            'w-full h-96 max-w-3xl md:h-80',
           )}
         >
           <div className="flex justify-between gap-3 md:gap-6">
