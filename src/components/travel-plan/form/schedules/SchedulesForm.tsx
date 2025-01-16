@@ -77,7 +77,7 @@ const SchedulesForm = () => {
       return (
         <div
           key={index}
-          className={`flex justify-center items-center h-8 px-3 border border-darkerGray rounded-2xl text-base md:min-w-24 md:h-10 md:text-xl ${bgColor}`}
+          className={`flex justify-center items-center min-w-20 h-10 px-3 border border-darkerGray rounded-2xl text-lg md:min-w-24 md:text-xl ${bgColor}`}
         >
           {item}
         </div>
@@ -88,7 +88,7 @@ const SchedulesForm = () => {
   return (
     <>
       <section className="sticky z-20 top-0 w-full bg-background">
-        <article className="flex flex-col items-center border-b border-b-lighterGray text-darkerGray md:border-none">
+        <article className="flex flex-col items-center pb-4 border-b border-b-lighterGray text-darkerGray md:pb-10 md:border-none">
           <label className="pb-4 text-xl md:text-2xl">최종 일정</label>
           <div className="flex flex-wrap justify-center gap-2 min-h-12">{renderSchedule()}</div>
         </article>
@@ -116,6 +116,7 @@ const SchedulesForm = () => {
               color="fadedGreen"
               label="추가"
               onClick={() => addSchedule('morning')}
+              className="text-base md:text-lg"
               disabled={schedule.morning >= 3}
             />
             <Button
