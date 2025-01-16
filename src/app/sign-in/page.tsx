@@ -21,8 +21,9 @@ import { RootState } from '@/store/store';
 const Page = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false); // 자동 로그인 체크 여부
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [loginUser, { isLoading, isSuccess }] = useLoginMutation(); // isSuccess, isError
-  const [getUserInfo] = useGetUserInfoMutation();
+  const [loginUser, { isLoading: loginLoading, isSuccess: loginSuccess }] = useLoginMutation(); // isSuccess, isError
+  const [getUserInfo, { isLoading: getUserInfoLoading, isSuccess: getUserInfoSuccess }] =
+    useGetUserInfoMutation();
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -119,7 +120,8 @@ const Page = () => {
   // 공통 tailwind
   const errorMessageStyle = 'px-3 pb-4 text-xs text-red';
 
-  if (isLoading || isSuccess) return <LoadingSpinner />;
+  if (loginLoading || loginSuccess || getUserInfoLoading || getUserInfoSuccess)
+    return <LoadingSpinner />;
 
   return (
     <div
@@ -180,7 +182,7 @@ const Page = () => {
             <p className={errorMessageStyle}>{errorMessage}</p>
           ) : null}
           <div className="flex flex-col items-center gap-10">
-            <Button label="로그인" className="w-96" type="submit" disabled={isLoading} />
+            <Button label="로그인" className="w-96" type="submit" disabled={loginLoading} />
             <div className="flex justify-center gap-2 pb-10 text-lightGray">
               <p>아직 회원이 아니신가요?</p>
               <Link href="/sign-up">

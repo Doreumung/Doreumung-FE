@@ -23,7 +23,9 @@ const RootLayout = ({
       <body>
         <Providers>
           <Header />
-          <main className="flex justify-center w-full px-4 mt-16 md:px-6 md:mt-20">{children}</main>
+          <main className="flex justify-center w-full min-h-[cal(100% - 64px )] px-4 mt-16 md:px-6 md:mt-20">
+            {children}
+          </main>
           <Footer />
           <CheckLoginStatus />
           <ResetSortAndPage />
