@@ -10,6 +10,9 @@ import { setScheduleResponse, setTempSavedRoute } from '@/store/travelPlanSlice'
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import RestaurantRoundedIcon from '@mui/icons-material/RestaurantRounded';
+import WbSunnyRoundedIcon from '@mui/icons-material/WbSunnyRounded';
+import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 
 const PlaceList = ({ isReadOnly = false }) => {
   const [showRandomLayerPopup, setShowRandomLayerPopup] = useState<boolean>(false);
@@ -34,35 +37,58 @@ const PlaceList = ({ isReadOnly = false }) => {
         travelRoute.schedule.breakfast
           ? {
               id: travelRoute.schedule.breakfast.place_id,
-              name: `🍚 ${travelRoute.schedule.breakfast.name}`,
+              name: (
+                <>
+                  <RestaurantRoundedIcon fontSize="medium" className="text-lightGray" />{' '}
+                  {travelRoute.schedule.breakfast.name}
+                </>
+              ),
               isMeal: true,
             }
           : null,
         ...(Array.isArray(travelRoute.schedule.morning)
           ? travelRoute.schedule.morning.map(item => ({
               id: item.place_id,
-              name: `☀️ ${item.name}`,
+              name: (
+                <>
+                  <WbSunnyRoundedIcon fontSize="medium" className="text-logo" /> {item.name}
+                </>
+              ),
               isMeal: false,
             }))
           : []),
         travelRoute.schedule.lunch
           ? {
               id: travelRoute.schedule.lunch.place_id,
-              name: `🍚 ${travelRoute.schedule.lunch.name}`,
+              name: (
+                <>
+                  <RestaurantRoundedIcon fontSize="medium" className="text-lightGray" />{' '}
+                  {travelRoute.schedule.lunch.name}
+                </>
+              ),
               isMeal: true,
             }
           : null,
         ...(Array.isArray(travelRoute.schedule.afternoon)
           ? travelRoute.schedule.afternoon.map(item => ({
               id: item.place_id,
-              name: `🌕 ${item.name}`,
+              name: (
+                <>
+                  <DarkModeRoundedIcon fontSize="medium" className="text-yellow" /> {item.name}
+                </>
+              ),
               isMeal: false,
             }))
           : []),
         travelRoute.schedule.dinner
           ? {
               id: travelRoute.schedule.dinner.place_id,
-              name: `🍚 ${travelRoute.schedule.dinner.name}`,
+              name: (
+                <>
+                  <RestaurantRoundedIcon fontSize="small" className="text-lightGray" />{' '}
+                  {travelRoute.schedule.dinner.name}
+                </>
+              ),
               isMeal: true,
             }
           : null,
