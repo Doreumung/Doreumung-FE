@@ -187,7 +187,15 @@ const Page = () => {
           </p>
 
           <div className="flex flex-col items-start gap-4 w-full ">
-            <div className="flex flex-col gap-5 w-full pb-4 border-b border-b-darkGray sm:gap-1">
+            <div className="flex flex-col gap-5 w-full pb-4 border-b border-lighterGray sm:gap-1">
+              <Button
+                label="지도 보기"
+                color="lighterGray"
+                size="xs"
+                shadow="dropShadow"
+                className="w-24 self-center mb-4"
+                onClick={handleClickRoute}
+              />
               <RouteInfoContainer
                 variant="reviewDetail"
                 label="평점"
@@ -204,9 +212,6 @@ const Page = () => {
                 label="경로"
                 content={travel_route.join(' - ')}
               />
-              <div className="flex justify-end">
-                <Button label="상세 경로" color="skyblue" onClick={handleClickRoute} />
-              </div>
             </div>
 
             <div className="flex flex-col gap-8 w-full pb-4 border-b border-lighterGray">
