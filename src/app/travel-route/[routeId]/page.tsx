@@ -1,7 +1,7 @@
 'use client';
 
 import { useGetTravelRouteByIdQuery } from '@/api/travelRouteApi';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import ApiErrorMessage from '@/components/common/errorMessage/ApiErrorMessage';
@@ -12,6 +12,9 @@ import TravelPlan from '@/components/travel-plan/plan/TravelPlan';
 const Page = () => {
   const { routeId: travel_route_id } = useParams<{ routeId: string }>();
   const dispatch = useDispatch();
+  const params = useSearchParams();
+  const title = params.get('title');
+  const reviewId = params.get('reviewId');
 
   const { data, isLoading, error } = useGetTravelRouteByIdQuery(Number(travel_route_id));
 
@@ -27,7 +30,9 @@ const Page = () => {
   return (
     <div className="-mt-16 md:-mt-20">
       {error && <ApiErrorMessage />}
-      <div>{data && <TravelPlan title={data.title} isReadOnly={true} />}</div>
+      <div>
+        {data && <TravelPlan title={title || ''} isReadOnly={true} reviewId={Number(reviewId)} />}
+      </div>
     </div>
   );
 };
