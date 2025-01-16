@@ -17,11 +17,8 @@ const Introduction = () => {
   );
 
   return (
-    <motion.div
-      className="flex flex-col items-center gap-6 w-full h-screen "
-      style={{ paddingTop }}
-    >
-      <div className="flex justify-center items-center relative w-full h-full mt-10">
+    <motion.div className="flex flex-col items-center gap-6 w-full h-screen" style={{ paddingTop }}>
+      <div className="flex justify-center items-center relative w-full aspect-square md:h-full md:aspect-auto mt-10">
         <Image
           src={preview}
           fill
