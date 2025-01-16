@@ -16,6 +16,8 @@ const FOOTER_HIDDEN_PATHS = [
   '/edit-profile',
   '/my-travel/',
   '/travel-route/',
+  '/kakao/callback',
+  '/google/callback',
 ];
 
 const Footer = () => {
