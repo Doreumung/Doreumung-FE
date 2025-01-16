@@ -2,6 +2,8 @@ import Button from '@/components/common/buttons/Button';
 import useIsMobile from '@/hooks/useIsMobile';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRouter } from 'next/navigation';
+import preview from '@public/images/preview.gif';
+import Image from 'next/image';
 
 const Introduction = () => {
   const isMobile = useIsMobile();
@@ -16,11 +18,19 @@ const Introduction = () => {
 
   return (
     <motion.div
-      className="flex flex-col items-center w-full h-screen md:flex-row md:justify-between md:items-end"
+      className="flex flex-col items-center gap-6 w-full h-screen "
       style={{ paddingTop }}
     >
-      <div className="w-full h-full text-center content-center md:w-3/4">도르멍 이용 방법</div>
-      <div className="flex justify-center self-end w-full pb-20 md:w-1/4 ">
+      <div className="flex justify-center items-center relative w-full h-full mt-10">
+        <Image
+          src={preview}
+          fill
+          sizes="100%"
+          style={{ objectFit: 'contain' }}
+          alt="일정 생성 미리보기"
+        />
+      </div>
+      <div className="flex justify-center self-end w-full pb-20">
         <Button
           size={isMobile ? 'md' : 'lg'}
           color="green"
