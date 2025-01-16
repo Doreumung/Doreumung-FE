@@ -185,22 +185,33 @@ const Page = () => {
 
           <div className="flex flex-col items-start gap-4 w-full ">
             <div className="flex flex-col gap-5 w-full pb-4 border-b border-lighterGray sm:gap-1">
-              <Link
-                href={{
-                  pathname: `/travel-route/${travel_route_id}`,
-                  query: { title, reviewId: review_id },
-                }}
-                className="self-center mb-4"
-              >
+              {user && (
+                <Link
+                  href={{
+                    pathname: `/travel-route/${travel_route_id}`,
+                    query: { title, reviewId: review_id },
+                  }}
+                  className="self-center mb-4"
+                >
+                  <Button
+                    label="지도 보기"
+                    color="lighterGray"
+                    size="xs"
+                    shadow="dropShadow"
+                    className="w-24"
+                  />
+                </Link>
+              )}
+              {!user && (
                 <Button
                   label="지도 보기"
                   color="lighterGray"
                   size="xs"
                   shadow="dropShadow"
-                  className="w-24"
-                  // onClick={handleClickRoute}
+                  className="w-24 self-center mb-4"
+                  onClick={() => setShowLoginPopup(true)}
                 />
-              </Link>
+              )}
               <RouteInfoContainer
                 variant="reviewDetail"
                 label="평점"
