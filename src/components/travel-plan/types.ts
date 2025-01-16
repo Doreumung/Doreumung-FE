@@ -20,7 +20,7 @@ export type ResizeablePanelProps = {
 };
 
 export type TravelPlanProps = {
-  isReadOnly: boolean;
-  title: string;
+  isReadOnly?: boolean;
+  title?: string;
   reviewId?: number;
 };
