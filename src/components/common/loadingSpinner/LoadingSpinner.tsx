@@ -7,12 +7,7 @@ import { twMerge } from 'tailwind-merge';
 
 const LoadingSpinner = ({ className }: { className?: string }) => {
   return (
-    <div
-      className={twMerge(
-        'flex justify-center items-center w-full',
-        className,
-      )}
-    >
+    <div className={twMerge('flex justify-center items-center w-full h-96', className)}>
       <motion.div
         className="w-12"
         animate={{
