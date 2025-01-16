@@ -25,7 +25,7 @@ const ReviewSwiper = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center gap-20 w-full min-h-screen">
+    <div className="flex flex-col justify-center items-center gap-20 w-full min-h-screen my-36 md:my-0">
       <div
         className="relative"
         style={{
