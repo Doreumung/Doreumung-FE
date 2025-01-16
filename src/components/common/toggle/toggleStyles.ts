@@ -3,7 +3,7 @@ import { cva } from 'class-variance-authority';
 export const toggleStyles = cva('rounded-2xl border border-darkerGray', {
   variants: {
     size: {
-      md: 'shrink-0 min-w-20 h-10 px-3 text-base md:min-w-24 md:px-5 md:text-xl',
+      md: 'shrink-0 min-w-20 h-10 px-3 text-base md:min-w-24 md:px-5 md:text-lg',
       sm: 'shrink-0 w-20 h-9 text-base',
     },
     color: {
