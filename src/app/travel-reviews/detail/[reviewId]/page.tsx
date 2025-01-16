@@ -33,6 +33,7 @@ import { useWebSocketContext } from '@/contexts/useWebSocketContext';
 import { useGetTravelRouteByIdQuery } from '@/api/travelRouteApi';
 import { setScheduleResponse } from '@/store/travelPlanSlice';
 import Button from '@/components/common/buttons/Button';
+import Link from 'next/link';
 
 const Page = () => {
   const router = useRouter();
@@ -155,10 +156,6 @@ const Page = () => {
     router.push(`/travel-reviews/edit/${review_id}`);
   };
 
-  const handleClickRoute = () => {
-    router.push(`/travel-reviews/route/${travel_route_id}`);
-  };
-
   const sendDeleteReviewRequest = () => {
     deleteReview({ review_id: Number(review_id) })
       .unwrap()
@@ -188,14 +185,22 @@ const Page = () => {
 
           <div className="flex flex-col items-start gap-4 w-full ">
             <div className="flex flex-col gap-5 w-full pb-4 border-b border-lighterGray sm:gap-1">
-              <Button
-                label="지도 보기"
-                color="lighterGray"
-                size="xs"
-                shadow="dropShadow"
-                className="w-24 self-center mb-4"
-                onClick={handleClickRoute}
-              />
+              <Link
+                href={{
+                  pathname: `/travel-route/${travel_route_id}`,
+                  query: { title, reviewId: review_id },
+                }}
+                className="self-center mb-4"
+              >
+                <Button
+                  label="지도 보기"
+                  color="lighterGray"
+                  size="xs"
+                  shadow="dropShadow"
+                  className="w-24"
+                  // onClick={handleClickRoute}
+                />
+              </Link>
               <RouteInfoContainer
                 variant="reviewDetail"
                 label="평점"
