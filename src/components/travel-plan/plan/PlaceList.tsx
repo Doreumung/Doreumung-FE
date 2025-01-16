@@ -190,14 +190,17 @@ const PlaceList = ({ isReadOnly = false }) => {
 
   return (
     <div className="flex flex-col justify-between h-full">
-      <div className="flex flex-col gap-12 px-12 pb-8 md:flex-grow md:py-4 md:overflow-auto">
-        {travelPlaces.map(travelPlace => (
+      <div className="flex flex-col gap-8 px-10 pb-8 md:flex-grow md:pt-8 md:overflow-auto">
+        {travelPlaces.map((travelPlace, index) => (
           <div
             key={travelPlace?.id}
             className="flex flex-row justify-around items-center gap-4 min-w-full"
           >
-            <div className="flex-grow text-base text-darkerGray md:text-lg">
-              {travelPlace?.name}
+            <div className="flex items-center gap-4 flex-grow text-base text-darkerGray md:text-lg">
+              <span className="inline-block size-6 shrink-0 border border-darkerGray rounded-md bg-skyblue text-darkerGray text-center content-center text-sm">
+                {index + 1}
+              </span>
+              <span>{travelPlace?.name}</span>
             </div>
             {!isReadOnly &&
               (travelPlace?.isMeal ? (
