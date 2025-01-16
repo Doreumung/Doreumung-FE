@@ -5,7 +5,7 @@ export const buttonStyles = cva('border border-darkerGray rounded-2xl hover:brig
     size: {
       lg: 'w-80 h-16 text-2xl',
       md: 'w-36 h-14 text-xl',
-      sm: 'w-24 h-10 text-lg',
+      sm: 'w-24 h-10 text-base md:text-lg',
       xs: 'w-20 h-8 text-base',
     },
     color: {
