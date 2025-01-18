@@ -38,7 +38,7 @@ export const buttonStyles = cva('border border-darkerGray rounded-2xl hover:brig
 });
 
 export const socialLoginButtonStyles = cva(
-  'flex gap-2 justify-center items-center rounded-2xl w-96 h-11',
+  'flex gap-2 justify-center items-center rounded-2xl w-full h-11',
   {
     variants: {
       provider: {

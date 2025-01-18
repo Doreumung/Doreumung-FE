@@ -126,17 +126,24 @@ const Page = () => {
   return (
     <div
       className={clsx(
-        'flex flex-col justify-center items-center min-h-[calc(100vh-80px)] py-5 scale-90 md:scale-100',
+        'flex flex-col justify-center items-center w-full max-w-96 h-[calc(100vh - 64px)] pt-4 pb-20 md:h-[calc(100vh - 80px)] md:pb-24',
       )}
     >
-      <div>
+      <div className="w-full">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col items-center justify-center"
+          className="flex flex-col items-center justify-center w-full"
         >
-          <p className="pb-8 text-3xl text-darkerGray">로그인</p>
-          <div className="flex flex-col gap-3 w-96">
-            <Input id="email" label="이메일" type="email" variant="signin" {...register('email')} />
+          <p className="py-10 text-3xl text-darkerGray">로그인</p>
+          <div className="flex flex-col gap-3 w-full">
+            <Input
+              id="email"
+              label="이메일"
+              type="email"
+              variant="signin"
+              {...register('email')}
+              className="w-full"
+            />
             <Input
               id="password"
               label="비밀번호"
@@ -181,8 +188,8 @@ const Page = () => {
           ) : errorMessage ? (
             <p className={errorMessageStyle}>{errorMessage}</p>
           ) : null}
-          <div className="flex flex-col items-center gap-10">
-            <Button label="로그인" className="w-96" type="submit" disabled={loginLoading} />
+          <div className="flex flex-col items-center gap-10 w-full">
+            <Button label="로그인" className="w-full" type="submit" disabled={loginLoading} />
             <div className="flex justify-center gap-2 pb-10 text-lightGray">
               <p>아직 회원이 아니신가요?</p>
               <Link href="/sign-up">

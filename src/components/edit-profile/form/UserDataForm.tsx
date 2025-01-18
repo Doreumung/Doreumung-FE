@@ -137,9 +137,9 @@ const UserDataForm = ({
   const divStyle = `flex flex-col gap-2`;
 
   return (
-    <div className="flex flex-col justify-between w-full px-7 py-5 h-[440px] rounded-2xl border border-black bg-fadedGreen">
+    <div className="flex flex-col justify-between w-full p-5 h-[440px] rounded-2xl border border-black bg-fadedGreen">
       <div className={divStyle}>
-        <p className="text-xl">이메일</p>
+        <p className="text-lg">이메일</p>
         <div className="flex items-center gap-2">
           {loginType == 'kakao' ? (
             <Image src={kakaoLogin} alt="kakao Login" width={20} height={20} />
@@ -150,7 +150,7 @@ const UserDataForm = ({
         </div>
       </div>
       <div className={divStyle}>
-        <p className="text-xl">닉네임</p>
+        <p className="text-lg">닉네임</p>
         {isUserDataChangeActive ? (
           <Input
             id="nickname"
@@ -167,7 +167,7 @@ const UserDataForm = ({
         )}
       </div>
       <div className={divStyle}>
-        <p className="text-xl">생년월일</p>
+        <p className="text-lg">생년월일</p>
         {isUserDataChangeActive ? (
           <Select
             setSelectedDate={setNewBirthday}
@@ -180,7 +180,7 @@ const UserDataForm = ({
       </div>
 
       <div className={divStyle}>
-        <p className="text-xl">성별</p>
+        <p className="text-lg">성별</p>
         {isUserDataChangeActive ? (
           <div className="flex gap-7 px-3">
             {genderOptions.map(genderOption => {

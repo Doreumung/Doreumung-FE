@@ -69,9 +69,9 @@ const Page = () => {
   }
 
   return (
-    <div className="flex justify-center items-center w-96 overflow-y-auto">
-      <div className="flex flex-col justify-center items-center gap-6 w-full min-h-[calc(100vh-80px)] py-5">
-        <p className="pb-2 text-3xl text-darkerGray">회원정보 수정</p>
+    <div className="flex justify-center items-center w-full max-w-96 h-[calc(100vh - 64px)] pt-4 pb-20 md:h-[calc(100vh - 80px)] md:pb-24">
+      <div className="flex flex-col justify-center items-center gap-6 w-full">
+        <p className="pt-10 pb-4 text-3xl text-darkerGray">회원정보 수정</p>
         {loginType == 'email' ? <PasswordForm setIsUserUpdate={setIsUserUpdate} /> : null}
         <UserDataForm setIsUserUpdate={setIsUserUpdate} />
         <Button

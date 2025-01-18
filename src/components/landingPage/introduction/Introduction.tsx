@@ -10,35 +10,43 @@ const Introduction = () => {
   const router = useRouter();
   const { scrollYProgress } = useScroll();
 
-  const marginTop = useTransform(
+  const marginTop = useTransform(scrollYProgress, [0, 0.3], [isMobile ? '48px' : '80px', '0px']);
+
+  const height = useTransform(
     scrollYProgress,
-    [0, 0.5, 1],
-    [isMobile ? '112px' : '160px', '0px', '0px'],
+    [0, 0.3],
+    [
+      isMobile ? 'calc(100dvh - 112px)' : 'calc(100dvh - 160px)',
+      isMobile ? 'calc(100dvh - 64px)' : 'calc(100dvh - 80px)',
+    ],
   );
 
   return (
     <motion.div
-      className="flex flex-col justify-center items-center gap-6 relative w-full h-[cal(100% - 20px)] md:gap-10"
-      style={{ marginTop }}
+      className="flex flex-col justify-center items-center relative w-full"
+      style={{ marginTop, height }}
     >
-      <div className="flex justify-center items-center relative w-full mt-20 aspect-video md:w-2/3">
-        <Image
-          src={preview}
-          fill
-          sizes="100%"
-          style={{ objectFit: 'contain' }}
-          alt="일정 생성 미리보기"
-          className="border border-darkerGray shadow-xl"
-        />
-      </div>
-      <div className="flex justify-center pb-20">
-        <Button
-          size={isMobile ? 'md' : 'lg'}
-          color="green"
-          label="일정 생성하기"
-          shadow="dropShadow"
-          onClick={() => router.push('/travel-plan')}
-        />
+      <div className="flex flex-col items-center gap-6 w-full md:gap-10">
+        <div className="relative w-full max-w-screen-xl aspect-video">
+          <Image
+            src={preview}
+            fill
+            sizes="100%"
+            style={{ objectFit: 'contain' }}
+            alt="일정 생성 미리보기"
+            className="border border-darkerGray shadow-xl"
+          />
+        </div>
+        <div className="flex justify-center">
+          <Button
+            size={isMobile ? 'sm' : 'lg'}
+            color="green"
+            label="일정 생성하기"
+            shadow="dropShadow"
+            className="w-36 md:w-80"
+            onClick={() => router.push('/travel-plan')}
+          />
+        </div>
       </div>
     </motion.div>
   );
