@@ -25,7 +25,12 @@ export const CheckLoginStatus = () => {
   const logoutExpireDate = new Date(logoutExpireTime as string).getTime();
 
   useEffect(() => {
-    if (!accessTokenExpireDate || !refreshTokenExpireDate) {
+    if (
+      !accessTokenExpireDate ||
+      !refreshTokenExpireDate ||
+      now > accessTokenExpireDate ||
+      now > refreshTokenExpireDate
+    ) {
       console.log('이미 로그아웃 됨');
 
       localStorage.removeItem('access_token');
