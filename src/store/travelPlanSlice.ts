@@ -7,6 +7,8 @@ const initialState: TravelConfig & {
   themeToggles: number[];
   mealToggles: number[];
   scheduleResponse: unknown;
+  tempSavedRoute: unknown;
+  justSaved: boolean;
 } = {
   regions: [],
   themes: [],
@@ -22,6 +24,8 @@ const initialState: TravelConfig & {
   themeToggles: [],
   mealToggles: [],
   scheduleResponse: null,
+  tempSavedRoute: null,
+  justSaved: false,
 };
 
 export const selectTravelPlanConfig = createSelector(
@@ -61,8 +65,14 @@ const travelPlanSlice = createSlice({
     setMealToggles(state, action: PayloadAction<number[]>) {
       state.mealToggles = action.payload;
     },
+    setTempSavedRoute(state, action: PayloadAction<unknown>) {
+      state.tempSavedRoute = action.payload;
+    },
     resetTravelPlan() {
       return initialState;
+    },
+    setJustSaved: (state, action: PayloadAction<boolean>) => {
+      state.justSaved = action.payload;
     },
   },
 });
@@ -75,7 +85,9 @@ export const {
   setMeals,
   setThemeToggles,
   setMealToggles,
+  setTempSavedRoute,
   resetTravelPlan,
+  setJustSaved,
 } = travelPlanSlice.actions;
 
 export default travelPlanSlice.reducer;

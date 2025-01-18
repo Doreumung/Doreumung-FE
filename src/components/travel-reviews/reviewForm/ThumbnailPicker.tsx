@@ -8,7 +8,11 @@ const ThumbnailPicker = ({ thumbnailImageUrl, setThumbnailImageUrl }: ThumbnailP
   const imagesInEditor = useAppSelector((state: RootState) => state.reviewImages.currentImages);
 
   useEffect(() => {
-    if (!thumbnailImageUrl && imagesInEditor) setThumbnailImageUrl(imagesInEditor[0]);
+    if (
+      (!thumbnailImageUrl && imagesInEditor) ||
+      (thumbnailImageUrl && !imagesInEditor.includes(thumbnailImageUrl))
+    )
+      setThumbnailImageUrl(imagesInEditor[0]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imagesInEditor]);
 

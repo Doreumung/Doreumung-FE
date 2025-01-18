@@ -11,7 +11,7 @@ export default {
     extend: {
       backgroundImage: {
         dolmung: 'url(/images/dolmung.svg)',
-        bigCloud: 'url(/images/bigCloud.svg)',
+        doreumung: 'url(/images/logo.svg)',
         smallCloud: 'url(/images/smallCloud.svg)',
       },
       backgroundSize: {

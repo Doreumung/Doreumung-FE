@@ -3,21 +3,25 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 import { SortCriteria, SortingOptionProps } from './types';
 import { LABELS_BY_SORTING_OPTIONS } from './constants';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { RootState } from '@/store/store';
+import { setOrderBy, setSortState } from '@/store/sortSlice';
 
-const SortingOption = ({
-  orderBy,
-  setOrderBy,
-  sortingOptions,
-  setSortingOptions,
-  option,
-}: SortingOptionProps) => {
+const SortingOption = ({ option }: SortingOptionProps) => {
+  const dispatch = useAppDispatch();
+  const { sortState, orderBy } = useAppSelector((state: RootState) => state.sort);
+
   const handleSorting = (criteria: SortCriteria) => {
-    setSortingOptions(prev => {
-      if (criteria === orderBy)
-        return { ...prev, [criteria]: prev[criteria] === 'desc' ? 'asc' : 'desc' };
-      else return { ...prev };
-    });
-    setOrderBy(criteria);
+    if (criteria === orderBy)
+      dispatch(
+        setSortState({
+          ...sortState,
+          [criteria]: sortState[criteria] === 'desc' ? 'asc' : 'desc',
+        }),
+      );
+    else dispatch(setSortState({ ...sortState }));
+
+    dispatch(setOrderBy(criteria));
   };
 
   return (
@@ -31,7 +35,7 @@ const SortingOption = ({
       onClick={() => handleSorting(option)}
     >
       {LABELS_BY_SORTING_OPTIONS[option]}
-      {sortingOptions[option] === 'desc' ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+      {sortState[option] === 'desc' ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
     </button>
   );
 };

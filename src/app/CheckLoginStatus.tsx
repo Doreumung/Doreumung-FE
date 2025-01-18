@@ -102,18 +102,26 @@ export const CheckLoginStatus = () => {
   ]);
 
   const toastShown = localStorage.getItem('toast_shown');
+  const justLoggedIn = localStorage.getItem('just_logged_in');
+  const fromSaveRoute = localStorage.getItem('from_save_route');
 
   useEffect(() => {
-    if (isLoggedIn == false && toastShown == 'false') {
-      // 로그인 만료 시 Toast 출력
-      toast({
-        message: ['로그인이 만료되었습니다.', '다시 로그인을 해주세요!'],
-        type: 'error',
-      });
-
-      localStorage.setItem('toast_shown', 'true');
+    if (isLoggedIn === false && toastShown === 'false' && justLoggedIn !== 'true') {
+      if (fromSaveRoute === 'true') {
+        localStorage.removeItem('from_save_route');
+      } else {
+        toast({
+          message: ['로그인이 만료되었습니다.', '다시 로그인을 해주세요!'],
+          type: 'error',
+        });
+        localStorage.setItem('toast_shown', 'true');
+      }
     }
-  }, [isLoggedIn, toastShown]);
+
+    if (justLoggedIn === 'true') {
+      localStorage.removeItem('just_logged_in');
+    }
+  }, [isLoggedIn, toastShown, fromSaveRoute, justLoggedIn]);
 
   return <>{isLoggedIn === false && <Toast />}</>;
 };

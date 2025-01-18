@@ -67,3 +67,7 @@ export const LOGO_STYLES = {
     },
   },
 } as const;
+
+export const LEAVE_ALERT_PATHS = ['/travel-reviews/create', '/travel-reviews/edit'];
+
+export const HEADER_HIDDEN_PATHS = ['/travel-plan', '/my-travel/', '/travel-route/'];

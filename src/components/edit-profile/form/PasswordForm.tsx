@@ -14,7 +14,7 @@ const PasswordForm = ({
 }: {
   setIsUserUpdate: React.Dispatch<React.SetStateAction<'success' | 'error' | null>>;
 }) => {
-  const [isPasswordChangeActive, setIsPasswordChangeAcitve] = useState<boolean>(false);
+  const [isPasswordChangeActive, setIsPasswordChangeActive] = useState<boolean>(false);
   const [updateUserInfo, { isLoading }] = useUpdateUserInfoMutation();
 
   // zod
@@ -41,7 +41,7 @@ const PasswordForm = ({
       console.log('비밀번호 변경 성공: ', result);
 
       setIsUserUpdate('success');
-      setIsPasswordChangeAcitve(false); // 폼 닫기
+      setIsPasswordChangeActive(false); // 폼 닫기
     } catch (err) {
       console.error('비밀번호 변경 실패: ', err);
       setIsUserUpdate('error'); // 실패 시 false
@@ -53,12 +53,12 @@ const PasswordForm = ({
   return (
     <div
       className={clsx(
-        'flex flex-col justify-between px-7 py-5 w-full h-32 rounded-2xl border border-black bg-fadedGreen',
-        'transition-all duration-200',
+        'flex flex-col justify-between p-5 w-full h-32 rounded-2xl border border-black bg-fadedGreen',
+        'transition-all duration-200 ease-in-out',
         isPasswordChangeActive && 'h-[320px]',
       )}
     >
-      <p className="self-start text-xl">비밀번호 변경</p>
+      <p className="self-start text-lg">비밀번호 변경</p>
       {isPasswordChangeActive && (
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
@@ -76,7 +76,7 @@ const PasswordForm = ({
           </div>
           <div className="flex flex-col gap-2">
             <Input
-              id="confirmpassword"
+              id="confirmPassword"
               type="password"
               variant="eye"
               label="새 비밀번호 확인"
@@ -95,27 +95,27 @@ const PasswordForm = ({
         {isPasswordChangeActive && (
           <Button
             label="취소"
-            size={'sm'}
+            size="sm"
             type="button"
             onClick={() => {
               reset({ password: '', confirmPassword: '' }); // 상태 초기화
-              setIsPasswordChangeAcitve(false); // 상태 업데이트를 비동기로 처리
+              setIsPasswordChangeActive(false); // 상태 업데이트를 비동기로 처리
             }}
             className="bg-lighterGray text-darkerGray"
           />
         )}
         <Button
           label={isPasswordChangeActive ? '저장' : '변경'}
-          size={'sm'}
+          size="sm"
           type="button"
           onClick={() => {
             if (isPasswordChangeActive) {
               handleSubmit(onSubmit)();
               if (isValid) {
-                setIsPasswordChangeAcitve(false);
+                setIsPasswordChangeActive(false);
               }
             } else {
-              setIsPasswordChangeAcitve(true);
+              setIsPasswordChangeActive(true);
             }
           }}
           disabled={isLoading}

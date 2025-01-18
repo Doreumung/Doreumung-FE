@@ -67,15 +67,12 @@ const Page = () => {
   const errorMessageStyle = 'px-3 pb-3 text-xs text-red';
 
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center w-full max-w-96 h-[calc(100vh - 64px)] pt-4 pb-20 md:h-[calc(100vh - 80px)] md:pb-24">
       {isLoading && <LoadingSpinner />}
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col justify-center items-center min-h-[calc(100vh-80px)] max-[375px]:h-[100%] py-5 scale-90 md:scale-100 overflow-y-visible"
-      >
-        <div className="inline-block w-96">
-          <p className="pb-8 text-3xl text-darkerGray text-center">회원가입</p>
-          <div className="flex flex-col gap-3">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+        <div className="w-full">
+          <p className="py-10 text-3xl text-darkerGray text-center">회원가입</p>
+          <div className="flex flex-col gap-1">
             <Input
               id="email"
               label="이메일"
@@ -146,7 +143,7 @@ const Page = () => {
                 })}
               </div>
             </div>
-            <Button label="가입하기" onClick={() => {}} className="w-96" disabled={isLoading} />
+            <Button label="가입하기" onClick={() => {}} className="w-full" disabled={isLoading} />
           </div>
         </div>
       </form>

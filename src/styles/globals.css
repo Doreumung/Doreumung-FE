@@ -44,7 +44,7 @@
 }
 
 body {
-  @apply w-screen;
+  @apply flex flex-col w-screen min-h-screen;
   @apply font-default text-foreground bg-background;
   @apply select-none;
 }
@@ -90,4 +90,18 @@ ul > li {
 ol,
 ul {
   @apply pl-5;
+}
+.swiper-pagination {
+  @apply flex justify-center items-center gap-4 w-full pt-4;
+}
+
+.swiper-pagination-bullet {
+  @apply shrink-0 content-center size-6;
+  @apply border border-darkGray rounded-lg;
+  @apply bg-lighterGray text-center text-sm text-darkerGray;
+  @apply cursor-pointer hover:bg-blue hover:text-background;
+}
+
+.swiper-pagination-bullet-active {
+  @apply size-7 bg-blue text-background text-sm font-bold;
 }

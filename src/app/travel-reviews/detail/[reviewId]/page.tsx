@@ -13,7 +13,7 @@ import StarRating from '@/components/travel-reviews/reviewForm/StarRatings';
 import EditAndDelete from '@/components/travel-reviews/EditAndDelete';
 import { useDeleteReviewMutation, useGetReviewDetailQuery } from '@/api/reviewApi';
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
-import { useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { RootState } from '@/store/store';
 import { toast } from '@/components/common/toast/Toast';
 import { useGetCommentsQuery } from '@/api/commentApi';
@@ -30,6 +30,10 @@ import {
   SOCKET_ERROR_MESSAGE,
 } from '@/components/travel-reviews/constants';
 import { useWebSocketContext } from '@/contexts/useWebSocketContext';
+import { useGetTravelRouteByIdQuery } from '@/api/travelRouteApi';
+import { setScheduleResponse } from '@/store/travelPlanSlice';
+import Button from '@/components/common/buttons/Button';
+import Link from 'next/link';
 
 const Page = () => {
   const router = useRouter();
@@ -39,11 +43,15 @@ const Page = () => {
   const [likeCount, setLikeCount] = useState<number>(0);
   const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
   const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false);
+  const [travelRouteId, setTravelRouteId] = useState<number | null>(null);
 
   const user = useAppSelector((state: RootState) => state.user.user);
+  const dispatch = useAppDispatch();
 
-  const { data, isLoading, error } = useGetReviewDetailQuery(Number(review_id));
-  const [deleteReview] = useDeleteReviewMutation();
+  const [deleteReview, { isLoading: deleteLoading, isSuccess }] = useDeleteReviewMutation();
+  const { data, isLoading, error } = useGetReviewDetailQuery(Number(review_id), {
+    skip: deleteLoading,
+  });
   const {
     data: commentData,
     isLoading: commentsLoading,
@@ -51,12 +59,17 @@ const Page = () => {
     refetch: commentRefetch,
   } = useGetCommentsQuery(Number(review_id));
 
+  const { data: travelRouteData } = useGetTravelRouteByIdQuery(travelRouteId || 0, {
+    skip: !travelRouteId,
+  });
+
   const { sendJsonMessage, lastMessage, isSocketOpen, setReviewId } = useWebSocketContext();
 
   const {
     user_id = '',
     title = '',
     nickname = '',
+    travel_route_id = 0,
     content = '',
     rating = 0,
     like_count = 0,
@@ -71,6 +84,7 @@ const Page = () => {
     if (data) {
       setIsLiked(liked_by_user);
       setLikeCount(like_count);
+      setTravelRouteId(travel_route_id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
@@ -78,6 +92,12 @@ const Page = () => {
   useEffect(() => {
     setReviewId(review_id);
   }, [setReviewId, review_id]);
+
+  useEffect(() => {
+    if (travelRouteData) {
+      dispatch(setScheduleResponse(travelRouteData.schedule));
+    }
+  }, [travelRouteData, dispatch]);
 
   useEffect(() => {
     if (lastMessage) {
@@ -140,15 +160,15 @@ const Page = () => {
     deleteReview({ review_id: Number(review_id) })
       .unwrap()
       .then(() => {
-        toast(DELETE_REVIEW_SUCCESS_MESSAGE);
         router.push('/travel-reviews');
+        toast(DELETE_REVIEW_SUCCESS_MESSAGE);
       })
       .catch(() => {
         toast(DELETE_REVIEW_ERROR_MESSAGE);
       });
   };
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading || deleteLoading || isSuccess) return <LoadingSpinner />;
 
   return (
     <div className="flex flex-col items-center w-full">
@@ -163,8 +183,35 @@ const Page = () => {
             <span>{covertDateTime(created_at)}</span>
           </p>
 
-          <div className="flex flex-col items-start gap-4 w-full">
-            <div className="flex flex-col gap-5 sm:gap-1">
+          <div className="flex flex-col items-start gap-4 w-full ">
+            <div className="flex flex-col gap-5 w-full pb-4 border-b border-lighterGray sm:gap-1">
+              {user && (
+                <Link
+                  href={{
+                    pathname: `/travel-route/${travel_route_id}`,
+                    query: { title, reviewId: review_id },
+                  }}
+                  className="self-center mb-4"
+                >
+                  <Button
+                    label="지도 보기"
+                    color="lighterGray"
+                    size="xs"
+                    shadow="dropShadow"
+                    className="w-24"
+                  />
+                </Link>
+              )}
+              {!user && (
+                <Button
+                  label="지도 보기"
+                  color="lighterGray"
+                  size="xs"
+                  shadow="dropShadow"
+                  className="w-24 self-center mb-4"
+                  onClick={() => setShowLoginPopup(true)}
+                />
+              )}
               <RouteInfoContainer
                 variant="reviewDetail"
                 label="평점"
@@ -181,10 +228,6 @@ const Page = () => {
                 label="경로"
                 content={travel_route.join(' - ')}
               />
-            </div>
-
-            <div className="h-96 w-full border border-darkerGray bg-fadedSkyblue">
-              {/* 지도 또는 후기 대표 사진 */}
             </div>
 
             <div className="flex flex-col gap-8 w-full pb-4 border-b border-lighterGray">

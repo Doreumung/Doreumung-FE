@@ -6,10 +6,13 @@ import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import { toast } from '@/components/common/toast/Toast';
 import Toggle from '@/components/common/toggle/Toggle';
 import { useAppSelector } from '@/store/hooks';
-import { setScheduleResponse } from '@/store/travelPlanSlice';
+import { setScheduleResponse, setTempSavedRoute } from '@/store/travelPlanSlice';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import RestaurantRoundedIcon from '@mui/icons-material/RestaurantRounded';
+import WbSunnyRoundedIcon from '@mui/icons-material/WbSunnyRounded';
+import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 
 const PlaceList = ({ isReadOnly = false }) => {
   const [showRandomLayerPopup, setShowRandomLayerPopup] = useState<boolean>(false);
@@ -19,8 +22,8 @@ const PlaceList = ({ isReadOnly = false }) => {
   const [toggledStates, setToggledState] = useState<Record<number, boolean>>({});
 
   const router = useRouter();
-
   const dispatch = useDispatch();
+
   const isLoggedIn = useAppSelector(state => !!state.user.user);
   const travelRoute = useAppSelector(
     state => state.travelPlan.scheduleResponse,
@@ -34,35 +37,58 @@ const PlaceList = ({ isReadOnly = false }) => {
         travelRoute.schedule.breakfast
           ? {
               id: travelRoute.schedule.breakfast.place_id,
-              name: `🍚 ${travelRoute.schedule.breakfast.name}`,
+              name: (
+                <>
+                  <RestaurantRoundedIcon fontSize="medium" className="text-lightGray" />{' '}
+                  {travelRoute.schedule.breakfast.name}
+                </>
+              ),
               isMeal: true,
             }
           : null,
         ...(Array.isArray(travelRoute.schedule.morning)
           ? travelRoute.schedule.morning.map(item => ({
               id: item.place_id,
-              name: `☀️ ${item.name}`,
+              name: (
+                <>
+                  <WbSunnyRoundedIcon fontSize="medium" className="text-logo" /> {item.name}
+                </>
+              ),
               isMeal: false,
             }))
           : []),
         travelRoute.schedule.lunch
           ? {
               id: travelRoute.schedule.lunch.place_id,
-              name: `🍚 ${travelRoute.schedule.lunch.name}`,
+              name: (
+                <>
+                  <RestaurantRoundedIcon fontSize="medium" className="text-lightGray" />{' '}
+                  {travelRoute.schedule.lunch.name}
+                </>
+              ),
               isMeal: true,
             }
           : null,
         ...(Array.isArray(travelRoute.schedule.afternoon)
           ? travelRoute.schedule.afternoon.map(item => ({
               id: item.place_id,
-              name: `🌕 ${item.name}`,
+              name: (
+                <>
+                  <DarkModeRoundedIcon fontSize="medium" className="text-yellow" /> {item.name}
+                </>
+              ),
               isMeal: false,
             }))
           : []),
         travelRoute.schedule.dinner
           ? {
               id: travelRoute.schedule.dinner.place_id,
-              name: `🍚 ${travelRoute.schedule.dinner.name}`,
+              name: (
+                <>
+                  <RestaurantRoundedIcon fontSize="small" className="text-lightGray" />{' '}
+                  {travelRoute.schedule.dinner.name}
+                </>
+              ),
               isMeal: true,
             }
           : null,
@@ -99,8 +125,6 @@ const PlaceList = ({ isReadOnly = false }) => {
       return acc;
     }, {} as Record<string, unknown>);
 
-    console.log('필터 장소: ', filteredSchedule);
-
     const payload: PatchTravelRouteRequest = {
       schedule: {
         breakfast: null,
@@ -112,10 +136,9 @@ const PlaceList = ({ isReadOnly = false }) => {
       },
       config: travelRoute.config,
     };
-    console.log('보내는 데이터: ', payload);
+
     try {
       const response = await patchTravelRoute(payload).unwrap();
-      console.log('patch 결과: ', response);
       dispatch(setScheduleResponse(response));
       setShowRandomLayerPopup(false);
     } catch (error) {
@@ -133,7 +156,14 @@ const PlaceList = ({ isReadOnly = false }) => {
 
   const handleRedirectToSignin = () => {
     setShowSigninLayerPopup(false);
-    // 라우터 통해 로그인 페이지 이동
+    const tempRoute: TravelRouteResponse = {
+      schedule: travelRoute.schedule,
+      config: travelRoute.config,
+    };
+    dispatch(setTempSavedRoute(tempRoute));
+    localStorage.setItem('tempSavedRoute', JSON.stringify(tempRoute));
+    localStorage.setItem('from_save_route', 'true');
+    router.push('/sign-in');
   };
 
   const handleSaveTravelRoute = async (title: string = '') => {
@@ -160,14 +190,17 @@ const PlaceList = ({ isReadOnly = false }) => {
 
   return (
     <div className="flex flex-col justify-between h-full">
-      <div className="flex flex-col gap-12 pb-8 md:flex-grow md:px-8 md:py-4 md:overflow-auto">
-        {travelPlaces.map(travelPlace => (
+      <div className="flex flex-col gap-8 px-10 pb-8 md:flex-grow md:pt-8 md:overflow-auto">
+        {travelPlaces.map((travelPlace, index) => (
           <div
             key={travelPlace?.id}
             className="flex flex-row justify-around items-center gap-4 min-w-full"
           >
-            <div className="flex-grow text-base text-darkerGray md:text-lg">
-              {travelPlace?.name}
+            <div className="flex items-center gap-4 flex-grow text-base text-darkerGray md:text-lg">
+              <span className="inline-block size-6 shrink-0 border border-darkerGray rounded-md bg-skyblue text-darkerGray text-center content-center text-sm">
+                {index + 1}
+              </span>
+              <span>{travelPlace?.name}</span>
             </div>
             {!isReadOnly &&
               (travelPlace?.isMeal ? (
@@ -185,7 +218,7 @@ const PlaceList = ({ isReadOnly = false }) => {
         ))}
       </div>
       {!isReadOnly && (
-        <div className="flex flex-row justify-between w-full pt-2 pb-6 md:gap-10 md:px-8 md:py-8 md:bg-background">
+        <div className="flex flex-row justify-evenly w-full pt-2 pb-6 md:gap-10 md:px-10 md:py-8 md:bg-background">
           <Button
             size="md"
             color="skyblue"

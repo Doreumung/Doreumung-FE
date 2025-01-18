@@ -1,7 +1,6 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 
 const getAccessToken = () => {
-  // 로컬 스토리지의 액세스 토큰으로 변경
   const cookies = document.cookie.split('; ');
   const accessTokenCookie = cookies.find(row => row.startsWith('access_token'));
 

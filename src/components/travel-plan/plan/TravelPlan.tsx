@@ -6,9 +6,9 @@ import ResizeablePanel from './ResizeablePanel';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
-import clsx from 'clsx';
+import { TravelPlanProps } from '../types';
 
-const TravelPlan = ({ isReadOnly = false, title = '' }) => {
+const TravelPlan = ({ isReadOnly = false, title = '', reviewId }: TravelPlanProps) => {
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
   const [showNavigationPopup, setShowNavigationPopup] = useState(false);
@@ -33,23 +33,25 @@ const TravelPlan = ({ isReadOnly = false, title = '' }) => {
   }, []);
 
   return (
-    <div
-      className={clsx(
-        'w-screen flex flex-col md:flex-row',
-        isReadOnly ? 'h-[calc(100vh-80px)]' : 'h-screen',
-      )}
-    >
+    <div className="w-screen h-screen flex flex-col md:flex-row">
       <div className="px-4 flex-shrink-0 md:flex md:flex-col md:w-[440px] md:px-0">
         <div className="pb-4 md:px-8">
-          <header className="pt-8 text-base md:pt-6">
+          <header className="pt-8 pb-4 text-base md:pt-6">
             {isReadOnly ? (
-              <BackNavigation to="mytravelList" />
+              reviewId ? (
+                <BackNavigation to="review" reviewId={reviewId} />
+              ) : (
+                <BackNavigation to="mytravelList" />
+              )
             ) : (
               <BackNavigation to="home" onNavigate={handleNavigation} />
             )}
           </header>
           {isReadOnly ? (
-            <TravelHeader step="내가 만든 일정~" stepName={title} />
+            <TravelHeader
+              step="장소 간 직선을 클릭하면 이동 경로를 알 수 있어요!"
+              stepName={title}
+            />
           ) : (
             <TravelHeader
               step="마음에 드는 장소는 고정하고 다시 뽑을 수 있어요!"
@@ -74,7 +76,13 @@ const TravelPlan = ({ isReadOnly = false, title = '' }) => {
       {showNavigationPopup && (
         <LayerPopup
           type="confirm"
-          label={<>작성 중인 내용이 저장되지 않습니다. 정말 나가시겠습니까?</>}
+          label={
+            <>
+              작성 중인 내용이 저장되지 않습니다.
+              <br />
+              정말 나가시겠습니까?
+            </>
+          }
           onConfirm={handleNavigationConfirm}
           setShowLayerPopup={setShowNavigationPopup}
         />

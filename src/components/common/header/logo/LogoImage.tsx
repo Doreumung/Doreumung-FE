@@ -3,7 +3,7 @@
 import Dolmung from '@public/images/dolmung.svg';
 import Image from 'next/image';
 import { motion, MotionValue, useMotionValue, useScroll, useTransform } from 'motion/react';
-import { LogoTextAndImageProps } from './types';
+import { LogoTextAndImageProps } from '../types';
 import { INPUT_RANGE, LOGO_STYLES } from '../constants';
 import useIsMobile from '@/hooks/useIsMobile';
 import { useEffect } from 'react';

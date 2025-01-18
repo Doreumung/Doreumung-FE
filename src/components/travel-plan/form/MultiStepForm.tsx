@@ -8,7 +8,7 @@ import BackNavigation from '@/components/common/backNavigation/BackNavigation';
 import ProgressIndicator from './ProgressIndicator';
 import TravelPlan from '../plan/TravelPlan';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { resetTravelPlan, setScheduleResponse } from '@/store/travelPlanSlice';
+import { resetTravelPlan, setScheduleResponse, setTempSavedRoute } from '@/store/travelPlanSlice';
 import LayerPopup from '@/components/common/layerPopup/LayerPopup';
 import useBeforeUnload from '@/hooks/useBeforeUnload';
 import useNavigationPopup from '@/hooks/useNavigationPopup';
@@ -16,21 +16,45 @@ import { usePostTravelRouteMutation } from '@/api/travelRouteApi';
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import { jejuArea } from './region/jejumap';
 import { THEMES } from '@/components/common/toggle/constants';
+import { useSearchParams } from 'next/navigation';
+import RedirectNotice from '@/components/common/redirectNotice/RedirectNotice';
 
 const MultiStepForm = () => {
   const dispatch = useAppDispatch();
   const travelPlanConfig = useAppSelector(state => state.travelPlan);
   const [postTravelRoute, { isLoading }] = usePostTravelRouteMutation();
 
+  const tempSavedRoute = useAppSelector(state => state.travelPlan.tempSavedRoute);
+
   const [step, setStep] = useState(1);
   const [showLayerPopup, setShowLayerPopup] = useState(false);
+  const [showRedirect, setShowRedirect] = useState(false);
 
-  // 메인으로(백네비게이션) 클릭 시 팝업
   const { showNavigationPopup, handleNavigation, handleNavigationConfirm, handleNavigationCancel } =
     useNavigationPopup();
 
-  // 새로고칩 시 팝업
   useBeforeUnload();
+
+  const searchParams = useSearchParams();
+  const stepParam = searchParams.get('step');
+
+  useEffect(() => {
+    if (stepParam) {
+      const step = parseInt(stepParam);
+      if (step >= 1 && step <= 3) {
+        if (step === 3 && !tempSavedRoute && !travelPlanConfig.scheduleResponse) {
+          setShowRedirect(true);
+        } else {
+          setStep(step);
+        }
+      }
+    }
+
+    if (tempSavedRoute) {
+      dispatch(setScheduleResponse(tempSavedRoute));
+      dispatch(setTempSavedRoute(null));
+    }
+  }, [dispatch, stepParam, tempSavedRoute, travelPlanConfig.scheduleResponse]);
 
   useEffect(() => {
     return () => {
@@ -75,6 +99,10 @@ const MultiStepForm = () => {
 
   if (isLoading) {
     return <LoadingSpinner />;
+  }
+
+  if (showRedirect) {
+    return <RedirectNotice mode="NOT_FOUND" />;
   }
 
   return (
