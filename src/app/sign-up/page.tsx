@@ -20,7 +20,7 @@ const Page = () => {
   const handleGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedGender(event.target.value); // 선택된 값 업데이트
   };
-  const [signUpUser, { isLoading }] = useSignUpMutation();
+  const [signUpUser, { isLoading, isSuccess }] = useSignUpMutation();
   const router = useRouter();
 
   const {
@@ -66,9 +66,10 @@ const Page = () => {
   // 공통 tailwind
   const errorMessageStyle = 'px-3 pb-3 text-xs text-red';
 
+  if (isLoading || isSuccess) return <LoadingSpinner />;
+
   return (
     <div className="flex flex-col justify-center items-center w-full max-w-96 h-[calc(100vh - 64px)] pt-4 pb-20 md:h-[calc(100vh - 80px)] md:pb-24">
-      {isLoading && <LoadingSpinner />}
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <div className="w-full">
           <p className="py-10 text-3xl text-darkerGray text-center">회원가입</p>
