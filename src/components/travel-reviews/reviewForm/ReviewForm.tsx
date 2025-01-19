@@ -32,6 +32,8 @@ import { RootState } from '@/store/store';
 import { useEditReviewMutation, usePostReviewMutation } from '@/api/reviewApi';
 import { toast } from '@/components/common/toast/Toast';
 import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
+import BackNavigation from '@/components/common/backNavigation/BackNavigation';
+import useNavigationPopup from '@/hooks/useNavigationPopup';
 
 const ReviewForm = ({
   mode = 'create',
@@ -45,8 +47,11 @@ const ReviewForm = ({
   const uploaded_urls = useAppSelector((state: RootState) => state.reviewImages.currentImages);
   const deleted_urls = useAppSelector((state: RootState) => state.reviewImages.deletedImages);
 
-  const [postReview, { isSuccess: postSuccess }] = usePostReviewMutation();
-  const [editReview, { isSuccess: editSuccess }] = useEditReviewMutation();
+  const [postReview, { isLoading: postLoading, isSuccess: postSuccess }] = usePostReviewMutation();
+  const [editReview, { isLoading: editLoading, isSuccess: editSuccess }] = useEditReviewMutation();
+
+  const { showNavigationPopup, handleNavigation, handleNavigationConfirm, handleNavigationCancel } =
+    useNavigationPopup();
 
   const [title, setTitle] = useState<string>(defaultValues.title);
   const [rating, setRating] = useState<number>(defaultValues.rating);
@@ -87,6 +92,7 @@ const ReviewForm = ({
         postReview(newReview)
           .unwrap()
           .then(res => {
+            console.log(res);
             toast(POST_REVIEW_SUCCESS_MESSAGE);
             router.push(`/travel-reviews/detail/${res.review_id}`);
           })
@@ -121,10 +127,16 @@ const ReviewForm = ({
     }
   };
 
-  if (postSuccess || editSuccess) return <LoadingSpinner />;
+  if (postLoading || editLoading || postSuccess || editSuccess) return <LoadingSpinner />;
 
   return (
-    <>
+    <div className="flex flex-col items-center w-full">
+      <BackNavigation
+        to={mode === 'create' ? 'reviewList' : 'review'}
+        reviewId={mode === 'edit' && reviewId ? Number(reviewId) : undefined}
+        onNavigate={handleNavigation}
+      />
+      <h3 className="block py-12 text-3xl">후기 {mode === 'create' ? '작성' : '수정'}</h3>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-6 w-full md:gap-4"
@@ -198,7 +210,21 @@ const ReviewForm = ({
           onConfirm={() => sendReviewRequest()}
         />
       )}
-    </>
+
+      {showNavigationPopup && (
+        <LayerPopup
+          type="confirm"
+          label={
+            <>
+              {mode === 'create' ? '작성' : '수정'} 중인 후기가 저장되지 않았습니다.
+              <br /> 정말 페이지를 떠나시겠습니까?
+            </>
+          }
+          onConfirm={handleNavigationConfirm}
+          setShowLayerPopup={handleNavigationCancel}
+        />
+      )}
+    </div>
   );
 };
 
