@@ -36,15 +36,15 @@ const Page = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="flex flex-col items-center gap-6 w-full pt-10">
+    <div className="flex flex-col items-center gap-6 pt-9">
       {error && <ApiErrorMessage />}
       {!error && (
         <>
-          <section className="flex flex-col gap-3 self-start relative w-full">
+          <section className="flex flex-col gap-3 self-start relative size-24">
             <div className="size-24 bg-dolmung bg-cover bg-center shrink-0" />
             <SpeechBubble
               text="도르멍과 함께한 후기를 들려주세요!"
-              className="absolute -top-10 -right-12"
+              className="absolute -top-9 -right-48 sm:-right-56 w-max"
             />
           </section>
 
@@ -74,7 +74,7 @@ const Page = () => {
                 ))}
               </div>
 
-              <div className="flex flex-col items-center gap-12 w-full">
+              <div className="flex flex-col items-center gap-10 w-full">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 place-items-center gap-8 w-full">
                   {data.reviews.map((review: SingleReviewType) => (
                     <ReviewCard key={`${review.review_id}-${review.created_at}`} review={review} />
