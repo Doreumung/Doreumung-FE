@@ -8,7 +8,7 @@ const Tiptap = ({ editor }: TiptapProps) => {
     <div>
       <EditorContent
         editor={editor}
-        className="w-full h-[640px] border border-t-0 border-green rounded-b-2xl bg-white overflow-scroll md:h-[768px]"
+        className="w-full h-[640px] border border-t-0 border-green rounded-b-2xl bg-white overflow-scroll scrollbar-hide md:h-[768px]"
       />
     </div>
   );
