@@ -46,17 +46,20 @@ export const postReviewRequestSchema = reviewSchemas
     }),
   });
 
-export const postReviewResponseSchema = reviewSchemas
-  .pick({
-    review_id: true,
-    user_id: true,
-    nickname: true,
-    like_count: true,
-    liked_by_user: true,
-    created_at: true,
-    updated_at: true,
-  })
-  .merge(postReviewRequestSchema);
+export const postReviewResponseSchema = reviewSchemas.pick({
+  review_id: true,
+  user_id: true,
+  nickname: true,
+  travel_route_id: true,
+  title: true,
+  rating: true,
+  content: true,
+  like_count: true,
+  liked_by_user: true,
+  created_at: true,
+  updated_at: true,
+  thumbnail: true,
+});
 
 export const singleReviewSchema = reviewSchemas.pick({
   user_id: true,
