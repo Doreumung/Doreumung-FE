@@ -48,11 +48,11 @@ const TravelPlanMap = () => {
     ].filter(Boolean) as { name: string; latitude: number; longitude: number }[];
 
     // 경로 URL 생성 함수 (출발지 도착지 모두 포함)
-    const createKakaoMapRouteUrl = (
+    const createMapRouteUrl = (
       from: { name: string; latitude: number; longitude: number },
       to: { name: string; latitude: number; longitude: number },
     ) => {
-      return `https://map.naver.com/p/directions/${from.longitude},${from.latitude},${from.name}/${to.longitude},${to.latitude},${to.name}/-/car`;
+      return `https://map.naver.com/p/directions/${from.longitude},${from.latitude},${from.name}/${to.longitude},${to.latitude},${to.name}/-/car?app=web`;
     };
 
     // 카카오 번호 마커 사용
@@ -123,7 +123,7 @@ const TravelPlanMap = () => {
         });
 
         // 폴리라인 클릭 이벤트 추가
-        const kakaoMapRouteUrl = createKakaoMapRouteUrl(place, nextPlace);
+        const kakaoMapRouteUrl = createMapRouteUrl(place, nextPlace);
 
         window.kakao.maps.event.addListener(polyline, 'click', () => {
           window.open(kakaoMapRouteUrl, '_blank');
