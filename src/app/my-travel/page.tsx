@@ -70,7 +70,7 @@ const Page = () => {
               className="self-center"
             >
               <Button
-                label="일정 생성 하기"
+                label="일정 생성하기"
                 color="green"
                 size="xs"
                 shadow="dropShadow"
