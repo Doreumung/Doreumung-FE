@@ -5,12 +5,14 @@
 
 ## 👥 팀 동료
 
+<div align=center>
 
 | <a href=https://github.com/Kwonyeojiny/><img src="https://avatars.githubusercontent.com/u/78148876?v=4" width=100px/><br/><sub><b>@Kwonyeojiny</b></sub></a><br/> | <a href=https://github.com/seyoonagain/><img src="https://avatars.githubusercontent.com/u/167067892?v=4" width=100px/><br/><sub><b>@seyoonagain</b></sub></a><br/> | <a href=https://github.com/xuuwon/><img src="https://avatars.githubusercontent.com/u/181433031?v=4" width=100px/><br/><sub><b>@xuuwon</b></sub></a><br/> | <a href=https://github.com/wkdsh21/><img src="https://avatars.githubusercontent.com/u/100358810?v=4" width=100px/><br/><sub><b>@wkdsh21</b></sub></a><br/> | <a href=https://github.com/limsu1015><img src="https://avatars.githubusercontent.com/u/179792450?v=4" width=100px/><br/><sub><b>@limsu1015</b></sub></a><br/> | 
 |:----------:|:----------:|:----------:|:----------:|:----------:|
 |    권여진    |    정세윤    |    조유원     |    장승한    |    임수혁    |
 |    FE    |    FE    |    FE    |    BE    |    BE    |
 
+</div>
 
 ## 💻 **개발 기간** 
 2024.12.18 ~ 2025.01.16
