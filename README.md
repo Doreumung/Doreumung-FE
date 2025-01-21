@@ -1,22 +1,15 @@
 # 도르멍
 <div align=center>
-  <img src="https://github.com/user-attachments/assets/60bdb388-d70f-4344-9b8e-49365475d471" width=500px alt="doreumung">
+  <img src="https://github.com/user-attachments/assets/7108a508-1431-418c-baaf-076d12ffae19" width=500px alt="doreumung">
 </div>
 
 ## 👥 팀 동료
 
-### FE
 
-| <a href=https://github.com/Kwonyeojiny/><img src="https://avatars.githubusercontent.com/u/78148876?v=4" width=100px/><br/><sub><b>@Kwonyeojiny</b></sub></a><br/> | <a href=https://github.com/seyoonagain/><img src="https://avatars.githubusercontent.com/u/167067892?v=4" width=100px/><br/><sub><b>@seyoonagain</b></sub></a><br/> | <a href=https://github.com/xuuwon/><img src="https://avatars.githubusercontent.com/u/181433031?v=4" width=100px/><br/><sub><b>@xuuwon</b></sub></a><br/> | 
-|:----------------------------------:|:----------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------:|
-|                권여진                 |                정세윤                |    조유원     |
-
-
-### BE
-
-| <a href=https://github.com/wkdsh21/><img src="https://avatars.githubusercontent.com/u/100358810?v=4" width=100px/><br/><sub><b>@wkdsh21</b></sub></a><br/> | <a href=https://github.com/limsu1015><img src="https://avatars.githubusercontent.com/u/179792450?v=4" width=100px/><br/><sub><b>@limsu1015</b></sub></a><br/> | 
-|:----------------------------------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------:|
-|                                                                            장승한                                                                             |                                                                            임수혁                                                                             |         
+| <a href=https://github.com/Kwonyeojiny/><img src="https://avatars.githubusercontent.com/u/78148876?v=4" width=100px/><br/><sub><b>@Kwonyeojiny</b></sub></a><br/> | <a href=https://github.com/seyoonagain/><img src="https://avatars.githubusercontent.com/u/167067892?v=4" width=100px/><br/><sub><b>@seyoonagain</b></sub></a><br/> | <a href=https://github.com/xuuwon/><img src="https://avatars.githubusercontent.com/u/181433031?v=4" width=100px/><br/><sub><b>@xuuwon</b></sub></a><br/> | <a href=https://github.com/wkdsh21/><img src="https://avatars.githubusercontent.com/u/100358810?v=4" width=100px/><br/><sub><b>@wkdsh21</b></sub></a><br/> | <a href=https://github.com/limsu1015><img src="https://avatars.githubusercontent.com/u/179792450?v=4" width=100px/><br/><sub><b>@limsu1015</b></sub></a><br/> | 
+|:----------:|:----------:|:----------:|:----------:|:----------:|
+|    권여진    |    정세윤    |    조유원     |    장승한    |    임수혁    |
+|    FE    |    FE    |    FE    |    BE    |    BE    |
 
 
 ## 💻 **개발 기간** 
@@ -570,4 +563,217 @@
 
 <details>
   <summary>3주차 (1/9 ~ 1/15)</summary>
+
+<details>  
+<summary><strong>[여행 계획]권여진</strong></summary>
+  
+### ✅ Done
+
+<hr>
+
+  - API 연동
+    - 일정 확인 페이지에서 다시 뽑기 버튼 클릭시 api 요청 및 응답 (PATCH)
+      - 장소 토글 버튼 활성화 되어있을 시 해당 장소 데이터 같이 보내기
+    - 일정 확인 페이지에서 저장 버튼 클릭시 api 요청 및 응답 (POST)
+    - 사용자 저장 여행 경로 목록 api 요청 및 응답 (GET)
+    - 사용자 저장 여행 경로 목록에서 카드 클릭시 해당 여행 경로 api 요청 및 응답 (GET)
+    - 사용자 저장 여행 경로 목록에서 특정 경로 삭제 클릭시 api 요청 및 응답 (DELETE)
+
+  - 인증 및 권한 (일정 생성 페이지)
+    - 로그인 상태에 따른 기능 제한 (일정 저장)
+    - 일정 생성 중: 로그인 후 이전 페이지 리다이렉트 구현
+    - 사용자의 저장 경로가 아닌 주소로 들어가려할 시 리다이렉트
+
+  - 웹 접근성 및 UI/UX 개선
+    - 사용자 저장 여행 경로 목록 카드 레이아웃 개선
+    - 카드 삭제 시 확인 레이어팝업 추가
+    - 일정 읽기 전용 레이아웃 추가
+    - 멀티스텝폼 일정 확인 컴포넌트 최적화
+      - 버튼 없는 버전 구현
+      - 제목 입력 유효성 검사 추가
+    - 저장 경로 페이지 키보드 Tab을 통한 이동 가능(웹 접근성 향상)
+    - 저장 경로가 없을 시 내용 분기처리
+
+  - 기능
+    - 여행 경로 장소별 지도 직선거리 표시
+    - 직선 클릭시 네이버 지도로 장소 이동 경로 표시
+    - 임시 저장 데이터 관리
+      - 로그인 후 데이터 복원
+      - 멀티스텝폼 3단계 연동
+    - 후기 페이지에 여행 상세 경로 연동 
+
+        
+### 🖼️ Preview
+
+ <div align=center>
+  <img src='https://github.com/user-attachments/assets/39e2b83d-971e-42fc-b5ab-e1867b0b07c9' width=500 />
+  <img src='https://github.com/user-attachments/assets/0381a18c-bcab-47b8-86c1-b1a173e6d432' width=500 />
+  <img src='https://github.com/user-attachments/assets/fe7e4555-2a32-474a-bbb7-e7eb2356f554' width=500 />
+</div>
+ <div align=center>
+  <img src='https://github.com/user-attachments/assets/a74441c5-df53-4d0e-ad62-91dd4a48a764' width=500 />
+  <img src='https://github.com/user-attachments/assets/8b8b19e7-e2d0-4d08-9a3e-63321fc6bfe5' width=500 />
+  <img src='https://github.com/user-attachments/assets/f98c1682-7e90-4d21-8e22-101d70c453e2' width=500 />
+</div>
+ <div align=center>
+  <img src='https://github.com/user-attachments/assets/cae1a15a-eff5-4954-ae8e-a5e6f9b7fadb' width=500 />
+  <img src='https://github.com/user-attachments/assets/1c0930f6-dc0e-4a95-9816-bcbab0cdb244' width=500 />
+</div>
+ <div align=center>
+  <img src='https://github.com/user-attachments/assets/2c675c18-9142-471b-8f9f-101f03e96a8d' width=500 />
+  <img src='https://github.com/user-attachments/assets/f266da4c-f79b-41e1-b10b-24e0eb10adfe' width=500 />
+</div>
+
+</details>
+
+
+  <details>  
+  <summary><strong>[여행 후기][미들웨어]정세윤</strong></summary>
+  
+  ### ✅ Done
+
+---
+
+  - **웹소켓 연결**
+    - 여행 후기 좋아요 수 실시간 업데이트 구현
+    - 여행 댓글 작성 / 수정 / 삭제 실시간 업데이트 구현
+    
+  - **API 요청 및 응답 처리**
+    - 여행 후기 목록 `GET`
+    - 여행 후기 상세 조회 `GET`, 작성 `POST`, 수정 `PATCH`, 삭제 `DELETE`
+    - 여행 후기 댓글 목록 `GET`
+    - 여행 후기 댓글 작성 `POST`, 수정 `PATCH`, 삭제 `DELETE`
+    - 이미지 업로드 `POST`
+  
+  - **미들웨어 업데이트 및 보완**
+    - 로그인하지 않은 사용자가 여행 후기 작성 및 수정 페이지에 접근하지 못하도록 제한
+   
+  - **ProtectedRoute 컴포넌트 생성**
+    - 여행 후기 작성 및 수정 페이지 접근 시, 인가 여부에 따라 해당 라우트를 보호하는 컴포넌트 구현
+    - 기존 미들웨어를 보완하여 구현
+
+  - **웹 접근성 향상**
+    - `Navbar`, `Pagination`, `Dropdown`의 클릭 가능한 요소를 interactive 태그로 변경
+   
+  - **UX 향상**
+    - `LayerPopup` 활성화 시, 오버레이된 영역의 스크롤 방지
+    - 페이지 선택 시 화면 최상단으로 이동
+    - 페이지네이션 및 정렬 방식을 전역상태로 관리
+      - 여행 후기 및 여행 경로 상세 페이지에서 다시 목록으로 돌아올 때, 이전의 페이지와 정렬 방식 유지
+      - 관련 없는 페이지 방문 시, 페이지와 정렬 방식 초기화
+    - 여행 후기 작성 및 수정 페이지를 벗어날 때 경고 `LayerPopup` 표시
+    - `LoadingSpinner`의 표시 조건 업데이트
+      - API 요청 성공 시, `isLoading` 뿐만 아니라 `isSuccess` 시에도 `LoadingSpinner` 표시   
+      - 페이지 전환이 되는 경우 페이지 전환이 될 때까지 LoadingSpinner 유지
+
+  - **여행 후기 목록 정렬 기능 추가**
+    - 날짜, 좋아요 수, 댓글 수 기준으로 오름차순 및 내림차순 정렬 기능 구현
+   
+  - **랜딩페이지 인터랙션 개선**
+    - 여행 일정 생성 방법 프리뷰 추가
+    - 스크롤 시 배경색 변하는 훅 생성
+    - 모션을 이용한 스크롤 애니메이션 추가
+    - 스와이퍼를 이용한 여행 후기 carousel 효과 적용
+   
+  - **Footer 컴포넌트 생성**
+    - 모션을 이용한 애니메이션 추가
+    - 경로별 Footer 숨기기 코드 추가
+   
+  - **`TravelCard`의 `Dropdown` 조건부 메뉴 표시**
+    - 후기 작성 여부에 따라 메뉴 분기 처리
+      - 후기 미작성 시: 후기 작성 메뉴 표시
+      - 후기 작성 시: 후기 보러가기 메뉴 표시
+   
+  - **Toast 컴포넌트 전역 상태 관리 추가**
+    - 페이지 전환 시에도 Toast 사라지지 않도록 전역 상태로 수정
+   
+  - **레이아웃 조정**
+    - main에 해당하는 부분 높이 조정
+    - 페이지별 가로세로 중앙정렬 조정
+    - 일정 생성 페이지 레이아웃 조정
+   
+  - **`Header` 내 구조 개선**
+    - `Logo` 컴포넌트를 `Navbar` 컴포넌트보다 위쪽으로 변경
+
+
+### 🖼️ Preview
+  
+---
+
+- 웹소켓을 통한 좋아요 수, 댓글 실시간 업데이트
+
+ <div align=center>
+    <img src='https://github.com/user-attachments/assets/38aa288f-b523-4e07-82bf-91c41b086ac3' width=500 />
+ </div>
+
+- 랜딩페이지
+ 
+ <div align=center>
+    <img src='https://github.com/user-attachments/assets/fd691da8-ffab-4bc6-b852-e010a70336a5' width=500 />
+ </div>
+
+ <div align=center>
+    <img src='https://github.com/user-attachments/assets/e831ab1e-e704-444b-9a8e-36106ba34f49' width=500 />
+ </div>
+
+- `Footer`
+  
+ <div align=center>
+    <img src='https://github.com/user-attachments/assets/b208ba69-e8cd-4e3f-aa9c-29772727aefb' width=500 />
+ </div>
+
+- 여행 후기 목록 정렬
+
+ <div align=center>
+    <img src='https://github.com/user-attachments/assets/7bf4f8f0-635f-4ca4-8e55-430566b5e224' width=500 />
+ </div>
+
+ - `LoadingSpinner`
+  
+ <div align=center>
+    <img src='https://github.com/user-attachments/assets/51f07dee-4141-4490-bea4-355dae9829a2' width=500 />
+ </div>
+
+ - `Toast` 전역 상태 관리
+
+ <div align=center>
+    <img src='https://github.com/user-attachments/assets/be7dbab0-3088-4fdc-b5bd-5611f543df0e' width=500 />
+ </div>
+</details>
+
+<details>  
+  <summary><strong>[유저(로그인/회원가입)]조유원</strong></summary>
+  
+  ### ✅ Done
+
+---
+
+  - **카카오, 구글 소셜 로그인 구현** : `/kakao/callback`, `/google/callback`
+    - 구글 리다이렉트 uri 이슈 해결
+    
+  - **자동 로그인 구현**
+    - 토큰 유효기간 로컬 스토리지에 저장
+    - 자동 로그인 O - 액세스 토큰 자동 재발급
+    - 자동 로그인 X - 1일간 로그인 유지 후 로그인 만료 처리
+    - 로그인 만료 시 토스트 팝업 노출
+      - 로컬 스토리지에 토스트 팝업 노출 여부를 담아, 한 번만 토스트 팝업이 노출되도록 함.
+    - 로그인 전용 페이지에서 로그인 만료 시 리다이렉트 페이지로 이동
+    - httpOnly 토큰 시도했으나.. 실패
+   
+  - **레이아웃 수정**
+    - 반응형 레이아웃 수정으로 잘림 현상 해결
+
+
+### 🖼️ Preview
+  
+---
+
+- 구글 로그인
+
+ <div align=center>
+    <img src="https://github.com/user-attachments/assets/483408ac-dbd2-4d77-af1f-9eaa5ed5f679" alt="GoogleLogin">
+ </div>
+
+</details>
+
 </details>
