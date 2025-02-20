@@ -1,7 +1,7 @@
 import { cva } from 'class-variance-authority';
 
 export const footerStyles = cva(
-  'relative w-full h-96 px-4 py-8 mt-10 border-t border-green overflow-hidden md:h-72',
+  'shrink-0 relative w-full h-96 px-4 py-8 mt-10 border-t border-green overflow-hidden md:h-72',
   {
     variants: {
       display: {

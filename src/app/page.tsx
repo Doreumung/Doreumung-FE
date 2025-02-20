@@ -8,7 +8,7 @@ const Home = () => {
   useScrollBackgroundColor([237, 237, 237], [208, 229, 241], 1000);
 
   return (
-    <div className="w-full">
+    <div className="flex flex-col gap-96 w-full h-full">
       <Introduction />
       <ReviewSwiper />
     </div>

@@ -12,7 +12,7 @@ const Introduction = () => {
 
   const marginTop = useTransform(scrollYProgress, [0, 0.3], [isMobile ? '48px' : '80px', '0px']);
 
-  const height = useTransform(
+  const minHeight = useTransform(
     scrollYProgress,
     [0, 0.3],
     [
@@ -24,7 +24,7 @@ const Introduction = () => {
   return (
     <motion.div
       className="flex flex-col justify-center items-center relative w-full"
-      style={{ marginTop, height }}
+      style={{ marginTop, minHeight }}
     >
       <div className="flex flex-col items-center gap-6 w-full md:gap-10">
         <div className="relative w-full max-w-screen-xl aspect-video">
@@ -34,7 +34,8 @@ const Introduction = () => {
             sizes="100%"
             style={{ objectFit: 'contain' }}
             alt="일정 생성 미리보기"
-            className="border border-darkerGray shadow-xl"
+            className="border border-darkerGray rounded-2xl shadow-xl"
+            priority
           />
         </div>
         <div className="flex justify-center">
