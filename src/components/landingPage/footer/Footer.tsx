@@ -52,7 +52,9 @@ const Footer = () => {
           </div>
           <CompanyInfo />
         </div>
-        <p className="text-xs text-darkGray tracking-tight">© 2025 도르멍. All rights reserved.</p>
+        <p className="text-xs text-darkerGray tracking-tight">
+          © 2025 도르멍. All rights reserved.
+        </p>
       </div>
     </footer>
   );
