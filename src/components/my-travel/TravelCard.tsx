@@ -33,10 +33,16 @@ const TravelCard = ({
 
   useOutsideClick({ ref, callback: () => setIsOpen(false) });
 
-  const handleDropdownClick = (e: React.MouseEvent) => {
+  const handleDropdownClick = (e: React.MouseEvent | React.KeyboardEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsOpen(prev => !prev);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleDropdownClick(e);
+    }
   };
 
   const handleDeleteConfirm = () => {
@@ -70,17 +76,25 @@ const TravelCard = ({
         >
           <div className="flex justify-between gap-3 md:gap-6">
             <p className={clsx('w-64 md:w-80', 'text-xl', 'line-clamp-2')}>{title}</p>
-            <div ref={ref} className="relative top-1">
+            <div
+              ref={ref}
+              tabIndex={0}
+              className="relative top-1 cursor-pointer"
+              onClick={handleDropdownClick}
+              onKeyDown={handleKeyDown}
+            >
               <Image
                 src="/images/myTravelMenu.svg"
                 alt="menu image"
                 width={28}
                 height={28}
-                onClick={handleDropdownClick}
                 className="cursor-pointer"
               />
               {isOpen && (
-                <div className={clsx('absolute pt-2 scale-90 md:scale-100 left-7 md:-left-10')}>
+                <div
+                  tabIndex={0}
+                  className={clsx('absolute pt-2 scale-90 md:scale-100 left-7 md:-left-10')}
+                >
                   <Dropdown
                     variant="travelMenu"
                     setIsOpen={setIsOpen}
