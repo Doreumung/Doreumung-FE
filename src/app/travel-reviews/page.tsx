@@ -48,7 +48,7 @@ const Page = () => {
             />
           </section>
 
-          {!data && (
+          {data.reviews.length === 0 && (
             <>
               <p className="text-center">
                 작성된 후기가 없습니다.
@@ -66,7 +66,7 @@ const Page = () => {
             </>
           )}
 
-          {data && (
+          {data.reviews.length > 0 && (
             <>
               <div className="flex gap-2 self-end">
                 {SORTING_OPTIONS.map((option: SortCriteria) => (
