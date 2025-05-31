@@ -1,20 +1,20 @@
 'use client';
 
-import ReviewCard from '@/components/travel-reviews/reviewCard/ReviewCard';
-import Pagination from '@/components/common/pagination/Pagination';
 import { useGetReviewListQuery } from '@/api/reviewApi';
-import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
-import { SingleReviewType } from './types';
-import { useRouter } from 'next/navigation';
 import Button from '@/components/common/buttons/Button';
 import ApiErrorMessage from '@/components/common/errorMessage/ApiErrorMessage';
+import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
+import Pagination from '@/components/common/pagination/Pagination';
 import SpeechBubble from '@/components/common/speechBubble/SpeechBubble';
+import { SORTING_OPTIONS } from '@/components/travel-reviews/constants';
+import ReviewCard from '@/components/travel-reviews/reviewCard/ReviewCard';
 import SortingOption from '@/components/travel-reviews/SortingOption';
 import { SortCriteria } from '@/components/travel-reviews/types';
-import { SORTING_OPTIONS } from '@/components/travel-reviews/constants';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { RootState } from '@/store/store';
 import { setReviewPage } from '@/store/pageSlice';
+import { RootState } from '@/store/store';
+import { useRouter } from 'next/navigation';
+import { SingleReviewType } from './types';
 
 const Page = () => {
   const router = useRouter();
@@ -36,7 +36,7 @@ const Page = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="flex flex-col items-center gap-6 pt-9">
+    <div className="flex flex-col items-center gap-6 w-full pt-9 ">
       {error && <ApiErrorMessage />}
       {!error && (
         <>
@@ -75,7 +75,7 @@ const Page = () => {
               </div>
 
               <div className="flex flex-col items-center gap-10 w-full">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 place-items-center gap-8 w-full">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 place-items-center gap-8 w-full max-w-2xl lg:max-w-6xl">
                   {data.reviews.map((review: SingleReviewType) => (
                     <ReviewCard key={`${review.review_id}-${review.created_at}`} review={review} />
                   ))}
