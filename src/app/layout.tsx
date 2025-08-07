@@ -7,6 +7,7 @@ import { CheckLoginStatus } from './CheckLoginStatus';
 import Toast from '@/components/common/toast/Toast';
 import Footer from '@/components/landingPage/footer/Footer';
 import ResetSortAndPage from './ResetSortAndPage';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   title: '도르멍',
@@ -25,6 +26,7 @@ const RootLayout = ({
           <Header />
           <main className="flex justify-center grow w-full min-h-[cal(100% - 64px)] px-4 mt-16 md:min-h-[cal(100% - 80px)] md:px-6 md:mt-20">
             {children}
+            <Analytics />
           </main>
           <Footer />
           <CheckLoginStatus />
