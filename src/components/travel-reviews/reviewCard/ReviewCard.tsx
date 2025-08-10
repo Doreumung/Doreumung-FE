@@ -12,7 +12,10 @@ const ReviewCard = ({
 }) => {
   return (
     <div className="w-full max-w-80 h-[400px] border border-darkerGray rounded-2xl bg-white text-darkerGray overflow-hidden transition duration-300 ease-in-out hover:rotate-1 active:rotate-2">
-      <Link href={`travel-reviews/detail/${review_id}`}>
+      <Link
+        href={`/travel-reviews/detail/${review_id}`}
+        aria-labelledby={`review-title-${review_id}`}
+      >
         <div
           className={clsx(
             'relative h-3/5 border-b border-darkerGray bg-background',
@@ -30,24 +33,23 @@ const ReviewCard = ({
             />
           )}
         </div>
-      </Link>
-
-      <section className="flex flex-col gap-1 w-full h-2/5 px-4 py-3">
-        <ReviewStats stats={rating} color="yellow" icon={Star} />
-
-        <Link href={`travel-reviews/detail/${review_id}`} className="flex-grow">
-          <span className="text-lg text-foreground line-clamp-2">{title}</span>
-        </Link>
-
-        <div className="flex justify-between items-center">
-          <div className="flex gap-3">
-            <ReviewStats stats={comment_count} color="fadedGreen" icon={MessageCircleMore} />
-            <ReviewStats stats={like_count} color="fadedOrange" icon={Heart} />
+        <section className="flex flex-col gap-1 w-full h-2/5 px-4 py-3">
+          <ReviewStats stats={rating} color="yellow" icon={Star} />
+          <span
+            id={`review-title-${review_id}`}
+            className="flex-grow text-lg text-foreground line-clamp-2"
+          >
+            {title}
+          </span>
+          <div className="flex justify-between items-center">
+            <div className="flex gap-3">
+              <ReviewStats stats={comment_count} color="fadedGreen" icon={MessageCircleMore} />
+              <ReviewStats stats={like_count} color="fadedOrange" icon={Heart} />
+            </div>
+            <span className="text-sm">{nickname}</span>
           </div>
-
-          <span className="text-sm">{nickname}</span>
-        </div>
-      </section>
+        </section>
+      </Link>
     </div>
   );
 };
