@@ -51,6 +51,7 @@ const Pagination = ({ totalResults, currentPage, setPage, perPage = 9 }: Paginat
         <button
           key={page}
           aria-label={`${page} 페이지`}
+          aria-current={currentPage === page ? 'page' : undefined}
           className={clsx(
             PAGE_BUTTON_STYLES,
             currentPage === page && 'text-logo',
