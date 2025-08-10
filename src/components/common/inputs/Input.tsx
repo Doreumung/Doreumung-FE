@@ -40,11 +40,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         />
         {isPasswordInput && (
           <button
+            aria-label={isPasswordVisible ? '비밀번호 숨기기' : '비밀번호 보이기'}
+            aria-pressed={isPasswordVisible}
             type="button"
             className={clsx(passwordStyle({ variant }))}
             onClick={() => setIsPasswordVisible(prev => !prev)}
           >
-            {isPasswordVisible ? <EyeOff className=" h-5 w-5" /> : <Eye className="h-5 w-5" />}
+            {isPasswordVisible ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
           </button>
         )}
         {error && <p className="text-sm text-logo">{error}</p>}
