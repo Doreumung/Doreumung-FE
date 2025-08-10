@@ -34,7 +34,12 @@ const ReviewCard = ({
           )}
         </div>
         <section className="flex flex-col gap-1 w-full h-2/5 px-4 py-3">
-          <ReviewStats stats={rating} color="yellow" icon={Star} />
+          <ReviewStats
+            stats={rating}
+            color="yellow"
+            icon={Star}
+            ariaLabel={`평점 ${rating}점 (최대 5점)`}
+          />
           <span
             id={`review-title-${review_id}`}
             className="flex-grow text-lg text-foreground line-clamp-2"
@@ -43,8 +48,18 @@ const ReviewCard = ({
           </span>
           <div className="flex justify-between items-center">
             <div className="flex gap-3">
-              <ReviewStats stats={comment_count} color="fadedGreen" icon={MessageCircleMore} />
-              <ReviewStats stats={like_count} color="fadedOrange" icon={Heart} />
+              <ReviewStats
+                stats={comment_count}
+                color="fadedGreen"
+                icon={MessageCircleMore}
+                ariaLabel={`댓글 ${comment_count}개`}
+              />
+              <ReviewStats
+                stats={like_count}
+                color="fadedOrange"
+                icon={Heart}
+                ariaLabel={`좋아요 ${like_count}개`}
+              />
             </div>
             <span className="text-sm">{nickname}</span>
           </div>

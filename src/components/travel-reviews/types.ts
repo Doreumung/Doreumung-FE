@@ -38,6 +38,7 @@ export type ReviewStatsProps = VariantProps<typeof reviewStatsIconStyles> & {
   stats: string | number;
   icon: LucideIcon;
   className?: string;
+  ariaLabel?: string;
 };
 
 export type ReviewFormProps = {
