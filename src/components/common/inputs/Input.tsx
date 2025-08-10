@@ -46,7 +46,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             className={clsx(passwordStyle({ variant }))}
             onClick={() => setIsPasswordVisible(prev => !prev)}
           >
-            {isPasswordVisible ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+            {isPasswordVisible ? <EyeOff className="h-6 w-6" /> : <Eye className="h-6 w-6" />}
           </button>
         )}
         {error && <p className="text-sm text-logo">{error}</p>}
