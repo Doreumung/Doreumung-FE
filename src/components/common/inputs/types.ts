@@ -7,5 +7,5 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
     label?: string;
     placeholder?: string;
     error?: string;
-    labelColor?: 'logo' | 'darkerGray';
+    labelColor?: 'logo' | 'darkerGray' | 'foreground';
   };

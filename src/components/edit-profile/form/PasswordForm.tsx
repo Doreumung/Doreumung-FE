@@ -66,7 +66,7 @@ const PasswordForm = ({
               id="password"
               type="password"
               label="새 비밀번호"
-              labelColor="darkerGray"
+              labelColor="foreground"
               variant="eye"
               placeholder="새 비밀번호 입력"
               className="self-start w-full"
@@ -80,7 +80,7 @@ const PasswordForm = ({
               type="password"
               variant="eye"
               label="새 비밀번호 확인"
-              labelColor="darkerGray"
+              labelColor="foreground"
               placeholder="새 비밀번호 확인"
               className="self-start w-full"
               {...register('confirmPassword')}
