@@ -24,7 +24,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <label
             htmlFor={inputId}
             className={clsx(
-              labelStyles({ labelColor: labelColor === 'darkerGray' ? 'darkGray' : labelColor }),
+              labelStyles({ labelColor: labelColor === 'darkerGray' ? 'darkerGray' : labelColor }),
               variant === 'signin' && 'absolute top-1',
             )}
           >
