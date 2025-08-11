@@ -1,6 +1,6 @@
 'use client';
 
-import ScheduleArticle from './SchedulesArticle';
+import SchedulesFieldset from './SchedulesFieldset';
 import ToggleGroup from '@/components/common/toggle/ToggleGroup';
 import { MEALS, THEMES } from '@/components/common/toggle/constants';
 import Button from '@/components/common/buttons/Button';
@@ -58,9 +58,9 @@ const SchedulesForm = () => {
 
     if (scheduleOrder.length === 0) {
       return (
-        <div className="text-lightGray text-center text-sm">
+        <li className="p-0 text-lightGray text-center text-sm list-none">
           오전, 오후 일정 중 최소 1개 이상 추가해 주세요!
-        </div>
+        </li>
       );
     }
 
@@ -75,42 +75,50 @@ const SchedulesForm = () => {
       }
 
       return (
-        <div
+        <li
           key={index}
-          className={`flex justify-center items-center min-w-20 h-10 px-3 border border-darkerGray rounded-2xl text-lg md:min-w-24 md:text-xl ${bgColor}`}
+          className={`flex justify-center items-center min-w-20 h-10 px-3 border border-darkerGray rounded-2xl text-lg md:min-w-24 md:text-xl ${bgColor} list-none`}
         >
           {item}
-        </div>
+        </li>
       );
     });
   };
 
   return (
     <>
-      <section className="sticky z-20 top-0 w-full bg-background">
-        <article className="flex flex-col items-center pb-4 border-b border-b-lighterGray text-darkerGray md:pb-10 md:border-none">
-          <label className="pb-4 text-xl md:text-2xl">최종 일정</label>
-          <div className="flex flex-wrap justify-center gap-2 min-h-12">{renderSchedule()}</div>
-        </article>
+      <section className="sticky z-20 top-0 w-full bg-background" aria-labelledby="final-schedule">
+        <header className="flex flex-col items-center pb-4 border-b border-b-lighterGray text-darkerGray md:pb-10 md:border-none">
+          <h2 id="final-schedule" className="pb-4 text-xl md:text-2xl">
+            최종 일정
+          </h2>
+          <ul
+            className="flex flex-wrap justify-center gap-2 min-h-12 p-0 list-none"
+            aria-live="polite"
+            aria-label="최종 일정 구성"
+          >
+            {renderSchedule()}
+          </ul>
+        </header>
       </section>
       <section className="flex flex-col gap-6 px-6 md:gap-10 md:p-0 md:pb-16">
-        <ScheduleArticle label="테마 선택">
+        <SchedulesFieldset label="테마 선택">
           <ToggleGroup
             items={THEMES}
             color="fadedSkyblue"
             onChange={handleThemeToggleChange}
             activeToggles={themeToggles}
           />
-        </ScheduleArticle>
-        <ScheduleArticle label="식사 여부">
+        </SchedulesFieldset>
+        <SchedulesFieldset label="식사 여부">
           <ToggleGroup
             items={MEALS}
             color="fadedSkyblue"
             onChange={handleMealToggleChange}
             activeToggles={mealToggles}
           />
-        </ScheduleArticle>
-        <ScheduleArticle label="오전 일정">
+        </SchedulesFieldset>
+        <SchedulesFieldset label="오전 일정">
           <div className="flex gap-6">
             <Button
               color="fadedGreen"
@@ -126,8 +134,8 @@ const SchedulesForm = () => {
               disabled={schedule.morning === 0}
             />
           </div>
-        </ScheduleArticle>
-        <ScheduleArticle label="오후 일정">
+        </SchedulesFieldset>
+        <SchedulesFieldset label="오후 일정">
           <div className="flex gap-6">
             <Button
               color="fadedYellow"
@@ -142,7 +150,7 @@ const SchedulesForm = () => {
               disabled={schedule.afternoon === 0}
             />
           </div>
-        </ScheduleArticle>
+        </SchedulesFieldset>
       </section>
     </>
   );
