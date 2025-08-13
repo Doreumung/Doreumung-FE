@@ -58,7 +58,7 @@ const SchedulesForm = () => {
 
     if (scheduleOrder.length === 0) {
       return (
-        <li className="p-0 text-lightGray text-center text-sm list-none">
+        <li className="p-0 text-darkerGray text-center text-sm list-none">
           오전, 오후 일정 중 최소 1개 이상 추가해 주세요!
         </li>
       );
@@ -88,7 +88,7 @@ const SchedulesForm = () => {
   return (
     <>
       <section className="sticky z-20 top-0 w-full bg-background" aria-labelledby="final-schedule">
-        <header className="flex flex-col items-center pb-4 border-b border-b-lighterGray text-darkerGray md:pb-10 md:border-none">
+        <header className="flex flex-col items-center pb-4 border-b border-b-lighterGray text-foreground md:pb-10 md:border-none">
           <h2 id="final-schedule" className="pb-4 text-xl md:text-2xl">
             최종 일정
           </h2>
