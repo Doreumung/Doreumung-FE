@@ -130,6 +130,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
               type="file"
               accept="image/*"
               className="absolute top-0 left-0 size-5 opacity-0 file:cursor-pointer md:size-6"
+              aria-label="이미지 업로드"
               onChange={handleUploadImage}
             />
             <ToolbarIcon icon={Image} />

@@ -151,6 +151,7 @@ const ReviewForm = ({
               type="text"
               variant="title"
               width="wide"
+              aria-label="후기 제목"
               className="text-base border-green bg-white focus:outline-0"
             />
             {errors.title?.message && <ErrorMessage message={errors.title.message} />}
