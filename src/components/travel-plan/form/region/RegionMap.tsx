@@ -114,7 +114,7 @@ const RegionMap = () => {
   return (
     <div className="absolute inset-0 flex flex-col z-0">
       <div className="absolute top-4 left-4 z-10 max-w-[calc(100%-2rem)] p-2 border border-darkGray rounded-md shadow-md bg-white text-xs text-darkerGray md:text-base">
-        <strong className="text-logo">선택된 지역: </strong>{' '}
+        <strong className="text-foreground">선택된 지역: </strong>
         {regions.length > 0 ? regions.join(', ') : '없음'}
       </div>
       <div id="map" className="absolute top-0 left-0 w-full h-full rounded-lg" />

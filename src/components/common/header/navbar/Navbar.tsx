@@ -3,7 +3,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { navbarStyles } from './NavbarStyles';
 import { NAVBAR_MENUS } from './constants';
-import { useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import { DropdownOption } from '@/components/common/dropdown/types';
 import Dropdown from '@/components/common/dropdown/Dropdown';
 import useOutsideClick from '@/hooks/useOutsideClick';
@@ -20,6 +20,9 @@ const Navbar = () => {
   const router = useRouter();
   const path = usePathname();
   const isMobile = useIsMobile();
+  const userMenuBtnId = useId();
+  const userMenuId = useId();
+  const userMenuRef = useRef<HTMLButtonElement>(null);
   const variant = path.includes('/sign-') ? 'hidden' : 'default';
   const user = useAppSelector((state: RootState) => state.user.user);
   const { isNavigationConfirmationRequired } = useAppSelector(
@@ -44,30 +47,61 @@ const Navbar = () => {
   return (
     <nav className={navbarStyles({ variant })}>
       {!isMobile &&
-        navbarMenus.map((menu, index) => (
-          <div
-            key={`${index}-${menu.label}`}
-            ref={menu.label.includes('혼저옵서예!') ? ref : null}
-            className="relative cursor-pointer"
-          >
-            <button
-              className="text-darkerGray hover:text-logo"
-              onClick={() => handleMenuClick(menu)}
+        navbarMenus.map((menu, index) => {
+          const isUserMenu = menu.label.includes('혼저옵서예!');
+          return (
+            <div
+              key={`${index}-${menu.label}`}
+              ref={isUserMenu ? ref : null}
+              className="relative cursor-pointer"
             >
-              {menu.label}
-            </button>
-            {isOpen && menu.label.includes('혼저옵서예!') && (
-              <Dropdown variant="userMenu" setIsOpen={setIsOpen} />
-            )}
-          </div>
-        ))}
+              <button
+                id={isUserMenu ? userMenuBtnId : undefined}
+                ref={isUserMenu ? userMenuRef : null}
+                className="text-darkerGray hover:text-logo"
+                onClick={() => handleMenuClick(menu)}
+                aria-label={isUserMenu ? '사용자 메뉴' : undefined}
+                aria-haspopup={isUserMenu ? 'menu' : undefined}
+                aria-expanded={isUserMenu ? isOpen : undefined}
+                aria-controls={isUserMenu ? userMenuId : undefined}
+                onKeyDown={e => {
+                  if (isUserMenu && e.key === 'Escape') {
+                    setIsOpen(false);
+                    userMenuRef.current?.focus();
+                  }
+                }}
+              >
+                {menu.label}
+              </button>
+              {isOpen && isUserMenu && (
+                <div id={userMenuId} role="menu" aria-labelledby={userMenuBtnId}>
+                  <Dropdown variant="userMenu" setIsOpen={setIsOpen} />
+                </div>
+              )}
+            </div>
+          );
+        })}
 
       {isMobile && (
         <div ref={ref} className="relative z-10">
-          <button onClick={() => setIsOpen(prev => !prev)}>
-            <MenuIcon size={30} className="text-darkerGray cursor-pointer hover:text-logo" />
+          <button
+            aria-label={isOpen ? '메뉴 닫기' : '메뉴 열기'}
+            aria-expanded={isOpen}
+            aria-controls="mobile-nav-menu"
+            aria-haspopup="menu"
+            onClick={() => setIsOpen(prev => !prev)}
+          >
+            <MenuIcon
+              aria-hidden="true"
+              size={30}
+              className="text-darkerGray cursor-pointer hover:text-logo"
+            />
           </button>
-          {isOpen && <Dropdown variant={mobileDropdownVariant} setIsOpen={setIsOpen} />}
+          {isOpen && (
+            <div id="mobile-nav-menu" role="menu">
+              <Dropdown variant={mobileDropdownVariant} setIsOpen={setIsOpen} />
+            </div>
+          )}
         </div>
       )}
     </nav>
