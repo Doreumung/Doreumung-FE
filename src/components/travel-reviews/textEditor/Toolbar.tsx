@@ -27,6 +27,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
 
   const colorRef = useRef<HTMLDivElement | null>(null);
   const headingRef = useRef<HTMLDivElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useOutsideClick({ ref: colorRef, callback: () => setColorSwatchMode(null) });
   useOutsideClick({ ref: headingRef, callback: () => setShowHeadingOptions(false) });
@@ -132,13 +133,20 @@ const Toolbar = ({ editor }: ToolbarProps) => {
 
           <div className="relative flex items-center">
             <input
+              id="review-image-upload"
+              ref={fileInputRef}
               type="file"
               accept="image/*"
-              className="absolute top-0 left-0 size-5 opacity-0 file:cursor-pointer md:size-6"
+              className="sr-only"
+              tabIndex={-1}
               aria-label="이미지 업로드"
               onChange={handleUploadImage}
             />
-            <ToolbarIcon icon={Image} ariaLabel="이미지 업로드" />
+            <ToolbarIcon
+              icon={Image}
+              ariaLabel="이미지 업로드"
+              onClick={() => fileInputRef.current?.click()}
+            />
           </div>
         </div>
 
