@@ -3,7 +3,14 @@ import clsx from 'clsx';
 import { ToolbarIconProps } from '../types';
 import { twMerge } from 'tailwind-merge';
 
-const ToolbarIcon = ({ icon: ICON, isActive, onClick, className, ariaLabel }: ToolbarIconProps) => {
+const ToolbarIcon = ({
+  icon: ICON,
+  isActive,
+  onClick,
+  className,
+  ariaLabel,
+  roleOverride,
+}: ToolbarIconProps) => {
   const isMobile = useIsMobile();
   return (
     <button
@@ -12,6 +19,8 @@ const ToolbarIcon = ({ icon: ICON, isActive, onClick, className, ariaLabel }: To
       onClick={onClick}
       aria-label={ariaLabel || '툴바 아이콘'}
       aria-pressed={isActive}
+      aria-checked={isActive}
+      role={roleOverride}
     >
       <ICON
         width={isMobile ? 20 : 23}

@@ -70,12 +70,25 @@ const Toolbar = ({ editor }: ToolbarProps) => {
               ariaLabel="헤딩 선택"
             />
             {((isMobile && showHeadingOptions) || !isMobile) && (
-              <div className={headingToolStyles({ isMobile })}>
+              <div
+                role="radiogroup"
+                aria-label="제목 수준"
+                className={headingToolStyles({ isMobile })}
+              >
                 {getToolbarOptions(editor, 'heading').map((option, index) => (
                   <ToolbarIcon
                     key={option.type}
                     icon={option.icon}
-                    ariaLabel={option.type}
+                    ariaLabel={
+                      option.type === 'h1'
+                        ? '제목 1 적용'
+                        : option.type === 'h2'
+                        ? '제목 2 적용'
+                        : option.type === 'h3'
+                        ? '제목 3 적용'
+                        : option.type
+                    }
+                    roleOverride="radio"
                     isActive={editor.isActive('heading', { level: index + 1 })}
                     onClick={() => option.action()}
                     className="p-2 border-r border-darkerGray last:border-none md:p-0 md:border-none"
@@ -117,19 +130,30 @@ const Toolbar = ({ editor }: ToolbarProps) => {
               <ToolbarIcon
                 key={option.type}
                 icon={option.icon}
-                ariaLabel={option.type}
+                ariaLabel={
+                  option.type === 'bold'
+                    ? '굵게'
+                    : option.type === 'italic'
+                    ? '기울임'
+                    : option.type === 'underline'
+                    ? '밑줄'
+                    : option.type === 'strike'
+                    ? '취소선'
+                    : option.type
+                }
                 isActive={editor.isActive(option.type)}
                 onClick={() => option.action()}
               />
             ))}
           </div>
 
-          <div role="group" aria-label="목록" className={TOOLBAR_GROUP_STYLES}>
+          <div role="radiogroup" aria-label="목록 종류" className={TOOLBAR_GROUP_STYLES}>
             {getToolbarOptions(editor, 'list').map(option => (
               <ToolbarIcon
                 key={option.type}
                 icon={option.icon}
-                ariaLabel={option.type}
+                ariaLabel={option.type === 'bulletList' ? '글머리 기호 목록' : '번호 목록'}
+                roleOverride="radio"
                 isActive={editor.isActive(option.type)}
                 onClick={() => option.action()}
               />

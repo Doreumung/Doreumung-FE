@@ -31,6 +31,7 @@ export type ToolbarIconProps = {
   onClick?: () => void;
   className?: string;
   ariaLabel?: string;
+  roleOverride?: React.AriaRole;
 };
 
 export type ColorSwatchesProps = { type: string; onClick: () => ChainedCommands };
