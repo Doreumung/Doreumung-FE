@@ -66,6 +66,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
               icon={Heading}
               onClick={() => setShowHeadingOptions(prev => !prev)}
               className="md:hidden"
+              ariaLabel="헤딩 선택"
             />
             {((isMobile && showHeadingOptions) || !isMobile) && (
               <div className={headingToolStyles({ isMobile })}>
@@ -73,6 +74,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
                   <ToolbarIcon
                     key={option.type}
                     icon={option.icon}
+                    ariaLabel={option.type}
                     isActive={editor.isActive('heading', { level: index + 1 })}
                     onClick={() => option.action()}
                     className="p-2 border-r border-darkerGray last:border-none md:p-0 md:border-none"
@@ -87,6 +89,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
               <ToolbarIcon
                 key={option.type}
                 icon={option.icon}
+                ariaLabel={option.type}
                 onClick={() => {
                   if (!colorSwatchMode) setColorSwatchMode(option.type);
                   else if (colorSwatchMode === option.type) setColorSwatchMode(null);
@@ -108,6 +111,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
               <ToolbarIcon
                 key={option.type}
                 icon={option.icon}
+                ariaLabel={option.type}
                 isActive={editor.isActive(option.type)}
                 onClick={() => option.action()}
               />
@@ -119,6 +123,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
               <ToolbarIcon
                 key={option.type}
                 icon={option.icon}
+                ariaLabel={option.type}
                 isActive={editor.isActive(option.type)}
                 onClick={() => option.action()}
               />
@@ -133,13 +138,21 @@ const Toolbar = ({ editor }: ToolbarProps) => {
               aria-label="이미지 업로드"
               onChange={handleUploadImage}
             />
-            <ToolbarIcon icon={Image} />
+            <ToolbarIcon icon={Image} ariaLabel="이미지 업로드" />
           </div>
         </div>
 
         <div className={clsx(TOOLBAR_GROUP_STYLES, isMobile && 'hidden')}>
-          <ToolbarIcon icon={Undo} onClick={() => editor.chain().focus().undo().run()} />
-          <ToolbarIcon icon={Redo} onClick={() => editor.chain().focus().redo().run()} />
+          <ToolbarIcon
+            icon={Undo}
+            ariaLabel="실행 취소"
+            onClick={() => editor.chain().focus().undo().run()}
+          />
+          <ToolbarIcon
+            icon={Redo}
+            ariaLabel="다시 실행"
+            onClick={() => editor.chain().focus().redo().run()}
+          />
         </div>
       </div>
     </div>

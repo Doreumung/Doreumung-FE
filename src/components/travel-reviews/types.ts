@@ -30,6 +30,7 @@ export type ToolbarIconProps = {
   isActive?: boolean;
   onClick?: () => void;
   className?: string;
+  ariaLabel?: string;
 };
 
 export type ColorSwatchesProps = { type: string; onClick: () => ChainedCommands };
