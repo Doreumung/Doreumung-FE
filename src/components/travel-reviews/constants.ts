@@ -21,6 +21,26 @@ export const COLOR_SWATCHES = [
   '#FFFFFF',
 ] as const;
 
+export const COLOR_NAMES: Record<string, string> = {
+  '#FBD6B0': '살구색',
+  '#F8EAC1': '연노랑',
+  '#DBEBCC': '연두',
+  '#D1E6F1': '하늘색',
+  '#CF3F2F': '진한 빨강',
+  '#FF9B36': '주황',
+  '#FBC114': '노랑',
+  '#98DA5B': '연두빛 초록',
+  '#95C9E7': '연파랑',
+  '#0E72D5': '파랑',
+  '#151515': '기본(진한 회색)',
+  '#404040': '어두운 회색',
+  '#6D6D6D': '회색',
+  '#9C9C9C': '중간 회색',
+  '#CECECE': '연회색',
+  '#EFEFEF': '아주 연한 회색',
+  '#FFFFFF': '흰색',
+};
+
 export const TOOLBAR_OUTER_CONTAINER_STYLES =
   'sticky top-16 z-10 w-full bg-background md:top-20' as const;
 
