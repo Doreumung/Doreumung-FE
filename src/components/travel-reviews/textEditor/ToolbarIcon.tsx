@@ -6,9 +6,10 @@ import { twMerge } from 'tailwind-merge';
 const ToolbarIcon = ({ icon: ICON, isActive, onClick, className }: ToolbarIconProps) => {
   const isMobile = useIsMobile();
   return (
-    <div className={className}>
+    <button type="button" className={className} onClick={onClick} aria-pressed={isActive}>
       <ICON
-        size={isMobile ? '20' : '23'}
+        width={isMobile ? 20 : 23}
+        height={isMobile ? 20 : 23}
         strokeWidth={isActive ? '2.5' : '1.5'}
         className={twMerge(
           clsx(
@@ -16,9 +17,10 @@ const ToolbarIcon = ({ icon: ICON, isActive, onClick, className }: ToolbarIconPr
             'cursor-pointer hover:text-logo hover:scale-110',
           ),
         )}
-        onClick={onClick}
+        aria-hidden="true"
+        focusable="false"
       />
-    </div>
+    </button>
   );
 };
 
