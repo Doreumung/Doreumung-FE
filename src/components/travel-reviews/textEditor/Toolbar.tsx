@@ -59,7 +59,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
 
   return (
     <div className={TOOLBAR_OUTER_CONTAINER_STYLES}>
-      <div className={TOOLBAR_INNER_CONTAINER_STYLES}>
+      <div role="toolbar" aria-label="텍스트 편집 도구" className={TOOLBAR_INNER_CONTAINER_STYLES}>
         <div className="flex gap-3 md:gap-5">
           <div ref={headingRef} className="relative">
             <ToolbarIcon
