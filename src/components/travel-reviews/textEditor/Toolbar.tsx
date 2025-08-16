@@ -61,7 +61,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
   return (
     <div className={TOOLBAR_OUTER_CONTAINER_STYLES}>
       <div role="toolbar" aria-label="텍스트 편집 도구" className={TOOLBAR_INNER_CONTAINER_STYLES}>
-        <div className="flex gap-3 md:gap-5">
+        <div role="group" aria-label="제목 서식" className="flex gap-3 md:gap-5">
           <div ref={headingRef} className="relative">
             <ToolbarIcon
               icon={Heading}
@@ -85,7 +85,12 @@ const Toolbar = ({ editor }: ToolbarProps) => {
             )}
           </div>
 
-          <div className={twMerge(TOOLBAR_GROUP_STYLES, 'relative')} ref={colorRef}>
+          <div
+            role="group"
+            aria-label="색상"
+            className={twMerge(TOOLBAR_GROUP_STYLES, 'relative')}
+            ref={colorRef}
+          >
             {getToolbarOptions(editor, 'color').map(option => (
               <ToolbarIcon
                 key={option.type}
@@ -107,7 +112,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
               <ColorSwatches type={colorSwatchMode} onClick={() => editor.chain().focus()} />
             )}
           </div>
-          <div className={TOOLBAR_GROUP_STYLES}>
+          <div role="group" aria-label="서식" className={TOOLBAR_GROUP_STYLES}>
             {getToolbarOptions(editor, 'style').map(option => (
               <ToolbarIcon
                 key={option.type}
@@ -119,7 +124,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
             ))}
           </div>
 
-          <div className={TOOLBAR_GROUP_STYLES}>
+          <div role="group" aria-label="목록" className={TOOLBAR_GROUP_STYLES}>
             {getToolbarOptions(editor, 'list').map(option => (
               <ToolbarIcon
                 key={option.type}
@@ -150,7 +155,11 @@ const Toolbar = ({ editor }: ToolbarProps) => {
           </div>
         </div>
 
-        <div className={clsx(TOOLBAR_GROUP_STYLES, isMobile && 'hidden')}>
+        <div
+          role="group"
+          aria-label="편집 기록 제어"
+          className={clsx(TOOLBAR_GROUP_STYLES, isMobile && 'hidden')}
+        >
           <ToolbarIcon
             icon={Undo}
             ariaLabel="실행 취소"
