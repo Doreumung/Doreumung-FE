@@ -197,7 +197,7 @@ const UserDataForm = ({
                     onChange={handleGenderChange}
                     checked={newGender === genderOption.value} // 기본값 설정
                   />
-                  <span className="h-4 text-sm text-darkGray align-middle">
+                  <span className="h-4 text-sm text-darkerGray align-middle">
                     {genderOption.label}
                   </span>
                 </label>

@@ -27,6 +27,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
 
   const colorRef = useRef<HTMLDivElement | null>(null);
   const headingRef = useRef<HTMLDivElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useOutsideClick({ ref: colorRef, callback: () => setColorSwatchMode(null) });
   useOutsideClick({ ref: headingRef, callback: () => setShowHeadingOptions(false) });
@@ -59,20 +60,35 @@ const Toolbar = ({ editor }: ToolbarProps) => {
 
   return (
     <div className={TOOLBAR_OUTER_CONTAINER_STYLES}>
-      <div className={TOOLBAR_INNER_CONTAINER_STYLES}>
-        <div className="flex gap-3 md:gap-5">
+      <div role="toolbar" aria-label="텍스트 편집 도구" className={TOOLBAR_INNER_CONTAINER_STYLES}>
+        <div role="group" aria-label="제목 서식" className="flex gap-3 md:gap-5">
           <div ref={headingRef} className="relative">
             <ToolbarIcon
               icon={Heading}
               onClick={() => setShowHeadingOptions(prev => !prev)}
               className="md:hidden"
+              ariaLabel="헤딩 선택"
             />
             {((isMobile && showHeadingOptions) || !isMobile) && (
-              <div className={headingToolStyles({ isMobile })}>
+              <div
+                role="radiogroup"
+                aria-label="제목 수준"
+                className={headingToolStyles({ isMobile })}
+              >
                 {getToolbarOptions(editor, 'heading').map((option, index) => (
                   <ToolbarIcon
                     key={option.type}
                     icon={option.icon}
+                    ariaLabel={
+                      option.type === 'h1'
+                        ? '제목 1 적용'
+                        : option.type === 'h2'
+                        ? '제목 2 적용'
+                        : option.type === 'h3'
+                        ? '제목 3 적용'
+                        : option.type
+                    }
+                    roleOverride="radio"
                     isActive={editor.isActive('heading', { level: index + 1 })}
                     onClick={() => option.action()}
                     className="p-2 border-r border-darkerGray last:border-none md:p-0 md:border-none"
@@ -82,11 +98,17 @@ const Toolbar = ({ editor }: ToolbarProps) => {
             )}
           </div>
 
-          <div className={twMerge(TOOLBAR_GROUP_STYLES, 'relative')} ref={colorRef}>
+          <div
+            role="group"
+            aria-label="색상"
+            className={twMerge(TOOLBAR_GROUP_STYLES, 'relative')}
+            ref={colorRef}
+          >
             {getToolbarOptions(editor, 'color').map(option => (
               <ToolbarIcon
                 key={option.type}
                 icon={option.icon}
+                ariaLabel={option.type}
                 onClick={() => {
                   if (!colorSwatchMode) setColorSwatchMode(option.type);
                   else if (colorSwatchMode === option.type) setColorSwatchMode(null);
@@ -103,22 +125,35 @@ const Toolbar = ({ editor }: ToolbarProps) => {
               <ColorSwatches type={colorSwatchMode} onClick={() => editor.chain().focus()} />
             )}
           </div>
-          <div className={TOOLBAR_GROUP_STYLES}>
+          <div role="group" aria-label="서식" className={TOOLBAR_GROUP_STYLES}>
             {getToolbarOptions(editor, 'style').map(option => (
               <ToolbarIcon
                 key={option.type}
                 icon={option.icon}
+                ariaLabel={
+                  option.type === 'bold'
+                    ? '굵게'
+                    : option.type === 'italic'
+                    ? '기울임'
+                    : option.type === 'underline'
+                    ? '밑줄'
+                    : option.type === 'strike'
+                    ? '취소선'
+                    : option.type
+                }
                 isActive={editor.isActive(option.type)}
                 onClick={() => option.action()}
               />
             ))}
           </div>
 
-          <div className={TOOLBAR_GROUP_STYLES}>
+          <div role="radiogroup" aria-label="목록 종류" className={TOOLBAR_GROUP_STYLES}>
             {getToolbarOptions(editor, 'list').map(option => (
               <ToolbarIcon
                 key={option.type}
                 icon={option.icon}
+                ariaLabel={option.type === 'bulletList' ? '글머리 기호 목록' : '번호 목록'}
+                roleOverride="radio"
                 isActive={editor.isActive(option.type)}
                 onClick={() => option.action()}
               />
@@ -127,18 +162,38 @@ const Toolbar = ({ editor }: ToolbarProps) => {
 
           <div className="relative flex items-center">
             <input
+              id="review-image-upload"
+              ref={fileInputRef}
               type="file"
               accept="image/*"
-              className="absolute top-0 left-0 size-5 opacity-0 file:cursor-pointer md:size-6"
+              className="sr-only"
+              tabIndex={-1}
+              aria-label="이미지 업로드"
               onChange={handleUploadImage}
             />
-            <ToolbarIcon icon={Image} />
+            <ToolbarIcon
+              icon={Image}
+              ariaLabel="이미지 업로드"
+              onClick={() => fileInputRef.current?.click()}
+            />
           </div>
         </div>
 
-        <div className={clsx(TOOLBAR_GROUP_STYLES, isMobile && 'hidden')}>
-          <ToolbarIcon icon={Undo} onClick={() => editor.chain().focus().undo().run()} />
-          <ToolbarIcon icon={Redo} onClick={() => editor.chain().focus().redo().run()} />
+        <div
+          role="group"
+          aria-label="편집 기록 제어"
+          className={clsx(TOOLBAR_GROUP_STYLES, isMobile && 'hidden')}
+        >
+          <ToolbarIcon
+            icon={Undo}
+            ariaLabel="실행 취소"
+            onClick={() => editor.chain().focus().undo().run()}
+          />
+          <ToolbarIcon
+            icon={Redo}
+            ariaLabel="다시 실행"
+            onClick={() => editor.chain().focus().redo().run()}
+          />
         </div>
       </div>
     </div>

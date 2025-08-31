@@ -9,7 +9,7 @@ const TravelHeader: React.FC<TravelHeaderProps> = ({ step, stepName }) => {
       </div>
       <div className="flex items-center gap-4">
         <div className="shrink-0 w-12 h-12 bg-center bg-no-repeat bg-contain bg-[url('/images/dolmung.svg')]" />
-        <h3 className="text-2xl sm:text-3xl">{stepName}</h3>
+        <h1 className="text-2xl sm:text-3xl">{stepName}</h1>
       </div>
     </div>
   );

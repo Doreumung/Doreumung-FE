@@ -23,7 +23,7 @@ export const labelStyles = cva('pl-3', {
   variants: {
     labelColor: {
       logo: 'text-logo',
-      darkGray: 'text-darkGray',
+      darkerGray: 'text-darkerGray',
     },
   },
   defaultVariants: {

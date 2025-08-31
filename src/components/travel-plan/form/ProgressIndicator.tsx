@@ -11,6 +11,7 @@ const ProgressIndicator = ({
         className="h-full bg-logo transition-all duration-300 ease-in-out"
         style={{ width: `${(currentStep / totalSteps) * 100}%` }}
         role="progressbar"
+        aria-label="Progress Indicator"
         aria-valuenow={currentStep}
         aria-valuemin={1}
         aria-valuemax={totalSteps}

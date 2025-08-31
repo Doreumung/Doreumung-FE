@@ -16,7 +16,7 @@ const BackNavigation = ({ to, reviewId, onNavigate }: BackNavigationProps) => {
     <div className="flex w-full">
       <Link
         href={BACK_NAVIGATION_PATHS[to].path || `/travel-reviews/detail/${reviewId}`}
-        className="flex items-center text-darkGray"
+        className="flex items-center text-foreground"
         onClick={onNavigate ? handleClick : undefined}
       >
         <ChevronLeft size={20} />
